@@ -29,4 +29,11 @@ app.get('/events/:id',(req,res)=>{
     res.json(row);
   });
 });
+
+app.get('/sevents/:ids',(req,res)=>{
+  var ids = req.params.ids;
+  events.darEventsIdService(ids,(err,row)=>{
+    res.json(row);
+  });
+});
 }
