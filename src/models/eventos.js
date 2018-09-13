@@ -34,7 +34,7 @@ eventmodule.darEventsIdUsuario=(id,callback)=>{
       if(err){throw err}
       else
       {
-        console.log('prueba de git');
+        //console.log('prueba de git');
       callback(null,row);
       }
     });
