@@ -4,6 +4,6 @@ module.exports= {
   nombredb:'prevenirexpres',
   host: 'localhost',
   userbd: 'root',
-  passwordbd: 'express',
+  passwordbd: 'mysql',
   jwt_secreto:'Frth760bBn6Ju89GZgO24FTgLSCTSAS30a0tDr'
 };
