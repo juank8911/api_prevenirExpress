@@ -41,6 +41,16 @@ eventmodule.darEventsIdUsuario=(id,callback)=>{
   }
 };
 
+eventmodule.darEventsIdService = (ids,callback)=>{
+  if(connection)
+  {
+    var sql = 'SELECT events.*, servicios.nombre FROM events, servicios WHERE events.servicios_idservicios = servicios.id_servicios AND events.servicios_idservicios = ?;';
+    connection.query(sql,ids,(err,row)=>{
+      if(err){throw err}else{callback(null,row);}
+    })
+  }
+};
+
 eventmodule.agregarEvento = (events,callback) =>{
   if(connection){
     var sql = 'INSERT INTO events(color,start,end,usuarios_id,servicios_idservicios) VALUES (?,?,?,?,?)';
