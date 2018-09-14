@@ -1,4 +1,5 @@
 const events = require('../models/eventos');
+var moment = require('moment');
 
 module.exports = function(app)
 {
@@ -18,9 +19,9 @@ app.post('/events',(req,res)=>{
     servicio: req.body.id_servicio
   };
   console.log(eventss);
-  //events.agregarEvento(eventss,(err,data)=>{
-    res.json(eventss);
-//  });
+  events.agregarEvento(eventss,(err,data)=>{
+    res.json(data);
+  });
 });
 
 app.get('/events/:id',(req,res)=>{
