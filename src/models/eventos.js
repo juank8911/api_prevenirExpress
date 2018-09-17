@@ -58,7 +58,7 @@ eventmodule.agregarEvento = (events,callback) =>{
       if(err){throw err}
       else
       {
-        callback(null,{'agregado':true});
+        callback(null,[{'agregado':true}]);
       }
     });
   }
