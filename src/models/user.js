@@ -90,4 +90,15 @@ userModel.registerUsu = (usu, callback) =>{
       }
     });
 };
+
+userModel.darUserId=(id,callback)=>{
+  if(connection)
+  {
+    var sql = 'SELECT * FROM usuarios where id = ? ';
+    connection.query(sql,id,(err,row)=>{if(err){throw err}else{
+        callback(null,row);
+    }
+  });
+  }
+};
 module.exports = userModel;

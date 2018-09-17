@@ -8,4 +8,11 @@ module.exports = function (app) {
 
 	app.get('/prueba',jwts.validaAdmin,(req, res)=>{User.getUsers((err, data) => {res.json(data);});});
 
+	app.get('/get/:id',(req,res)=>{
+		var id=req.params.id;
+		User.darUserId(id,(err,res)=>{
+			res.json(res);
+		});
+	});
+
 }
