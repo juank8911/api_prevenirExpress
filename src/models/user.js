@@ -1,10 +1,11 @@
 const mysql = require('mysql');
+let config = require('../config');
 
 connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'mysql',
-    database: 'prevenirexpres'
+    host: config.host,
+    user: config.userbd,
+    password: config.passwordbd,
+    database: config.nombredb
 });
 
 let userModel={};
