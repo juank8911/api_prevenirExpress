@@ -30,9 +30,10 @@ servmodule.save64 = (data, callback)=>
     }
     else
     {
+      console.log(res.insertId);
       var idinsert = res.insertId;
       console.log(idinsert);
-      horario.id=idinsert;
+      //horario.id=idinsert;
       if(img.length>=1 )
       {
         var p = 1;

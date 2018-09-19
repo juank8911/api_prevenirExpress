@@ -3,10 +3,10 @@ let config = require('../config');
 let jwts = require('jsonwebtoken');
 let vals = require('./valida');
 connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'mysql',
-    database: 'prevenirexpres'
+    host: config.host,
+    user: config.userbd,
+    password: config.passwordbd,
+    database: config.nombredb
 });
 
 let jwtmodel = {};
