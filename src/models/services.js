@@ -19,6 +19,7 @@ servmodule.save64 = (data, callback)=>
 {
   img = data.foto64;
   nombre = data.nombre;
+  horario = data.horario;
   //console.log(img);
   var cliente = data.precio*(data.descuento/100);
   var sql = 'INSERT INTO servicios(nombre,descripcion,duracion,max_citas_ves,video,precio,descuento,precio_cliente_prevenir,id_provedores,municipio_id_municipio) values (?,?,?,?,?,?,?,?,?,?);';
@@ -31,6 +32,7 @@ servmodule.save64 = (data, callback)=>
     {
       var idinsert = res.insertId;
       console.log(idinsert);
+      horario.id=idinsert;
       if(img.length>=1 )
       {
         var p = 1;

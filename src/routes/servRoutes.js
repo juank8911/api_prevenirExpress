@@ -18,7 +18,8 @@ app.post('/services',jwts.validaAdmin,(req,res)=>{
       foto64: req.body.imagenes,
       precio: req.body.precio,
       descuento: req.body.descuento,
-      categoria: req.body.id_ctga
+      categoria: req.body.id_ctga,
+      horario: req.body.horario
 
       //files: req.files.imagenes
     };

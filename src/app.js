@@ -67,6 +67,7 @@ require('./routes/cateRoutes')(app);
 require('./routes/parenntRoutes')(app);
 require('./routes/provedorRoutes')(app);
 require('./routes/eventsRoutes')(app);
+require('./routes/horarioRoutes')(app);
 //app.use(rutas);
 
 app.listen(app.get('port'),()=>{
