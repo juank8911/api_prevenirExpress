@@ -24,6 +24,7 @@ ejectModel.darLibres = (serv,callback)=>
       //console.log(res);
       serv.libres = res;
       serv.hora = moment(serv.hora).format('hh:mm a');
+      
       //console.log(serv);
       callback(null,serv);
     });
