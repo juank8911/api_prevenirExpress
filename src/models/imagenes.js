@@ -1,15 +1,15 @@
-let mysql =require('sync-mysql');
+const mysql = require('mysql');
 let config = require('../config');
 let jwts = require('jsonwebtoken');
 let vals = require('./valida');
 let fs = require('fs');
 let ciclo = require('../controler/ciclos');
 
-connection = new mysql({
-    host: 'localhost',
-    user: 'root',
-    password: 'mysql',
-    database: 'prevenirexpres'
+connection = mysql.createConnection({
+    host: config.host,
+    user: config.userbd,
+    password: config.passwordbd,
+    database: config.nombredb
 });
 
 let imgmodule = {};
