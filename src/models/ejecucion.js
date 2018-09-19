@@ -1,11 +1,12 @@
 const mysql = require('mysql');
+let config = require('../config');
 let moment = require('moment');
 
 connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'mysql',
-    database: 'prevenirexpres'
+    host: config.host,
+    user: config.userbd,
+    password: config.passwordbd,
+    database: config.nombredb
 });
 
 
@@ -24,7 +25,7 @@ ejectModel.darLibres = (serv,callback)=>
       //console.log(res);
       serv.libres = res;
       serv.hora = moment(serv.hora).format('hh:mm a');
-      
+
       //console.log(serv);
       callback(null,serv);
     });
