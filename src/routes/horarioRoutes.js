@@ -11,10 +11,10 @@ module.exports=function(app)
     })
 });
 
-app.post('/citas',(req,res)=>{
+app.post('/citas/:fecha/:id',(req,res)=>{
   serv = {
-    fecha:req.body.fecha,
-    id:req.body.id
+    fecha:req.params.fecha,
+    id:req.params.id
   };
   hora.darDia(serv,(err,resp)=>{
     res.json(resp);
