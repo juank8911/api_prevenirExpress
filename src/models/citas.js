@@ -44,6 +44,20 @@ citasModel.countCitas = (row,callback)=>{
 
     }
 
+};
+
+citasModel.darCitasUsu = (id,callback)=>{
+if(connection)
+{
+var sql = 'SELECT servicios.nombre, servicios.id_servicios, events.start FROM servicios,events WHERE servicios.id_servicios = events.servicios_idservicios AND usuarios_id = ?';
+connection.query(sql,[id],(err,row)=>{
+  if(err){throw err}
+  else
+  {
+    callback(null,row);
+  }
+});
 }
+};
 
 module.exports = citasModel;

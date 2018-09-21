@@ -52,16 +52,19 @@ diasModel.controlH=(horario,callback)=>{
     {
       // console.log("horarios nuemro" + i);
       // console.log(horarios[i]);
-      hora.agregarHorario(horarios[i],(err,resp)=>{
-           respuesta.push(resp);
-           console.log(p);
-            p++;
-           if(p>=horarios.length)
-           {
-             res.json(respuesta);
-           }
-
-      });
+      var horas = horarios[i];
+      horas.id =   horarios.id;
+      console.log(horas);
+      // hora.agregarHorario(horas,(err,resp)=>{
+      //      respuesta.push(resp);
+      //      console.log(p);
+      //       p++;
+      //      if(p>=horarios.length)
+      //      {
+      //        res.json(respuesta);
+      //      }
+      //
+      // });
 
     }
 };

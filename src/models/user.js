@@ -31,6 +31,7 @@ userModel.getUsers = (callback) => {
   }
 };
 
+
 //registro de usuarios por facebook
 userModel.registerFace = (usu, callback)=> {
 if(connection)

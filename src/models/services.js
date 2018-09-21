@@ -41,6 +41,7 @@ servmodule.save64 = (data, callback)=>
       diasH.controlH(horario,(err,res)=>{
         next();
       });
+      callback(null,'prueba finalizada');
               // if(img.length>=1 )
               // {
               //   var p = 1;
