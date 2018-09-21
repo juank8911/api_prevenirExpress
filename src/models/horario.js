@@ -15,7 +15,7 @@ let horarioModel = {};
 
 horarioModel.agregarHorario = (horario,callback) =>
 {
-  var horas = horario.horario;
+  var horas = horario;
   var semana = horas.semana;
   var dias={};
   //console.log(semana);

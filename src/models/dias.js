@@ -42,30 +42,43 @@ for (var i = 0; i < semana.length; i++)
 diasModel.controlH=(horario,callback)=>{
 
   //console.log(req.body);
-  horarios = horario;
+  var id = horario.id;
+  horarios = horario[0];
+  horarios = horarios.horario;
+  //horarios = horarios.horario;
     console.log(horarios);
   //id=horario.id;
   //semana = horario.semana;
-    console.log(horarios.length);
+    //console.log(horarios.length);
   //  console.log(id);
    for (var i = 0; i < horarios.length; i++)
     {
       // console.log("horarios nuemro" + i);
       // console.log(horarios[i]);
       var horas = horarios[i];
-      horas.id =   horarios.id;
-      console.log(horas);
-      // hora.agregarHorario(horas,(err,resp)=>{
-      //      respuesta.push(resp);
-      //      console.log(p);
-      //       p++;
-      //      if(p>=horarios.length)
-      //      {
-      //        res.json(respuesta);
-      //      }
-      //
-      // });
-
+      horas.id =   id;
+      console.log(horas.semana);
+      hora.darDia(horas,(err,resp)=>{
+        respuesta.push(resp);
+        console.log(p);
+         p++;
+        if(p>=horarios.length)
+        {
+          res.json(respuesta);
+        }
+      });
+////////////////////////////////////////////////////
+// hora.agregarHorario(horas,(err,resp)=>{
+//      respuesta.push(resp);
+//      console.log(p);
+//       p++;
+//      if(p>=horarios.length)
+//      {
+//        res.json(respuesta);
+//      }
+//
+// });
+/////////////////////////////////////////
     }
 };
 

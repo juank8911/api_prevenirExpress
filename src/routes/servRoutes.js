@@ -22,7 +22,7 @@ app.post('/services',jwts.validaAdmin,(req,res)=>{
       horario: req.body.horarios
       //files: req.files.imagenes
     };
-
+    //console.log(req.body.horarios);
        serv.save64(servicio,(err,data)=>{
          console.log(data);
          res.json(data);
