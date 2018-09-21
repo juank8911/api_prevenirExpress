@@ -5,6 +5,8 @@ let fs = require('fs');
 let imgmodule = require('./imagenes')
 var rn = require('random-number');
 var ba64 = require("ba64");
+var regH = require("./horario");
+var diasH = require("./dias");
 
 connection = mysql.createConnection({
     host: config.domain,
@@ -30,102 +32,109 @@ servmodule.save64 = (data, callback)=>
     }
     else
     {
+
       console.log(res.insertId);
       var idinsert = res.insertId;
+      horario.id=idinsert;
       console.log(idinsert);
       //horario.id=idinsert;
-      if(img.length>=1 )
-      {
-        var p = 1;
-        var respons = [];
-      for (var i = 0; i < img.length; i++)
-      {
-          var foto = img[i];
-          var options = {
-              min:  00001
-              , max:  999999
-              , integer: true
-                          }
-              var rand = rn(options);
-              var name = data.nombre +'_'+rand+data.duracion+'_'+idinsert+rand
-              var fotos = foto.base64Image;
-              //console.log(fotos);
-              //var foto1 = fotos.base64Image;
-              var newPath = "src/public/servicios/"+name;
-              var pathView = "/servicios/"+name;
-              ba64.writeImageSync(newPath, fotos);
-              console.log(newPath);
-              if(fs.existsSync(newPath+'.jpeg'))
-              { // inicio if
-                var sql = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
-                connection.query(sql,[name,pathView,idinsert],(err,res)=>{
-                 if(err)
-                 {
-                   //throw err
-                   throw err;
-                   respons[p-1]=({"name": name, "carga": true});
-                 }
-                 else
-                 {
-                   respons[p-1]=({"name": name, "carga": true});
+      diasH.controlH(horario,(err,res)=>{
+        next();
+      });
+              // if(img.length>=1 )
+              // {
+              //   var p = 1;
+              //   var respons = [];
+              // for (var i = 0; i < img.length; i++)
+              // {
+              //     var foto = img[i];
+              //     var options = {
+              //         min:  00001
+              //         , max:  999999
+              //         , integer: true
+              //                     }
+              //         var rand = rn(options);
+              //         var name = data.nombre +'_'+rand+data.duracion+'_'+idinsert+rand
+              //         var fotos = foto.base64Image;
+              //         //console.log(fotos);
+              //         //var foto1 = fotos.base64Image;
+              //         var newPath = "src/public/servicios/"+name;
+              //         var pathView = "/servicios/"+name;
+              //         ba64.writeImageSync(newPath, fotos);
+              //         console.log(newPath);
+              //         if(fs.existsSync(newPath+'.jpeg'))
+              //         { // inicio if
+              //           var sql = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
+              //           connection.query(sql,[name,pathView,idinsert],(err,res)=>{
+              //            if(err)
+              //            {
+              //              //throw err
+              //              throw err;
+              //              respons[p-1]=({"name": name, "carga": true});
+              //            }
+              //            else
+              //            {
+              //              respons[p-1]=({"name": name, "carga": true});
+              //
+              //              if(p==img.length)
+              //              {
+              //                console.log(respons[1]);
+              //                var mensaje = [{'agregado':true}];
+              //                mensaje.fotos = respons;
+              //
+              //                callback(null,mensaje);
+              //              }
+              //              console.log(p+'=='+img.length);
+              //              p++;
+              //              console.log(newPath);
+              //            }
+              //
+              //           });
+              //
+              //         } // fin if
+              //         else
+              //         {
+              //           respons[p-1]=({"name": name, "carga": true});
+              //           console.log('error en la carga= '+newPath);
+              //         }
+              //
+              //       }
+              //
+              //
+              //     }
+              // else
+              //       {
+              //   var options = {
+              //       min:  00001
+              //       , max:  999999
+              //       , integer: true
+              //                   }
+              //       var rand = rn(options);
+              //       var name = data.nombre +'_'+rand+data.duracion+'_'+idinsert
+              //       var foto = img[0];
+              //       var foto1 = foto.base64Image;
+              //       var newPath = "src/public/servicios/"+name;
+              //       var pathView = "/servicios/"+name;
+              //       ba64.writeImageSync(newPath, foto1);
+              //       if(!fs.existsSync(newPath))
+              //       {
+              //         var sql = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
+              //         connection.query(sql,[name,pathView,idinsert],(err,res)=>{
+              //           if(err)
+              //           {
+              //             throw err
+              //           }
+              //           else
+              //           {
+              //             respons.push({"name": name, "carga": "true"});
+              //             callback(null,respons);
+              //           }
+              //         });
+              //
+              //       }
+              //
+              // }
 
-                   if(p==img.length)
-                   {
-                     console.log(respons[1]);
-                     var mensaje = [{'agregado':true}];
-                     mensaje.fotos = respons;
-                     callback(null,mensaje);
-                   }
-                   console.log(p+'=='+img.length);
-                   p++;
-                   console.log(newPath);
-                 }
-
-                });
-
-              } // fin if
-              else
-              {
-                respons[p-1]=({"name": name, "carga": true});
-                console.log('error en la carga= '+newPath);
-              }
-
-            }
-
-
-          }
-      else
-            {
-        var options = {
-            min:  00001
-            , max:  999999
-            , integer: true
-                        }
-            var rand = rn(options);
-            var name = data.nombre +'_'+rand+data.duracion+'_'+idinsert
-            var foto = img[0];
-            var foto1 = foto.base64Image;
-            var newPath = "src/public/servicios/"+name;
-            var pathView = "/servicios/"+name;
-            ba64.writeImageSync(newPath, foto1);
-            if(!fs.existsSync(newPath))
-            {
-              var sql = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
-              connection.query(sql,[name,pathView,idinsert],(err,res)=>{
-                if(err)
-                {
-                  throw err
-                }
-                else
-                {
-                  respons.push({"name": name, "carga": "true"});
-                  callback(null,respons);
-                }
-              });
-
-            }
-
-      }
     }
   });
 };
