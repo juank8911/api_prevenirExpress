@@ -54,13 +54,6 @@ servmodule.save64 = (data, callback)=>
          console.log(horas);
          regH.agregarHorario(horas,(err,resp)=>{
                   respuesta.push(resp);
-                  console.log(p);
-                  p++;
-                  if(p>=horarios.length)
-                  {
-
-                  }
-
          });
        }
        }

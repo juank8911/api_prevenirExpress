@@ -7,13 +7,15 @@ module.exports = function(app)
 {
 
 app.post('/services',jwts.validaAdmin,(req,res)=>{
+  var videos = req.body.video;
+  videos = videos.split("=").pop();
     var servicio = {
       id_prov: req.body.id_usuario,
       nombre: req.body.nombre,
       descripcion: req.body.descripcion,
       duracion: req.body.duracion,
       max_citas: req.body.max_citas,
-      video: req.body.video,
+      video: videos,
       muni: req.body.id_mncp,
       foto64: req.body.imagenes,
       precio: req.body.precio,
