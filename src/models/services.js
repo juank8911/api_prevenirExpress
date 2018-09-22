@@ -26,7 +26,7 @@ servmodule.save64 = (data, callback)=>
   var horarios;
   var p=0;
   //console.log(img);
-  var cliente = data.precio*(data.descuento/100);
+  var cliente = data.precio*((100-data.descuento)/100);
   var sql = 'INSERT INTO servicios(nombre,descripcion,duracion,max_citas_ves,video,precio,descuento,precio_cliente_prevenir,id_provedores,municipio_id_municipio) values (?,?,?,?,?,?,?,?,?,?);';
   connection.query(sql,[data.nombre,data.descripcion,data.duracion,data.max_citas,data.video,data.precio,data.descuento,cliente,data.id_prov,data.muni],(err,res)=>{
     if(err)
@@ -54,13 +54,6 @@ servmodule.save64 = (data, callback)=>
          console.log(horas);
          regH.agregarHorario(horas,(err,resp)=>{
                   respuesta.push(resp);
-                  console.log(p);
-                  p++;
-                  if(p>=horarios.length)
-                  {
-
-                  }
-
          });
        }
        }
@@ -387,8 +380,7 @@ servmodule.deleteServ = (id,callback)=>{
             connection.query(sql2,[id],(err,res2)=>{
               if(err){throw err;}
               else
-              {
-                      connection.query(sql3,[id],(err,res)=>{
+              {    connection.query(sql3,[id],(err,res)=>{
                         if(err){throw err}
                         else
                         {
