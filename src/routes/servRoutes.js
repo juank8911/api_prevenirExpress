@@ -19,15 +19,10 @@ app.post('/services',jwts.validaAdmin,(req,res)=>{
       precio: req.body.precio,
       descuento: req.body.descuento,
       categoria: req.body.id_ctga,
-      horario: req.body.horario
-
+      horario: req.body.horarios
       //files: req.files.imagenes
     };
-    //console.log(servicio);
-       // var confoto = servicio.foto64;
-       // var foto = confoto[0];
-       // var foto1 = foto.base64Image;
-      // console.log(servicio);
+    //console.log(req.body.horarios);
        serv.save64(servicio,(err,data)=>{
          console.log(data);
          res.json(data);

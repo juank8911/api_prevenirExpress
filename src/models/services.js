@@ -5,6 +5,8 @@ let fs = require('fs');
 let imgmodule = require('./imagenes')
 var rn = require('random-number');
 var ba64 = require("ba64");
+var regH = require("./horario");
+var diasH = require("./dias");
 
 connection = mysql.createConnection({
     host: config.domain,
@@ -20,6 +22,9 @@ servmodule.save64 = (data, callback)=>
   img = data.foto64;
   nombre = data.nombre;
   horario = data.horario;
+  var respuesta =[];
+  var horarios;
+  var p=0;
   //console.log(img);
   var cliente = data.precio*(data.descuento/100);
   var sql = 'INSERT INTO servicios(nombre,descripcion,duracion,max_citas_ves,video,precio,descuento,precio_cliente_prevenir,id_provedores,municipio_id_municipio) values (?,?,?,?,?,?,?,?,?,?);';
@@ -30,102 +35,130 @@ servmodule.save64 = (data, callback)=>
     }
     else
     {
-      console.log(res.insertId);
+
+      //console.log(res.insertId);
       var idinsert = res.insertId;
-      console.log(idinsert);
+      //console.log(horario)
       //horario.id=idinsert;
-      if(img.length>=1 )
-      {
-        var p = 1;
-        var respons = [];
-      for (var i = 0; i < img.length; i++)
-      {
-          var foto = img[i];
-          var options = {
-              min:  00001
-              , max:  999999
-              , integer: true
+      //console.log(horario);
+      horarios = horario[0];
+      horarios = horarios.horario;
+      //console.log(horarios);
+      for (var i = 0; i < horarios.length; i++)
+       {
+         var horas = horarios[i];
+         //console.log(horas.length);
+         if(horas.m_de!=null)
+         {
+           horas.id=idinsert;
+         console.log(horas);
+         regH.agregarHorario(horas,(err,resp)=>{
+                  respuesta.push(resp);
+                  console.log(p);
+                  p++;
+                  if(p>=horarios.length)
+                  {
+
+                  }
+
+         });
+       }
+       }
+
+               if(img.length>=1 )
+               {
+                 var p = 1;
+                 var respons = [];
+               for (var i = 0; i < img.length; i++)
+               {
+                   var foto = img[i];
+                   var options = {
+                       min:  00001
+                       , max:  999999
+                       , integer: true
+                                   }
+                       var rand = rn(options);
+                       var name = data.nombre +'_'+rand+data.duracion+'_'+idinsert+rand
+                       var fotos = foto.base64Image;
+                       //console.log(fotos);
+                       //var foto1 = fotos.base64Image;
+                       var newPath = "src/public/servicios/"+name;
+                       var pathView = "/servicios/"+name;
+                       ba64.writeImageSync(newPath, fotos);
+                       console.log(newPath);
+                       if(fs.existsSync(newPath+'.jpeg'))
+                       { // inicio if
+                         var sql = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
+                         connection.query(sql,[name,pathView,idinsert],(err,res)=>{
+                          if(err)
+                          {
+                            //throw err
+                            throw err;
+                            respons[p-1]=({"name": name, "carga": true});
                           }
-              var rand = rn(options);
-              var name = data.nombre +'_'+rand+data.duracion+'_'+idinsert+rand
-              var fotos = foto.base64Image;
-              //console.log(fotos);
-              //var foto1 = fotos.base64Image;
-              var newPath = "src/public/servicios/"+name;
-              var pathView = "/servicios/"+name;
-              ba64.writeImageSync(newPath, fotos);
-              console.log(newPath);
-              if(fs.existsSync(newPath+'.jpeg'))
-              { // inicio if
-                var sql = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
-                connection.query(sql,[name,pathView,idinsert],(err,res)=>{
-                 if(err)
-                 {
-                   //throw err
-                   throw err;
-                   respons[p-1]=({"name": name, "carga": true});
+                          else
+                          {
+                            respons[p-1]=({"name": name, "carga": true});
+
+                            if(p==img.length)
+                            {
+                              console.log(respons[1]);
+                              var mensaje = [{'agregado':true}];
+                              mensaje.fotos = respons;
+
+                              callback(null,mensaje);
+                            }
+                            console.log(p+'=='+img.length);
+                            p++;
+                            console.log(newPath);
+                          }
+
+                         });
+
+                       } // fin if
+                       else
+                       {
+                       respons[p-1]=({"name": name, "carga": true});
+                         console.log('error en la carga= '+newPath);
+                     }
+
+                     }
+
+
                  }
-                 else
-                 {
-                   respons[p-1]=({"name": name, "carga": true});
+               else
+                     {
+                 var options = {
+                     min:  00001
+                     , max:  999999
+                     , integer: true
+                                 }
+                     var rand = rn(options);
+                     var name = data.nombre +'_'+rand+data.duracion+'_'+idinsert
+                     var foto = img[0];
+                     var foto1 = foto.base64Image;
+                     var newPath = "src/public/servicios/"+name;
+                     var pathView = "/servicios/"+name;
+                     ba64.writeImageSync(newPath, foto1);
+                     if(!fs.existsSync(newPath))
+                     {
+                       var sql = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
+                       connection.query(sql,[name,pathView,idinsert],(err,res)=>{
+                         if(err)
+                         {
+                           throw err
+                         }
+                         else
+                         {
+                           respons.push({"name": name, "carga": "true"});
+                           callback(null,respons);
+                         }
+                       });
 
-                   if(p==img.length)
-                   {
-                     console.log(respons[1]);
-                     var mensaje = [{'agregado':true}];
-                     mensaje.fotos = respons;
-                     callback(null,mensaje);
-                   }
-                   console.log(p+'=='+img.length);
-                   p++;
-                   console.log(newPath);
-                 }
+                     }
 
-                });
-
-              } // fin if
-              else
-              {
-                respons[p-1]=({"name": name, "carga": true});
-                console.log('error en la carga= '+newPath);
-              }
-
-            }
-
-
-          }
-      else
-            {
-        var options = {
-            min:  00001
-            , max:  999999
-            , integer: true
-                        }
-            var rand = rn(options);
-            var name = data.nombre +'_'+rand+data.duracion+'_'+idinsert
-            var foto = img[0];
-            var foto1 = foto.base64Image;
-            var newPath = "src/public/servicios/"+name;
-            var pathView = "/servicios/"+name;
-            ba64.writeImageSync(newPath, foto1);
-            if(!fs.existsSync(newPath))
-            {
-              var sql = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
-              connection.query(sql,[name,pathView,idinsert],(err,res)=>{
-                if(err)
-                {
-                  throw err
-                }
-                else
-                {
-                  respons.push({"name": name, "carga": "true"});
-                  callback(null,respons);
-                }
-              });
-
-            }
-
-      }
+               }
+// fin de else
     }
   });
 };
