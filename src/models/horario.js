@@ -67,8 +67,15 @@ var dia = moment(fecha.fecha).format('dddd');
      if(err){throw err}
      else
      {
+       console.log(dia);
+       if (JSON.stringify(row)=='[]') {
+          //execute
+          console.log('vacio');
+          callback(null,[{'maniana':[{"hora": "no ahy citas disponibles"}]}]);
+          }
 
-       var hd = row[0];
+      else
+{       var hd = row[0];
        // console.log(hd);
        var m_de = fecha.fecha+" "+hd.de_maniana;
        var m_hasta = fecha.fecha+" "+hd.a_maniana;
@@ -111,7 +118,7 @@ var dia = moment(fecha.fecha).format('dddd');
        //console.log(m_de)
 
        //callback(null,manana);
-
+}
      }
    });
  }
