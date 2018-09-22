@@ -71,9 +71,8 @@ var dia = moment(fecha.fecha).format('dddd');
        if (JSON.stringify(row)=='[]') {
           //execute
           console.log('vacio');
-          callback(null,[{'maniana':[{"hora": "no ahy citas disponibles"}]}]);
-          }
-
+          callback(null,[{'maniana':[{"hora": "no ahy citas disponibles"},]},{'tardes':[{"hora": "no ahy citas disponibles"},]}]);
+}
       else
 {       var hd = row[0];
        // console.log(hd);
