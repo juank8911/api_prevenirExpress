@@ -29,7 +29,7 @@ eventmodule.darEvents = (callback) =>{
 eventmodule.darEventsIdUsuario=(id,callback)=>{
   if(connection)
   {
-    var sql = 'SELECT events.*, servicios.nombre FROM events, servicios WHERE events.servicios_idservicios = servicios.id_servicios AND events.usuarios_id = ?;';
+    var sql = 'SELECT events.*, servicios.nombre FROM events, servicios WHERE events.servicios_idservicios = servicios.id_servicios AND events.usuarios_id = ? ORDER BY events.start desc;';
     connection.query(sql,id,(err,row)=>{
       if(err){throw err}
       else
@@ -54,16 +54,36 @@ eventmodule.darEventsIdService = (ids,callback)=>{
 eventmodule.agregarEvento = (events,callback) =>{
   if(connection){
     console.log(events);
+    var valida = 'SELECT createdAT,start FROM events where usuarios_id = ? and DATE(start) = DATE(?); ';
     var sql = 'INSERT INTO events(color,start,end,usuarios_id,servicios_idservicios) VALUES (?,?,?,?,?)';
-    connection.query(sql,[events.color,events.start,events.end,events.usuario,events.servicio],(err,row)=>{
+    connection.query(valida,[events.usuario,events.start],(err,res)=>{
       if(err){throw err}
-      else
-      {
-        callback(null,[{'agregado':true}]);
-      }
+      else {
+
+              // res = res[0];
+              console.log(res);
+              if(JSON.stringify(res)=='[]')
+              {
+                connection.query(sql,[events.color,events.start,events.end,events.usuario,events.servicio],(err,row)=>{
+                  if(err){throw err}
+                  else
+                  {
+                    callback(null,[{'agregado':true}]);
+                  }
+                });
+
+              }
+              else{  console.log('vacio'); callback(null,[{'reservado':true}]);}
+            }
+
     });
   }
 };
+
+
+
+
+
 
 eventmodule.eliminarEvento = (id,callback) =>{
   if(connection)
