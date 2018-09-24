@@ -8,7 +8,16 @@ module.exports = function(app)
 
 app.post('/services',jwts.validaAdmin,(req,res)=>{
   var videos = req.body.video;
-  videos = videos.split("/").pop();
+  if(videos!=null)
+  {
+      videos = videos.split("/").pop();
+  }
+  else {
+    {
+      videos = '4Z4TxFh1tO8';
+    }
+  }
+
     var servicio = {
       id_prov: req.body.id_usuario,
       nombre: req.body.nombre,
@@ -35,7 +44,7 @@ app.post('/services',jwts.validaAdmin,(req,res)=>{
 
 
 app.get('/services',(req,res)=>{
-      console.log('servicios');
+      //console.log('servicios');
       serv.pruebaServicio((req,resp)=>{
         res.json(resp);
       });
@@ -45,7 +54,7 @@ app.get('/services/:id',(req,res)=>{
   console.log('dar servicio por id de provedor');
   var id=req.params.id;
   serv.DarServiceUsu(id,(err,data)=>{
-    console.log(data);
+    //console.log(data);
     res.json(data);
   });
 });

@@ -67,11 +67,11 @@ var dia = moment(fecha.fecha).format('dddd');
      if(err){throw err}
      else
      {
-       console.log(dia);
+       //console.log(dia);
        if (JSON.stringify(row)=='[]') {
           //execute
-          console.log('vacio');
-          callback(null,[{'maniana':[{"hora": "no ahy citas disponibles"},]},{'tardes':[{"hora": "no ahy citas disponibles"},]}]);
+        //  console.log('vacio');
+          callback(null,[{'maniana':[{"hora": "no ahy citas disponibles",'disponible':false},]},{'tardes':[{"hora": "no ahy citas disponibles",'disponible':false},]}]);
 }
       else
 {       var hd = row[0];
@@ -93,8 +93,8 @@ var dia = moment(fecha.fecha).format('dddd');
 
        } while (horaD.isBefore(m_hasta));
        hora = moment(m_hasta).format('YYYY-MM-DD HH:mm:ss');
-       manana.push({hora});
-       manana.id = 2;
+       manana.push({hora,'disponible':true});
+       manana.id = parseInt(fecha.id);
        citas.countCitas(manana,(err,maniana)=>{
          derro.push({maniana});
          //console.log(derro[0]);
@@ -108,8 +108,9 @@ var dia = moment(fecha.fecha).format('dddd');
                               } while (horaT.isBefore(t_hasta));
                               hora = moment(t_hasta).format('YYYY-MM-DD HH:mm:ss');
                               tarde.push({hora});
-                              tarde.id = 2;
+                              tarde.id = parseInt(fecha.id);
                               citas.countCitas(tarde,(err,tardes)=>{
+
                                   derro.push({tardes});
                                   callback(null,derro);
                               });

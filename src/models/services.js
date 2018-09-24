@@ -51,7 +51,7 @@ servmodule.save64 = (data, callback)=>
          if(horas.m_de!=null)
          {
            horas.id=idinsert;
-         console.log(horas);
+         //console.log(horas);
          regH.agregarHorario(horas,(err,resp)=>{
                   respuesta.push(resp);
          });
@@ -82,7 +82,7 @@ servmodule.save64 = (data, callback)=>
                        if(fs.existsSync(newPath+'.jpeg'))
                        { // inicio if
                          var sql = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
-                         connection.query(sql,[name,pathView,idinsert],(err,res)=>{
+                         connection.query(sql,[name,pathView+".jpeg",idinsert],(err,res)=>{
                           if(err)
                           {
                             //throw err
@@ -186,7 +186,7 @@ else
           else
           {
             serv.foto = resp;
-            console.log(resp);
+            //console.log(resp);
             jsonServ.push(serv);
             // console.log('/////////******* valor p '+p)
             // console.log('/////////******* valor row '+row.length);
@@ -320,7 +320,7 @@ else
             if(p>=row.length)
             {
               callback(null,jsonServ);
-              console.log('find de la consulta');
+              //console.log('find de la consulta');
             }
             p++
           }
@@ -331,7 +331,7 @@ else
   });
 
   }
-  console.log('prueba');
+//  console.log('prueba');
 };
 
 servmodule.darServicios = (callback)=>{
@@ -354,7 +354,7 @@ servmodule.darServicios = (callback)=>{
               {
                 imgmodule.darImagenesServ(row,(err,resp)=>
                 {
-                    console.log(resp);
+                    //console.log(resp);
                     callback(null,resp);
 
                 });
