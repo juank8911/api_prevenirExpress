@@ -53,12 +53,29 @@ eventmodule.darEventsIdService = (ids,callback)=>{
 
 eventmodule.agregarEvento = (events,callback) =>{
   if(connection){
+    console.log(events);
     var sql = 'INSERT INTO events(color,start,end,usuarios_id,servicios_idservicios) VALUES (?,?,?,?,?)';
     connection.query(sql,[events.color,events.start,events.end,events.usuario,events.servicio],(err,row)=>{
       if(err){throw err}
       else
       {
         callback(null,[{'agregado':true}]);
+      }
+    });
+  }
+};
+
+eventmodule.eliminarEvento = (id,callback) =>{
+  if(connection)
+  {
+    var sql = 'DELETE FROM events WHERE id_eventos=?';
+    connection.query(sql,[id],(err,row)=>{
+      if(err){throw err}
+      else
+      {
+        row.delete = true;
+        //console.log(row);
+        callback(null,row);
       }
     });
   }

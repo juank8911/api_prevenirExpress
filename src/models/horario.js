@@ -67,10 +67,10 @@ var dia = moment(fecha.fecha).format('dddd');
      if(err){throw err}
      else
      {
-       console.log(dia);
+       //console.log(dia);
        if (JSON.stringify(row)=='[]') {
           //execute
-          console.log('vacio');
+        //  console.log('vacio');
           callback(null,[{'maniana':[{"hora": "no ahy citas disponibles",'disponible':false},]},{'tardes':[{"hora": "no ahy citas disponibles",'disponible':false},]}]);
 }
       else

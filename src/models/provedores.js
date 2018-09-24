@@ -56,7 +56,8 @@ provedorModule.darProvedor = (callback)=>{
 provedorModule.darProvedorid = (id,callback)=>{
   var sql = 'SELECT * FROM provedores WHERE id_provedor = ?';
   connection.query(sql,[id],(err,row)=>{
-    if(err){throw err}else{console.log(row); callback(null,row)}
+    if(err){throw err}else{//console.log(row); 
+      callback(null,row)}
   });
 };
 

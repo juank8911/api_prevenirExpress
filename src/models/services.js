@@ -186,7 +186,7 @@ else
           else
           {
             serv.foto = resp;
-            console.log(resp);
+            //console.log(resp);
             jsonServ.push(serv);
             // console.log('/////////******* valor p '+p)
             // console.log('/////////******* valor row '+row.length);
@@ -320,7 +320,7 @@ else
             if(p>=row.length)
             {
               callback(null,jsonServ);
-              console.log('find de la consulta');
+              //console.log('find de la consulta');
             }
             p++
           }
@@ -331,7 +331,7 @@ else
   });
 
   }
-  console.log('prueba');
+//  console.log('prueba');
 };
 
 servmodule.darServicios = (callback)=>{
@@ -354,7 +354,7 @@ servmodule.darServicios = (callback)=>{
               {
                 imgmodule.darImagenesServ(row,(err,resp)=>
                 {
-                    console.log(resp);
+                    //console.log(resp);
                     callback(null,resp);
 
                 });

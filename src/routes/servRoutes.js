@@ -44,7 +44,7 @@ app.post('/services',jwts.validaAdmin,(req,res)=>{
 
 
 app.get('/services',(req,res)=>{
-      console.log('servicios');
+      //console.log('servicios');
       serv.pruebaServicio((req,resp)=>{
         res.json(resp);
       });
@@ -54,7 +54,7 @@ app.get('/services/:id',(req,res)=>{
   console.log('dar servicio por id de provedor');
   var id=req.params.id;
   serv.DarServiceUsu(id,(err,data)=>{
-    console.log(data);
+    //console.log(data);
     res.json(data);
   });
 });
