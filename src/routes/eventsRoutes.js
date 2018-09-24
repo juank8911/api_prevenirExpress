@@ -11,7 +11,7 @@ module.exports = function(app)
 
 
 app.post('/events',(req,res)=>{
-  console.log(req.body);
+  //console.log(req.body);
   var Mend = parseInt(00);
   var hinicio = moment(req.body.start).format('HH:mm:ss');
   var Finicio = moment(req.body.start).format('YYYY-MM-DD');
@@ -34,7 +34,7 @@ app.post('/events',(req,res)=>{
     usuario: req.body.usuario,
     servicio: req.body.servicio
   };
-  console.log(starts + " "+ends);
+  //console.log(starts + " "+ends);
   events.agregarEvento(eventss,(err,data)=>{
     res.json(data);
   });
