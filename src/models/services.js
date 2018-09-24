@@ -82,7 +82,7 @@ servmodule.save64 = (data, callback)=>
                        if(fs.existsSync(newPath+'.jpeg'))
                        { // inicio if
                          var sql = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
-                         connection.query(sql,[name,pathView,idinsert],(err,res)=>{
+                         connection.query(sql,[name,pathView+".jpeg",idinsert],(err,res)=>{
                           if(err)
                           {
                             //throw err

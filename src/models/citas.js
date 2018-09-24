@@ -35,7 +35,7 @@ citasModel.countCitas = (row,callback)=>{
           if(p>=row.length)
           {
             //console.log('jsonHd');
-            //console.log(jsonHd);
+            console.log(jsonHd);
             callback(null,jsonHd);
           }
       });

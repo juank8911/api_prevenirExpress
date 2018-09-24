@@ -8,7 +8,16 @@ module.exports = function(app)
 
 app.post('/services',jwts.validaAdmin,(req,res)=>{
   var videos = req.body.video;
-  videos = videos.split("/").pop();
+  if(videos!=null)
+  {
+      videos = videos.split("/").pop();
+  }
+  else {
+    {
+      videos = '4Z4TxFh1tO8';
+    }
+  }
+
     var servicio = {
       id_prov: req.body.id_usuario,
       nombre: req.body.nombre,
