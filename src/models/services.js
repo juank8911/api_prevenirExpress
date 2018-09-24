@@ -51,7 +51,7 @@ servmodule.save64 = (data, callback)=>
          if(horas.m_de!=null)
          {
            horas.id=idinsert;
-         console.log(horas);
+         //console.log(horas);
          regH.agregarHorario(horas,(err,resp)=>{
                   respuesta.push(resp);
          });
