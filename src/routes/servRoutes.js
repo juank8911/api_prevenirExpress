@@ -30,7 +30,8 @@ app.post('/services',jwts.validaAdmin,(req,res)=>{
       precio: req.body.precio,
       descuento: req.body.descuento,
       categoria: req.body.id_ctga,
-      horario: req.body.horarios
+      horario: req.body.horarios,
+      categoria: req.body.categoria
       //files: req.files.imagenes
     };
     //console.log(req.body.horarios);
@@ -67,6 +68,13 @@ app.delete('/services/:id',jwts.validaAdmin,(req,res)=>{
         res.json(resp);
       });
     });
+
+app.get('/servicess/:id',(req,res)=>{
+  var id = req.params.id;
+  serv.darServiciosIdS(id,(err,resp)=>{
+    res.json(resp);
+  });
+});
 
 
 app.put('/service/:id',jwts.validaAdmin,(req,res)=>{

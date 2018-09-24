@@ -58,6 +58,14 @@ servmodule.save64 = (data, callback)=>
        }
        }
 
+       sqlss = 'INSERT INTO servicios_categoria (servicios_idservicios, categoria_idcategoria) VALUES (?, ?)';
+       connection.query(sqlss,[idinsert,data.categoria],(err,row)=>{
+         if(err)
+         {
+           throw err;
+         }
+         else
+         {
                if(img.length>=1 )
                {
                  var p = 1;
@@ -151,6 +159,8 @@ servmodule.save64 = (data, callback)=>
                      }
 
                }
+             }
+           });
 // fin de else
     }
   });
@@ -287,7 +297,7 @@ servmodule.pruebaServicio = (callback)=>{
   console.log('prueba de servicios')
 if(connection)
 {
-  var sql = 'SELECT servicios.* FROM servicios';
+  var sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios, categoria, servicios_categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios and categoria.id_categoria = servicios_categoria.categoria_idcategoria';
   connection.query(sql,(err,row)=>{
 if(err)
 {
@@ -364,6 +374,57 @@ servmodule.darServicios = (callback)=>{
 
   }
 
+};
+
+servmodule.darServiciosIdS = (id,callback)=>{
+  console.log('prueba de servicios')
+if(connection)
+{
+  var sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios, categoria, servicios_categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios and categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ?';
+  connection.query(sql,[id],(err,row)=>{
+if(err)
+{
+
+}
+else
+{
+  console.log(row);
+  var p =1;
+      var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
+      var jsonServ = [];
+    //  console.log('fuera de la consulta')
+      var jsonServ = [];
+      row.forEach((serv)=>{
+        // console.log(serv.idservicios)
+        var id = serv.id_servicios;
+        //console.log(id);
+        connection.query(sql,[id],(err,resp)=>{
+          // console.log('dentro de la consulta '+id)
+          if(err)
+          {
+
+          }
+          else
+          {
+            serv.foto = resp;
+            //console.log(resp);
+            jsonServ.push(serv);
+            // console.log('/////////******* valor p '+p)
+            //console.log('/////////******* valor row '+row.length);
+            if(p>=row.length)
+            {
+              callback(null,jsonServ);
+              //console.log('find de la consulta');
+            }
+            p++
+          }
+        });
+       });
+
+}
+  });
+
+  }
 };
 
 servmodule.deleteServ = (id,callback)=>{
