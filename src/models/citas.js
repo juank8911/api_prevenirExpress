@@ -60,4 +60,7 @@ connection.query(sql,[id],(err,row)=>{
 }
 };
 
+
+
+
 module.exports = citasModel;

@@ -1,5 +1,6 @@
 let mysql =require('mysql');
 let config = require('../config');
+var moment = require('moment');
 
 
 connection = mysql.createConnection({
@@ -41,6 +42,7 @@ eventmodule.darEventsIdUsuario=(id,callback)=>{
   }
 };
 
+
 eventmodule.darEventsIdService = (ids,callback)=>{
   if(connection)
   {
@@ -50,6 +52,7 @@ eventmodule.darEventsIdService = (ids,callback)=>{
     })
   }
 };
+
 
 eventmodule.agregarEvento = (events,callback) =>{
   if(connection){
@@ -86,20 +89,35 @@ eventmodule.agregarEvento = (events,callback) =>{
 
 
 eventmodule.eliminarEvento = (id,callback) =>{
+  var now = moment().format('YYYY-MM-DD hh:mm:ss a');
+      console.log('hoy'+now);
   if(connection)
   {
-    var sql = 'DELETE FROM events WHERE id_eventos=?';
-    connection.query(sql,[id],(err,row)=>{
-      if(err){throw err}
+    var valida = 'SELECT start FROM events WHERE id_eventos = ?';
+    connection.query(valida,id,(err,resp)=>{
+      resp = resp[0];
+      resp = resp.start
+      resp = moment(resp).format('YYYY-MM-DD hh:mm:ss a');
+      console.log('original'+resp);
+      resp =  moment(resp).subtract(1, 'day').format('YYYY-MM-DD hh:mm:ss a');
+      console.log('resta'+resp);
+      if(moment(now).isSameOrBefore(resp))
+      {
+          var del = ' DELETE FROM events where id_eventos = ?';
+          connection.query(del,[id],(err,row)=>{
+            if(err){throw err}else{callback(null,{'borrado':true});}
+          });
+      }
       else
       {
-        row.delete = true;
-        //console.log(row);
-        callback(null,row);
+        callback(null,{'borrado':false})
+
       }
+
     });
   }
 };
+
 
 
 module.exports = eventmodule;
