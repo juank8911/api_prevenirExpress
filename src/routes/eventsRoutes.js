@@ -1,5 +1,6 @@
 const events = require('../models/eventos');
 var moment = require('moment');
+const jwts = require('../models/jwt');
 
 module.exports = function(app)
 {
@@ -54,7 +55,7 @@ app.get('/sevents/:ids',(req,res)=>{
   });
 });
 
-app.delete('/events/:id',(req,res)=>{
+app.delete('/events/:id',jwts.valida,(req,res)=>{
   var id = req.params.id;
   events.eliminarEvento(id,(err,row)=>{
     res.json(row);

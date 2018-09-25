@@ -42,6 +42,7 @@ eventmodule.darEventsIdUsuario=(id,callback)=>{
   }
 };
 
+
 eventmodule.darEventsIdService = (ids,callback)=>{
   if(connection)
   {
@@ -51,6 +52,7 @@ eventmodule.darEventsIdService = (ids,callback)=>{
     })
   }
 };
+
 
 eventmodule.agregarEvento = (events,callback) =>{
   if(connection){
