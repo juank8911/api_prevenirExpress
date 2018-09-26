@@ -10,6 +10,7 @@ connection = mysql.createConnection({
 
 let parentModule = {};
 
+//retorna una lista de parentescos posibles de la base de datos
 parentModule.darParent = (callback)=>{
   if(connection)
   {

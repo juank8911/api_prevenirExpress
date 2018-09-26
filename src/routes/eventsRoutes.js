@@ -4,13 +4,15 @@ const jwts = require('../models/jwt');
 
 module.exports = function(app)
 {
+
+  //devuelvve la lista de todos los eventos posibles
   app.get('/events',(req,res)=>{
     events.darEvents((err,resp)=>{
       res.json(resp);
     });
   });
 
-
+//crea eventos
 app.post('/events',(req,res)=>{
   //console.log(req.body);
   var Mend = parseInt(00);
@@ -41,6 +43,7 @@ app.post('/events',(req,res)=>{
   });
 });
 
+// retorna eventos segun el id del usuario
 app.get('/events/:id',(req,res)=>{
   var id = req.params.id;
   events.darEventsIdUsuario(id,(err,row)=>{
@@ -48,6 +51,7 @@ app.get('/events/:id',(req,res)=>{
   });
 });
 
+// retorna eventos segun el id del servicio
 app.get('/sevents/:ids',(req,res)=>{
   var ids = req.params.ids;
   events.darEventsIdService(ids,(err,row)=>{
@@ -55,6 +59,7 @@ app.get('/sevents/:ids',(req,res)=>{
   });
 });
 
+// elimina eventos segun el id del evento
 app.delete('/events/:id',jwts.valida,(req,res)=>{
   var id = req.params.id;
   events.eliminarEvento(id,(err,row)=>{

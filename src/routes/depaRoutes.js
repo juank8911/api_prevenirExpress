@@ -3,6 +3,7 @@ const dpart = require('../models/departamentos');
 module.exports = function (app)
 {
 
+//devuelve los departamentos segun el id del pais
 app.get('/departamentos/:id',(req,res)=>{
   var id = 47;
   var idPar = req.params.id;
@@ -11,6 +12,7 @@ app.get('/departamentos/:id',(req,res)=>{
     });
 });
 
+//elimina departamentos segun el id del departamento
 app.delete('/departamentos/:id',(req,res)=>{
 
   console.log('borrando departamento con id= '+req.params.id)

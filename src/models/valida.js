@@ -10,6 +10,7 @@ connection = mysql.createConnection({
 
 let validamodel = {};
 
+//valida el email y el id de los usuarios no exixsta en la base de datos
 validamodel.vRegistro = (val,callback) =>{
 if(connection)
 {

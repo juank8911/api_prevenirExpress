@@ -17,6 +17,7 @@ connection = mysql.createConnection({
 
 let servmodule = {};
 
+// guarda los servicios con las fotos y todos sus datos
 servmodule.save64 = (data, callback)=>
 {
   img = data.foto64;
@@ -219,7 +220,7 @@ else
 };
 
 
-
+// guardaba servicios pero no funciona
 servmodule.save = (data , callback ) => {
   img = data.files;
   nombre = data.nombre;
@@ -293,6 +294,7 @@ servmodule.save = (data , callback ) => {
 
 };
 
+// devuelve los servicios para el ususario
 servmodule.pruebaServicio = (callback)=>{
   console.log('prueba de servicios')
 if(connection)
@@ -344,6 +346,8 @@ else
 //  console.log('prueba');
 };
 
+
+// da los servicios para el ususario
 servmodule.darServicios = (callback)=>{
   var jsonServicios=[];
   if(connection)
@@ -375,7 +379,7 @@ servmodule.darServicios = (callback)=>{
   }
 
 };
-
+// da servicios por el id de del servicio
 servmodule.darServiciosIdS = (id,callback)=>{
   console.log('prueba de servicios')
 if(connection)
@@ -427,6 +431,8 @@ else
   }
 };
 
+
+// elimina un servicio de la base de datos
 servmodule.deleteServ = (id,callback)=>{
   if(connection)
     {

@@ -6,6 +6,7 @@ var ba64 = require("ba64");
 module.exports = function(app)
 {
 
+// agrega un servicio a la base de datos retorna true en caso de logragrlo
 app.post('/services',jwts.validaAdmin,(req,res)=>{
   var videos = req.body.video;
   if(videos!=null)
@@ -44,6 +45,7 @@ app.post('/services',jwts.validaAdmin,(req,res)=>{
    });
 
 
+// devuelve un json de servicios con sus caracteristicas
 app.get('/services',(req,res)=>{
       //console.log('servicios');
       serv.pruebaServicio((req,resp)=>{
@@ -51,6 +53,7 @@ app.get('/services',(req,res)=>{
       });
     });
 
+//retorna los servicios segun el id del provedor
 app.get('/services/:id',(req,res)=>{
   console.log('dar servicio por id de provedor');
   var id=req.params.id;
@@ -60,6 +63,7 @@ app.get('/services/:id',(req,res)=>{
   });
 });
 
+//elimina un servicio segun su id
 app.delete('/services/:id',jwts.validaAdmin,(req,res)=>{
     var id = req.params.id;
     console.log(req);
@@ -69,6 +73,7 @@ app.delete('/services/:id',jwts.validaAdmin,(req,res)=>{
       });
     });
 
+// retorna un servicio con su id
 app.get('/servicess/:id',(req,res)=>{
   var id = req.params.id;
   serv.darServiciosIdS(id,(err,resp)=>{
@@ -76,7 +81,7 @@ app.get('/servicess/:id',(req,res)=>{
   });
 });
 
-
+//actualiza un servicio con la nueva informacion 
 app.put('/service/:id',jwts.validaAdmin,(req,res)=>{
   var serv = {
     correo:req.body.correo,

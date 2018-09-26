@@ -2,9 +2,10 @@ const hora = require('../models/horario');
 
 module.exports=function(app)
 {
-  var respuesta=[];
-  var p=0;
+
   app.post('/horario',(req, res)=>{
+    var respuesta=[];
+    var p=0;
     //console.log(req.body);
     horarios = req.body.horarios;
       console.log(horarios);
@@ -34,6 +35,7 @@ module.exports=function(app)
      // })
 });
 
+// retorna las citas segun la fecha y el id del servicio
 app.get('/citas/:fecha/:id',(req,res)=>{
   serv = {
     fecha:req.params.fecha,
@@ -42,6 +44,16 @@ app.get('/citas/:fecha/:id',(req,res)=>{
   hora.darDia(serv,(err,resp)=>{
     res.json(resp);
   });
+});
+
+app.get('/servcitas/:fecha/:id',(req,res)=>{
+prov  = {
+  fecha:req.params.fecha,
+  id:req.params.id
+};
+hora.darDiaOc(prov,(err,resp)=>{
+  res.json(resp);
+});
 });
 
 }

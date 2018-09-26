@@ -10,6 +10,8 @@ connection = mysql.createConnection({
 
 let cateModule = {};
 
+
+//retorna las caategorias que eisten para los servicios
 cateModule.darCategoria = (callback)=>{
   if(connection)
   {

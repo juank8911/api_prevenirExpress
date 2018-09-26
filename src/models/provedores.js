@@ -16,6 +16,8 @@ connection = mysql.createConnection({
 
 let provedorModule = {};
 
+
+// registra provedores en la base de datos 
 provedorModule.regProvedorFace = (prov, callback)=> {
   if(connection)
   {
@@ -43,6 +45,8 @@ provedorModule.regProvedorFace = (prov, callback)=> {
   }
 };
 
+
+//retorna una lista de provedores
 provedorModule.darProvedor = (callback)=>{
   if(connection)
   {
@@ -53,14 +57,17 @@ provedorModule.darProvedor = (callback)=>{
   }
 };
 
+//retorna a un provedor por su id
+
 provedorModule.darProvedorid = (id,callback)=>{
   var sql = 'SELECT * FROM provedores WHERE id_provedor = ?';
   connection.query(sql,[id],(err,row)=>{
-    if(err){throw err}else{//console.log(row); 
+    if(err){throw err}else{//console.log(row);
       callback(null,row)}
   });
 };
 
+//registra un provedor en la base de datos
 provedorModule.regProv = (prov, callback)=> {
   var id = prov.cedula;
   var nombre = prov.nombre;

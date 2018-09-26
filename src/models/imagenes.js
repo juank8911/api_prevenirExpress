@@ -14,6 +14,7 @@ connection = mysql.createConnection({
 
 let imgmodule = {};
 
+//sube las imagenes al servidor
 imgmodule.subida = (img,res) =>{
   console.log(img);
   var name = img.path.split("\\").pop();
@@ -33,7 +34,7 @@ imgmodule.subida = (img,res) =>{
   });
 };
 
-
+//sube las imagenes al servidor
 imgmodule.subidas = (img,id, callback)=>{
 
   var respons = [];
@@ -69,6 +70,7 @@ imgmodule.subidas = (img,id, callback)=>{
 
 };
 
+//retorna las imagenes por servicio del servidor
 imgmodule.darImagenesServ = (row,callback)=>
 {
   if(connection)
@@ -93,6 +95,7 @@ imgmodule.darImagenesServ = (row,callback)=>
   }
 };
 
+//busca una imagen por el id del servicio 
 imgmodule.buscarImagenes = (id,res)=>
 {
   var ids = id;

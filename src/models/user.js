@@ -64,7 +64,7 @@ else
 callback(null,{'error':'error al comunicarse con la base de datos'});
 }
 };
-
+// registra a los ususarios manualmmente
 userModel.registerUsu = (usu, callback) =>{
     if(connection)
     {
@@ -92,7 +92,7 @@ userModel.registerUsu = (usu, callback) =>{
       }
     });
 };
-
+// retorna los usuarios por su id
 userModel.darUserId=(id,callback)=>{
   if(connection)
   {

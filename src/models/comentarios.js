@@ -11,6 +11,7 @@ connection = mysql.createConnection({
 
 let comentmodule = {};
 
+// agrega un comentario por cita a la base de atos con la calificacion brindada por el ususario
 comentmodule.agregarComentario(coment,callback)
 {
   if(connection)
