@@ -31,10 +31,10 @@ app.post('/services',jwts.validaAdmin,(req,res)=>{
       descuento: req.body.descuento,
       categoria: req.body.id_ctga,
       horario: req.body.horarios,
-      categoria: req.body.categoria
+      categoria: req.body.id_ctga
       //files: req.files.imagenes
     };
-    //console.log(req.body.horarios);
+    //console.log(servicio.categoria);
        serv.save64(servicio,(err,data)=>{
          console.log(data);
          res.json(data);
