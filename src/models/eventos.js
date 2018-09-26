@@ -12,6 +12,7 @@ connection = mysql.createConnection({
 
 let eventmodule = {};
 
+// retorna todos los eventos
 eventmodule.darEvents = (callback) =>{
   if(connection)
   {
@@ -26,7 +27,7 @@ eventmodule.darEvents = (callback) =>{
     });
   }
 };
-
+//retorna una lista de eventos por ususario
 eventmodule.darEventsIdUsuario=(id,callback)=>{
   if(connection)
   {
@@ -42,7 +43,7 @@ eventmodule.darEventsIdUsuario=(id,callback)=>{
   }
 };
 
-
+//retorna una lista de eventos por servicio
 eventmodule.darEventsIdService = (ids,callback)=>{
   if(connection)
   {
@@ -53,7 +54,7 @@ eventmodule.darEventsIdService = (ids,callback)=>{
   }
 };
 
-
+//agrega los eventos a la base de datos
 eventmodule.agregarEvento = (events,callback) =>{
   if(connection){
     console.log(events);
@@ -87,7 +88,7 @@ eventmodule.agregarEvento = (events,callback) =>{
 
 
 
-
+// ELIMINA UN EVENTO DE LA BASE DE DATOS
 eventmodule.eliminarEvento = (id,callback) =>{
   var now = moment().format('YYYY-MM-DD hh:mm:ss a');
       console.log('hoy'+now);

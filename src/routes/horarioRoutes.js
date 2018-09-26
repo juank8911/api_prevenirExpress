@@ -46,7 +46,7 @@ app.get('/citas/:fecha/:id',(req,res)=>{
   });
 });
 
-app.get('/provcitas/:fecha/:id',(req,res)=>{
+app.get('/servcitas/:fecha/:id',(req,res)=>{
 prov  = {
   fecha:req.params.fecha,
   id:req.params.id

@@ -5,6 +5,7 @@ const provers = require('../models/provedores');
 
 module.exports = function (app) {
 
+//ejecuta el login de los ususarios y provedores
 	app.post('/login',(req, res) => {
 		var login = {
 			email: req.body.email,
@@ -18,7 +19,7 @@ module.exports = function (app) {
 });
 
 
-
+// realiza el registro de los ususarios y provedores segun si son admins o usuarios y si es por facebook o manual 
 app.post('/register',(req, res)=>{
 	var regist = {
 		nombre: req.body.nombre,

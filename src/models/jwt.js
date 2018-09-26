@@ -11,7 +11,7 @@ connection = mysql.createConnection({
 
 let jwtmodel = {};
 
-
+//realiza el login de los ususarios retorna un token
 jwtmodel.login = (logins,callback) =>{
 //  console.log('****************************');
 //  console.log(logins);
@@ -64,7 +64,7 @@ jwtmodel.login = (logins,callback) =>{
 };
 
 
-
+//regista la parte memebre a la base de datos para el login de los ususarios
 jwtmodel.registroMember = (register, callback) =>{
 //  console.log('recibido registro',register);
   if(connection)
@@ -114,6 +114,7 @@ jwtmodel.registroMember = (register, callback) =>{
   }
 };
 
+//valida si el usuario esta logeado o no
 jwtmodel.valida = (req, res,next) =>
 {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -141,6 +142,7 @@ jwtmodel.valida = (req, res,next) =>
 
 };
 
+//valida si el ususario esta logeado y si es admin o no 
 jwtmodel.validaAdmin = (req,res,next) =>
 {
   var token = req.body.token || req.query.token || req.headers['x-access-token'];

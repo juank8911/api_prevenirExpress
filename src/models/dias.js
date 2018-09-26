@@ -11,8 +11,10 @@ connection = mysql.createConnection({
 });
 
 let diasModel={};
-var sql = 'INSERT INTO dias(dia,id_horario) value (?,?)';
+
+// agrega los dias la base de datos
 diasModel.agregarDia=(dia,callback)=> {
+  var sql = 'INSERT INTO dias(dia,id_horario) value (?,?)';
 semana=dia.semanas;
 id = dia.id;
 var fin = [];
@@ -39,6 +41,7 @@ for (var i = 0; i < semana.length; i++)
 };
 
 
+// retorna los dias de la semana
 diasModel.controlH=(horario,callback)=>{
 
   //console.log(req.body);

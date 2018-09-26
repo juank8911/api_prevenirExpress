@@ -11,6 +11,7 @@ connection = mysql.createConnection({
 
 let municipioModel = {};
 
+//retorna una lista de municipios por el id del depattamento
 municipioModel.darMunicipioId = (id ,callback)=>
 {
   if(connection)

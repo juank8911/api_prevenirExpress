@@ -12,6 +12,7 @@ connection = mysql.createConnection({
 
 let ejectModel = {};
 
+//retorna una lista de horarios libres para la citas medicas
 ejectModel.darLibres = (serv,callback)=>
 {
   //console.log(serv);

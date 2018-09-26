@@ -11,7 +11,7 @@ connection = mysql.createConnection({
 
 let departModel = {};
 
-
+// retorna los departamentos 
 departModel.darDepartamentos = (id,callback)=>{
   if(connection)
   {

@@ -13,6 +13,7 @@ connection = mysql.createConnection({
 
 let horarioModel = {};
 
+//agrega el horario a la base de datos
 horarioModel.agregarHorario = (horario,callback) =>
 {
   var horas = horario;
@@ -49,6 +50,7 @@ horarioModel.agregarHorario = (horario,callback) =>
    }
 }
 
+// retorna los dias de la semana con su horario
 horarioModel.darDia = (fecha,callback)=>{
   var manana = [];
   var tarde = [];
@@ -126,7 +128,7 @@ var dia = moment(fecha.fecha).format('dddd');
 };
 
 
-
+// retorna el horario del dia con sus citas
 horarioModel.darDiaOc = (fecha,callback)=>{
   var manana = [];
   var tarde = [];
