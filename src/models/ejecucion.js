@@ -32,6 +32,39 @@ ejectModel.darLibres = (serv,callback)=>
     });
 
   }
+};
+
+// retorna las citas por servicio cuando ahy una cita separada
+ejectModel.darCitasOc = (serv,callback)=>
+{
+  //console.log(serv);
+  if(connection)
+  {
+    var sql = 'SELECT events.* FROM servicios, events WHERE servicios.id_servicios = events.servicios_idservicios and start = ? AND servicios_idservicios = ? ;'
+    connection.query(sql,[serv.hora,serv.id],(err,res)=>{
+      //res;
+      //res=res.libres;
+      //console.log('///////////****//////////');
+      //console.log(res);
+      serv.citas = res;
+      if(JSON.stringify(res)!='[]')
+      {
+        serv.disponible = false;
+      }
+      else
+      {
+        serv.disponible = true;
+      }
+      serv.hora = moment(serv.hora).format('hh:mm a');
+
+      //console.log(serv);
+      callback(null,serv);
+    });
+
+  }
 }
+
+
+
 
 module.exports = ejectModel;

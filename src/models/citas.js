@@ -46,6 +46,43 @@ citasModel.countCitas = (row,callback)=>{
 
 };
 
+citasModel.countCitasOc = (row,callback)=>{
+  var hora =0;
+  let p=0;
+  let jsonHd = [];
+  //console.log(row.id);
+  var serv = {};
+
+    for (var i = 0; i < row.length; i++)
+    {
+      hora=row[i];
+      //console.log(hora.hora);
+      serv = {
+        hora:hora.hora,
+        id:row.id
+      };
+      //console.log(serv);
+      eject.darCitasOc(serv,(err,resp)=> {
+        //console.log(resp);
+          p++;
+          jsonHd.push(resp);
+          if(p>=row.length)
+          {
+            //console.log('jsonHd');
+            //console.log(jsonHd);
+            callback(null,jsonHd);
+          }
+      });
+
+
+
+    }
+
+};
+
+
+
+
 citasModel.darCitasUsu = (id,callback)=>{
 if(connection)
 {
