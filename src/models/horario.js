@@ -151,7 +151,7 @@ var dia = moment(fecha.fecha).format('dddd');
        if (JSON.stringify(row)=='[]') {
           //execute
         //  console.log('vacio');
-          callback(null,[{'maniana':[{"hora": "no ahy citas disponibles",'disponible':false},]},{'tardes':[{"hora": "no ahy citas disponibles",'disponible':false},]}]);
+          callback(null,[{'maniana':[{"hora": "No ahy citas",'disponible':false,"echas":0},]},{'tardes':[{"hora": "No ahy citas",'disponible':false,"echas":0},]}]);
 }
       else
 {       var hd = row[0];

@@ -104,4 +104,45 @@ userModel.darUserId=(id,callback)=>{
   });
   }
 };
+
+userModel.darFechaNId=(id,callback)=>{
+  if(connection)
+  {
+    var darF = 'SELECT cedula,feha_nacimiento,telefono,telefonowatshapp FROM usuarios WHERE id = ?';
+    connection.query(darF,[id],(err,row)=>{
+      if(err){throw err}
+      else {
+        {
+          row = row[0];
+          //console.log(row);
+          if(row.feha_nacimiento ==null || row.cedula==null || row.telefono==null || row.telefonowatshapp==null )
+          {
+            //console.log({'datos':false});
+            callback(null,{'datos':false});
+          }
+          else
+          {
+              //console.log({'datos':true});
+              callback(null,{'datos':true});
+          }
+        }
+      }
+    });
+  }
+};
+
+userModel.setUsuario=(usu,callback)=>{
+  if(connection)
+  {
+    var sql = 'UPDATE usuarios SET cedula=?, nombre= ?, apellidos=?, direccion=?, telefono=?,telefonowatshapp=?,feha_nacimiento=? WHERE id= ? and parentescos_id_parentescos = 17;'
+    connection.query(sql,[usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.feha_nacimiento,usu.id],(err,row)=>{
+      if(err){throw err}
+      else
+      {
+        console.log(row);
+      }
+    });
+
+  }
+};
 module.exports = userModel;
