@@ -5,7 +5,7 @@ const citas = require('../models/citas');
 
 module.exports = function (app) {
 
-// retorna los usuarion sin necesidad de ser admin 
+// retorna los usuarion sin necesidad de ser admin
 	app.get('/',(req, res) => {User.getUsers((err, data) => {res.json(data);});});
 
 //retorna el usuario usando jwts para la autentificacion del admin
@@ -14,8 +14,8 @@ module.exports = function (app) {
 //retorna la informacion del usuario segun su id
 	app.get('/user/:id',(req,res)=>{
 		var id=req.params.id;
-		User.darUserId(id,(err,res)=>{
-			res.json(res);
+		User.darUserId(id,(err,resp)=>{
+			res.json(resp);
 		});
 	});
 
@@ -27,5 +27,31 @@ module.exports = function (app) {
 			res.json(resp);
 		})
 	});
-
+	//modifica la informacion de los usuarios en la base de datos
+	app.put('/user',(req,res)=>{
+		//usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.feha_nacimiento,usu.id
+		let usu = {
+			cedula:req.body.cedula,
+			nombre:req.body.nombre,
+			apellidos:req.body.apellidos,
+			direccion:req.body.direccion,
+			telefono:req.body.telefono,
+			telefonowatshapp:req.body.telwp,
+			feha_nacimiento:req.boy.feha_nacimiento,
+			id:req.body.id
+		};
+		User.setUsuario(usu,(err,resp)=>{if(err){throw err}
+			else
+			{
+					res.json(resp);
+			}
+		});
+	});
+//comprueba los datos faltantes de los usuasrios
+app.get('/datos/:id',(req,res)=>{
+	var id = req.params.id;
+	User.darFechaNId(id,(err,resp)=>{
+		res.json(resp);
+	});
+});
 }
