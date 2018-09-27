@@ -41,8 +41,6 @@ citasModel.countCitas = (row,callback)=>{
           }
       });
 
-
-
     }
 
 };
@@ -75,16 +73,12 @@ citasModel.countCitasOc = (row,callback)=>{
             callback(null,jsonHd);
           }
       });
-
-
-
     }
-
 };
 
 
 
-// retorna las citas por el usuario 
+// retorna las citas por el usuario
 citasModel.darCitasUsu = (id,callback)=>{
 if(connection)
 {
