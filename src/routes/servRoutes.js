@@ -66,11 +66,11 @@ app.get('/services/:id',(req,res)=>{
 //elimina un servicio segun su id
 app.delete('/services/:id',jwts.validaAdmin,(req,res)=>{
     var id = req.params.id;
-    console.log(req);
-      console.log('borrando departamento con id= '+req.params.id)
+    // console.log(req.params);
+    //   console.log(req.params.id);
       serv.deleteServ(id,(err,resp)=>{
-        res.json(resp);
-      });
+         res.json(resp);
+       });
     });
 
 // retorna un servicio con su id
@@ -81,7 +81,7 @@ app.get('/servicess/:id',(req,res)=>{
   });
 });
 
-//actualiza un servicio con la nueva informacion 
+//actualiza un servicio con la nueva informacion
 app.put('/service/:id',jwts.validaAdmin,(req,res)=>{
   var serv = {
     correo:req.body.correo,

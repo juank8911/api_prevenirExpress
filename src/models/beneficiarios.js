@@ -26,4 +26,15 @@ benefModule.agregarBeneficiario = (benef,callback)=>{
   }
 };
 
+benefModule.darBenefId = (id,callback)=>{
+var sel = 'SELECT * FROM usuarios WHERE usuariosBf_id = ? and parentescos_id_parentescos != 17;'
+if(connection)
+{
+  connection.query(sel,[id],(err,row)=>{
+    if(err){callback(500,err)}
+    else{callback(null,row)}
+  });
+}
+};
+
 module.exports = benefModule;

@@ -7,6 +7,7 @@ var rn = require('random-number');
 var ba64 = require("ba64");
 var regH = require("./horario");
 var diasH = require("./dias");
+var hora = require('./horario');
 
 connection = mysql.createConnection({
     host: config.domain,
@@ -436,10 +437,12 @@ else
 servmodule.deleteServ = (id,callback)=>{
   if(connection)
     {
+      hora.eliminarHorario(id,(err,res)=>{
       var sql1 = 'DELETE FROM fotos where servicios_idservicios = ?';
       var sql2 = 'DELETE FROM servicios_categoria WHERE servicios_idservicios = ?';
       var sql = 'DELETE FROM servicios WHERE id_servicios = ?';
       var sql3 = 'DELETE FROM medicos WHERE servicios_idservicios = ?';
+
       connection.query(sql1,[id],(err,res)=>{
         if(err){throw err;}
         else {
@@ -454,7 +457,7 @@ servmodule.deleteServ = (id,callback)=>{
                           connection.query(sql,[id],(err,row)=>{
                             if(err)
                             {
-                              console.log(err)
+                              throw err
                             }
                             else
                             {
@@ -468,6 +471,7 @@ servmodule.deleteServ = (id,callback)=>{
           }
         }
       });
+        });
     }
 };
 
