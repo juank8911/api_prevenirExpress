@@ -14,7 +14,7 @@ let parentModule = {};
 parentModule.darParent = (callback)=>{
   if(connection)
   {
-    connection.query('SELECT id_parentescos, nombre FROM parentescos;',(err,row)=>{
+    connection.query('SELECT id_parentescos, nombre FROM parentescos where id_parentescos != 17;',(err,row)=>{
       if(err)
       {
         throw err;

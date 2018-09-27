@@ -19,7 +19,7 @@ module.exports = function (app) {
 });
 
 
-// realiza el registro de los ususarios y provedores segun si son admins o usuarios y si es por facebook o manual 
+// realiza el registro de los ususarios y provedores segun si son admins o usuarios y si es por facebook o manual
 app.post('/register',(req, res)=>{
 	var regist = {
 		nombre: req.body.nombre,
@@ -30,7 +30,8 @@ app.post('/register',(req, res)=>{
 		direccion: req.body.direccion,
 		tel: req.body.tel,
 		admin: req.body.esAdmin,
-		face: req.body.face
+		face: req.body.face,
+		parent: 17
 	};
 	console.log(regist);
 	//console.log('//*/*/*/*/*///');

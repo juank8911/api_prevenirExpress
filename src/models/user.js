@@ -40,9 +40,10 @@ if(connection)
   var correo = usu.email;
   var nombre = usu.nombre;
   var apellido = usu.apellido;
-  var sql = 'INSERT INTO usuarios(id,correo,nombre,apellidos,members_id) VALUES (?,?,?,?,?);';
+
+  var sql = 'INSERT INTO usuarios(id,correo,nombre,apellidos,members_id,parentescos_id_parentescos) VALUES (?,?,?,?,?);';
   console.log('Agregando ususario');
-  connection.query(sql,[id,correo,nombre,apellido,id],(err, row)=>{
+  connection.query(sql,[id,correo,nombre,apellido,id,usu.parent],(err, row)=>{
     if(err)
     {
       console.log('no agregado ususario');
@@ -75,8 +76,8 @@ userModel.registerUsu = (usu, callback) =>{
       var apellido = usu.apellido;
     }
 
-    var sql = 'INSERT INTO usuarios(id,cedula,correo,nombre,apellidos,members_id) VALUES (?,?,?,?,?,?)';
-    connection.query(sql,[id,cedula,correo,nombre,apellido,id],(err, row)=>{
+    var sql = 'INSERT INTO usuarios(id,cedula,correo,nombre,apellidos,members_id,parentescos_id_parentescos) VALUES (?,?,?,?,?,?)';
+    connection.query(sql,[id,cedula,correo,nombre,apellido,id,usu.parent],(err, row)=>{
       if(err)
       {
         connection.query('DELETE FROM members WHERE id = ?',[id],(err,res)=>{

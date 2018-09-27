@@ -41,26 +41,34 @@ ejectModel.darCitasOc = (serv,callback)=>
   //console.log(serv);
   if(connection)
   {
-    var sql = 'SELECT events.* FROM servicios, events WHERE servicios.id_servicios = events.servicios_idservicios and start = ? AND servicios_idservicios = ? ;'
+    var sql = "SELECT events.* ,concat(usuarios.nombre,' ',usuarios.apellidos) as nombres FROM servicios, events, usuarios WHERE servicios.id_servicios = events.servicios_idservicios and usuarios.id = events.usuarios_id and start = ? AND servicios_idservicios = ? ;"
+    //console.log(sql);
     connection.query(sql,[serv.hora,serv.id],(err,res)=>{
       //res;
       //res=res.libres;
       //console.log('///////////****//////////');
       //console.log(res);
-      serv.citas = res;
-      if(JSON.stringify(res)!='[]')
-      {
-        serv.disponible = false;
-      }
-      else
-      {
-        serv.disponible = true;
-      }
-      serv.hora = moment(serv.hora).format('hh:mm a');
+      var sql1 = 'SELECT count(events.id_eventos) as echas  FROM servicios, events WHERE servicios.id_servicios = events.servicios_idservicios and start = ? AND servicios_idservicios = ? ';
+      connection.query(sql1,[serv.hora,serv.id],(err,resp)=>{
+                resp = resp[0];
+                resp = resp.echas
+                // console.log();
+                serv.echas = resp;
+                serv.citas = res;
+                if(JSON.stringify(res)!='[]')
+                {
+                  serv.disponible = false;
 
-      //console.log(serv);
-      callback(null,serv);
-    });
+                }
+                else
+                {
+                  serv.disponible = true;
+                }
+                serv.hora = moment(serv.hora).format('hh:mm a');
+                //console.log(serv);
+                callback(null,serv);
+              });
+            });
 
   }
 }
