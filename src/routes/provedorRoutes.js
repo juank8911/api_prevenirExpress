@@ -13,7 +13,8 @@ module.exports = function(app){
 // retorna a informacion del provedor segun su id
   app.get('/provedores/:id',(req,res)=>{
       var idprov = req.params.id;
-    provers.darProvedorid(idprov,(err,data)=>{//console.log(data);
+    provers.darProvedorid(idprov,(err,data)=>{
+      //console.log(data);
        res.json(data)});
   });
 
