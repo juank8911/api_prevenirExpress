@@ -110,14 +110,14 @@ userModel.darUserId=(id,callback)=>{
 userModel.darFechaNId=(id,callback)=>{
   if(connection)
   {
-    var darF = 'SELECT cedula,feha_nacimiento,telefono,telefonowatshapp FROM usuarios WHERE id = ?';
+    var darF = 'SELECT cedula,fecha_nacimiento,telefono,telefonowatshapp FROM usuarios WHERE id = ?';
     connection.query(darF,[id],(err,row)=>{
       if(err){throw err}
       else {
         {
           row = row[0];
           //console.log(row);
-          if(row.feha_nacimiento ==null || row.cedula==null || row.telefono==null )
+          if(row.fecha_nacimiento ==null || row.cedula==null || row.telefono==null )
           {
             //console.log({'datos':false});
             callback(null,{'datos':false});
