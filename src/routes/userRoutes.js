@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const jwts = require('../models/jwt');
 const citas = require('../models/citas');
+const eject = require('../models/ejecucion');
 
 
 module.exports = function (app) {
@@ -53,5 +54,11 @@ app.get('/datos/:id',(req,res)=>{
 	User.darFechaNId(id,(err,resp)=>{
 		res.json(resp);
 	});
+});
+
+app.get('/prueba',(err,res)=>{
+eject.pruebas((err,resp)=>{
+	res.json(resp);
+});
 });
 }

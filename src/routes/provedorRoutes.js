@@ -18,4 +18,21 @@ module.exports = function(app){
        res.json(data)});
   });
 
+  app.put('/provedores',(req,res)=>{
+    //prov.nit,prov.nombre,prov.direccion,prov.telefono,prov.whatsapp,prov.link,prov.video,,prov.id
+    let prov = {
+      nit: req.body.nit,
+      nombre:req.body.nombre,
+      direccion:req.body.direccion,
+      telefono:req.body.telefono,
+      whatsapp: req.body.whatsapp,
+      link:req.body.link,
+      video:req.body.video,
+      id:req.body.id
+    };
+    provers.setProvedor(prov,(err,resp)=>{
+      res.json(resp);
+    });
+  });
+
 }
