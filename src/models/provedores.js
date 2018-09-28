@@ -99,7 +99,7 @@ provedorModule.setProvedor = (prov,callback)=>{
   if(connection)
   {
     var up = 'UPDATE provedores SET nit= ?, nombre= ?, direccion=?, telefono=?, whatsapp=?, link=?, video=? WHERE id_provedor=?;';
-    connection.query(up,[prov.nit,prov.nombre,prov.direccion,prov.telefono,prov.whatsapp,prov.link,prov.video,,prov.id],(err,res)=>{
+    connection.query(up,[prov.nit,prov.nombre,prov.direccion,prov.telefono,prov.whatsapp,prov.link,prov.video,prov.id],(err,res)=>{
       if(err){throw err}
       else
       {
