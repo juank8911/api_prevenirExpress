@@ -117,7 +117,7 @@ userModel.darFechaNId=(id,callback)=>{
         {
           row = row[0];
           //console.log(row);
-          if(row.feha_nacimiento ==null || row.cedula==null || row.telefono==null || row.telefonowatshapp==null )
+          if(row.feha_nacimiento ==null || row.cedula==null || row.telefono==null )
           {
             //console.log({'datos':false});
             callback(null,{'datos':false});

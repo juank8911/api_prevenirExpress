@@ -73,7 +73,12 @@ ejectModel.darCitasOc = (serv,callback)=>
   }
 }
 
+ejectModel.pruebas = (callback)=>{
+  var fecha1 = moment('1989-11-11'); //fecha de nacimiento
+var fecha2 = moment('2018-11-12');  //fecha actual
 
+console.log(fecha2.diff(fecha1, 'years.days'), ' años de diferencia');
+};
 
 
 module.exports = ejectModel;
