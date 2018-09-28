@@ -17,7 +17,7 @@ connection = mysql.createConnection({
 let provedorModule = {};
 
 
-// registra provedores en la base de datos 
+// registra provedores en la base de datos
 provedorModule.regProvedorFace = (prov, callback)=> {
   if(connection)
   {
@@ -93,6 +93,21 @@ provedorModule.regProv = (prov, callback)=> {
             callback(null,mensaje);
           }
       });
+};
+
+provedorModule.setProvedor = (prov,callback)=>{
+  if(connection)
+  {
+    var up = 'UPDATE provedores SET nit= ?, nombre= ?, direccion=?, telefono=?, whatsapp=?, link=?, video=? WHERE id_provedor=?;';
+    connection.query(up,[prov.nit,prov.nombre,prov.direccion,prov.telefono,prov.whatsapp,prov.link,prov.video,,prov.id],(err,res)=>{
+      if(err){throw err}
+      else
+      {
+        console.log(res);
+        callback(null,res);
+      }
+    });
+  }
 };
 
 
