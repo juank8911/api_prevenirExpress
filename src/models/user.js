@@ -74,13 +74,14 @@ userModel.registerUsu = (usu, callback) =>{
       var correo = usu.email;
       var nombre = usu.nombre;
       var apellido = usu.apellido;
-    }
 
-    var sql = 'INSERT INTO usuarios(id,cedula,correo,nombre,apellidos,members_id,parentescos_id_parentescos) VALUES (?,?,?,?,?,?)';
+      console.log(usu);
+    var sql = 'INSERT INTO usuarios(id,cedula,correo,nombre,apellidos,members_id,parentescos_id_parentescos) VALUES (?,?,?,?,?,?,?)';
     connection.query(sql,[id,cedula,correo,nombre,apellido,id,usu.parent],(err, row)=>{
       if(err)
       {
         connection.query('DELETE FROM members WHERE id = ?',[id],(err,res)=>{
+          console.log('error al agregar ususario en user.js lineas 79')
         callback(null,{'mensaje':'error al agregar el usuario'});
         });
         throw err
@@ -92,6 +93,7 @@ userModel.registerUsu = (usu, callback) =>{
         callback(null,mensaje);
       }
     });
+        }
 };
 // retorna los usuarios por su id
 userModel.darUserId=(id,callback)=>{

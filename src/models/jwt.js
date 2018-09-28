@@ -78,11 +78,13 @@ jwtmodel.registroMember = (register, callback) =>{
   //  console.log('////////////////////////////');
   //  console.log(admin);
     var isadmin;
-    if(admin===true){isadmin = 'true';}else{isadmin='false';}
+    if(admin===true){isadmin = 'true';}
+    else{isadmin='false';}
     //console.log(isadmin);
       var val = {email:mememail,id:memid};
           vals.vRegistro(val,(err,res)=>{
-      //    console.log(res);
+          console.log('/////////////////*************///////');
+         console.log(res);
 
           if(res.existe==='false')
           {
@@ -142,7 +144,7 @@ jwtmodel.valida = (req, res,next) =>
 
 };
 
-//valida si el ususario esta logeado y si es admin o no 
+//valida si el ususario esta logeado y si es admin o no
 jwtmodel.validaAdmin = (req,res,next) =>
 {
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
