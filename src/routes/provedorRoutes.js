@@ -18,7 +18,7 @@ module.exports = function(app){
        res.json(data)});
   });
 
-  app.put('/provedores',(req,res)=>{
+  app.put('/provedores',jwts.validaAdmin,(req,res)=>{
     //prov.nit,prov.nombre,prov.direccion,prov.telefono,prov.whatsapp,prov.link,prov.video,,prov.id
     let prov = {
       nit: req.body.nit,
@@ -28,6 +28,7 @@ module.exports = function(app){
       whatsapp: req.body.whatsapp,
       link:req.body.link,
       video:req.body.video,
+      descripcion: req.body.descrip,
       id:req.body.id
     };
     provers.setProvedor(prov,(err,resp)=>{
