@@ -104,7 +104,7 @@ provedorModule.setProvedor = (prov,callback)=>{
       else
       {
         console.log(res);
-        callback(null,res);
+        callback(null,{'update':true});
       }
     });
   }
