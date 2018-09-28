@@ -136,12 +136,14 @@ userModel.darFechaNId=(id,callback)=>{
 userModel.setUsuario=(usu,callback)=>{
   if(connection)
   {
-    var sql = 'UPDATE usuarios SET cedula=?, nombre= ?, apellidos=?, direccion=?, telefono=?,telefonowatshapp=?,feha_nacimiento=? WHERE id= ? and parentescos_id_parentescos = 17;'
-    connection.query(sql,[usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.feha_nacimiento,usu.id],(err,row)=>{
-      if(err){throw err}
+    console.log(usu.fecha_nacimiento);
+    var sql = 'UPDATE usuarios SET cedula=?, nombre= ?, apellidos=?, direccion=?, telefono=?,telefonowatshapp=?,fecha_nacimiento=? WHERE id= ? and parentescos_id_parentescos = 17;'
+    connection.query(sql,[usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.fecha_nacimiento,usu.id],(err,row)=>{
+      if(err){callback(null,{'update':false})}
       else
       {
-        console.log(row);
+        console.log({'update':true});
+        callback(null,{'update':true});
       }
     });
 

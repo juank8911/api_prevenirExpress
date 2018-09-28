@@ -2,6 +2,7 @@ const User = require('../models/user');
 const jwts = require('../models/jwt');
 const citas = require('../models/citas');
 const eject = require('../models/ejecucion');
+const moment = require('moment');
 
 
 module.exports = function (app) {
@@ -29,16 +30,20 @@ module.exports = function (app) {
 		})
 	});
 	//modifica la informacion de los usuarios en la base de datos
-	app.put('/user',(req,res)=>{
+	app.put('/user',jwts.valida,(req,res)=>{
 		//usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.feha_nacimiento,usu.id
+		console.log(req.body);
+		var fecha = moment(req.body.fecha_nacimiento).format('YYYY-MM-DD');
+		fecha = fecha.toString();
+		//console.log(fecha);
 		let usu = {
 			cedula:req.body.cedula,
 			nombre:req.body.nombre,
 			apellidos:req.body.apellidos,
 			direccion:req.body.direccion,
 			telefono:req.body.telefono,
-			telefonowatshapp:req.body.telwp,
-			feha_nacimiento:req.boy.feha_nacimiento,
+			telefonowatshapp:req.body.telefonowatshapp,
+			fecha_nacimiento: fecha,
 			id:req.body.id
 		};
 		User.setUsuario(usu,(err,resp)=>{if(err){throw err}

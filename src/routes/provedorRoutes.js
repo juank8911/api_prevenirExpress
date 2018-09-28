@@ -28,6 +28,7 @@ module.exports = function(app){
       whatsapp: req.body.whatsapp,
       link:req.body.link,
       video:req.body.video,
+      descripcion: req.body.descrip,
       id:req.body.id
     };
     provers.setProvedor(prov,(err,resp)=>{
