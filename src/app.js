@@ -26,10 +26,12 @@ app.use(cors());
 app.use(formidable.parse({ keepExtensions: true}));
 app.set('port',config.puerto);
 
-cron.schedule ( ' *  * */2 * * * ' , ( ) => {
+cron.schedule ( ' * * */2 * * * ' , ( ) => {
   // console.log ( ' ejecutando cada minuto 1, 2, 4 y 5 ' ) ;
   horas.citaHistorial();
 } ) ;
+
+
 
 //Permisos CORS para acceso a la Api
 app.all('*', function(req, res,next) {
@@ -37,6 +39,8 @@ app.all('*', function(req, res,next) {
      * Response settings
      * @type {Object}
      */
+
+     
     var responseSettings = {
         "AccessControlAllowOrigin": req.headers.origin,
         "AccessControlAllowHeaders": "Content-Type,X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5,  Date, X-Api-Version, X-File-Name",
