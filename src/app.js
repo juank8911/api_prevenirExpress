@@ -33,7 +33,7 @@ app.set('port',config.puerto);
 //   // });
 // } ) ;
 
-cron.schedule('*/2 * * * *', () => {
+cron.schedule('* */2 * * *', () => {
   console.log('running a task every two minutes');
 });
 
