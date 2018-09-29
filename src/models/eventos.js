@@ -120,7 +120,7 @@ eventmodule.eliminarEvento = (id,callback) =>{
 };
 
 
-eventmodule.citaHistorial = ()=>{
+eventmodule.citaHistorial = (callback)=>{
   if(connection)
   {
     var h = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -130,11 +130,12 @@ eventmodule.citaHistorial = ()=>{
       if(err){throw err}
       else
       {
-        connection.query(del,[h],(err,res)=>{
+        connection.query(del,[h],(err,resp)=>{
           if(err){throw err}
           else
           {
             console.log('eliminado');
+            callback(null,'eliminado');
           }
         });
       }
