@@ -112,11 +112,12 @@ userModel.darFechaNId=(id,callback)=>{
   {
     var darF = 'SELECT cedula,fecha_nacimiento,telefono,telefonowatshapp FROM usuarios WHERE id = ?';
     connection.query(darF,[id],(err,row)=>{
+      console.log(id);
       if(err){throw err}
       else {
         {
           row = row[0];
-          //console.log(row);
+          console.log(row);
           if(row.fecha_nacimiento ==null || row.cedula==null || row.telefono==null )
           {
             //console.log({'datos':false});
