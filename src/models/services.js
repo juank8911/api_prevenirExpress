@@ -50,7 +50,7 @@ servmodule.save64 = (data, callback)=>
        {
          var horas = horarios[i];
          //console.log(horas.length);
-         if(horas.m_de!=null)
+         if(horas.m_de!=null || horas.t_de!=null )
          {
            horas.id=idinsert;
          //console.log(horas);

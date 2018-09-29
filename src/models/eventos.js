@@ -120,5 +120,28 @@ eventmodule.eliminarEvento = (id,callback) =>{
 };
 
 
+eventmodule.citaHistorial = ()=>{
+  if(connection)
+  {
+    var h = moment().format('YYYY-MM-DD HH:mm:ss');
+    var citas = 'insert into historial SELECT * FROM events WHERE end < ?;'
+    var del = 'DELETE FROM events WHERE end < ?;'
+    connection.query(citas,[h],(err,res)=>{
+      if(err){throw err}
+      else
+      {
+        connection.query(del,[h],(err,res)=>{
+          if(err){throw err}
+          else
+          {
+            console.log('eliminado');
+          }
+        });
+      }
+    });
+  }
+};
+
+
 
 module.exports = eventmodule;

@@ -4,6 +4,8 @@ let bodyparser = require('body-parser');
 let cors = require('cors');
 let jwt = require('jsonwebtoken');
 let formidable = require('express-form-data');
+var  cron  = require ('node-cron');
+var horas = require('./models/eventos');
 
 //configuracion de la aplicacion
 let config = require('./config');
@@ -23,6 +25,11 @@ app.use(bodyparser.urlencoded({limit: '50mb', extended: true}));
 app.use(cors());
 app.use(formidable.parse({ keepExtensions: true}));
 app.set('port',config.puerto);
+
+cron.schedule ( ' * * */2 * * * ' , ( ) => {
+  // console.log ( ' ejecutando cada minuto 1, 2, 4 y 5 ' ) ;
+  horas.citaHistorial();
+} ) ;
 
 //Permisos CORS para acceso a la Api
 app.all('*', function(req, res,next) {
