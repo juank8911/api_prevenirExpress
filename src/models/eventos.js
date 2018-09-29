@@ -119,6 +119,13 @@ eventmodule.eliminarEvento = (id,callback) =>{
   }
 };
 
+eventmodule.delEventProv = (id,callback)=>{
+  if(connection)
+  {
+    var sql = 'DELETE FROM events';
+  }
+};
+
 
 eventmodule.citaHistorial = (callback)=>{
   if(connection)
