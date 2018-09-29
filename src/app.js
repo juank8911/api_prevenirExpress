@@ -26,12 +26,16 @@ app.use(cors());
 app.use(formidable.parse({ keepExtensions: true}));
 app.set('port',config.puerto);
 
-cron.schedule ( ' * * */5 * * ' , ( ) => {
-  // console.log ( ' ejecutando cada minuto 1, 2, 4 y 5 ' ) ;
-  horas.citaHistorial((err,res)=>{
-    console.log(res+' ok');
-  });
-} ) ;
+// cron.schedule ( ' * * */2 * * ' , ( ) => {
+//   console.log ( ' ejecutando cada minuto 1, 2, 4 y 5 ' ) ;
+//   // horas.citaHistorial((err,res)=>{
+//   //   console.log(res+' ok');
+//   // });
+// } ) ;
+
+cron.schedule('*/2 * * * *', () => {
+  console.log('running a task every two minutes');
+});
 
 //Permisos CORS para acceso a la Api
 app.all('*', function(req, res,next) {
