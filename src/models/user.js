@@ -19,8 +19,7 @@ userModel.getUsers = (callback) => {
       {if(err){
 					     throw err;
 				      }else{
-                row.avatar = 'http://192.168.1.43:3300/servicios/KLogopnguWIynnN2AfJ58ou8iUpTysZH.png';
-				             callback(null,row);
+                       callback(null,row);
 				            }
 			}
 		)
