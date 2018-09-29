@@ -26,7 +26,7 @@ app.use(cors());
 app.use(formidable.parse({ keepExtensions: true}));
 app.set('port',config.puerto);
 
-cron.schedule ( ' * */1 * * * ' , ( ) => {
+cron.schedule ( ' * * */2 * * ' , ( ) => {
   // console.log ( ' ejecutando cada minuto 1, 2, 4 y 5 ' ) ;
   horas.citaHistorial((err,res)=>{
     console.log(res+' ok');
