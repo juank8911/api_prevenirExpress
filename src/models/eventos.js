@@ -134,7 +134,7 @@ eventmodule.citaHistorial = (callback)=>{
           if(err){throw err}
           else
           {
-            console.log('eliminado');
+            console.log(h);
             callback(null,'eliminado');
           }
         });
