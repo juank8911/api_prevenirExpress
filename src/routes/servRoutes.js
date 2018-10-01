@@ -63,6 +63,7 @@ app.get('/services/:id',(req,res)=>{
   });
 });
 
+// da los servicios por id de municipio e id de categoria
 app.get('/services/:idm/:idc',(req,res)=>{
   let ids = {
     idm:req.params.idm,
