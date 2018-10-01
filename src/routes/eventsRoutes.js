@@ -66,4 +66,15 @@ app.delete('/events/:id',jwts.valida,(req,res)=>{
     res.json(row);
   });
 });
+
+app.delete('/eventss/:ide/:idp',jwts.validaAdmin, (req,res)=>{
+  let ev = {
+    ide:req.params.ide,
+    idp: req.params.idp
+  };
+  console.log(ev);
+  events.delEventProv(ev,(err,resp)=>{
+          res.json(resp);
+  });
+});
 }
