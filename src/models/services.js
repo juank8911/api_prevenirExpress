@@ -433,6 +433,132 @@ else
 };
 
 
+// da servicios por el id de del servicio
+servmodule.darServiciosMunCat = (ids,callback)=>{
+  console.log('////////////////Servicios ')
+  var idm = ids.idm;
+  var idc = ids.idc;
+
+if(connection)
+{
+if(idc==0)
+{
+  console.log('////////////////Servicios por muunicipios/////////// ')
+  var sql = 'SELECT servicios.*, categoria.nombre as categoria from servicios, categoria, servicios_categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and categoria.id_categoria = servicios_categoria.categoria_idcategoria and municipio.id_municipio = ? GROUP BY servicios.id_servicios;';
+  connection.query(sql,[idm],(err,row)=>{
+if(err)
+{
+throw err
+}
+else
+{
+  console.log(row);
+  if (JSON.stringify(row)!='[]')
+{
+  var p =1;
+      var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
+      var jsonServ = [];
+    //  console.log('fuera de la consulta')
+      var jsonServ = [];
+      row.forEach((serv)=>{
+        // console.log(serv.idservicios)
+        var id = serv.id_servicios;
+        //console.log(id);
+        connection.query(sql,[id],(err,resp)=>{
+          // console.log('dentro de la consulta '+id)
+          if(err)
+          {
+
+          }
+          else
+          {
+            serv.foto = resp;
+            //console.log(resp);
+            jsonServ.push(serv);
+            // console.log('/////////******* valor p '+p)
+            //console.log('/////////******* valor row '+row.length);
+            if(p>=row.length)
+            {
+              callback(null,jsonServ);
+              //console.log('find de la consulta');
+            }
+            p++
+          }
+        });
+       });
+}
+else
+{
+  callback(null,{'vacio':true})
+}
+}
+  });
+}
+else
+{
+console.log('////////////////Servicios por municipos y categorias ')
+  var sql = 'SELECT servicios.*, categoria.nombre as categoria from servicios, categoria, servicios_categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and categoria.id_categoria = servicios_categoria.categoria_idcategoria and municipio.id_municipio = ? and categoria.id_categoria = ?  GROUP BY servicios.id_servicios;';
+  connection.query(sql,[idm,idc],(err,row)=>{
+if(err)
+{
+throw err
+}
+else
+{
+  console.log(row);
+  if (JSON.stringify(row)!='[]')
+{  var p =1;
+      var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
+      var jsonServ = [];
+    //  console.log('fuera de la consulta')
+      var jsonServ = [];
+      row.forEach((serv)=>{
+        // console.log(serv.idservicios)
+        var id = serv.id_servicios;
+        //console.log(id);
+        connection.query(sql,[id],(err,resp)=>{
+          // console.log('dentro de la consulta '+id)
+          if(err)
+          {
+
+          }
+          else
+          {
+            serv.foto = resp;
+            //console.log(resp);
+            jsonServ.push(serv);
+            // console.log('/////////******* valor p '+p)
+            //console.log('/////////******* valor row '+row.length);
+            if(p>=row.length)
+            {
+              callback(null,jsonServ);
+              //console.log('find de la consulta');
+            }
+            p++
+          }
+        });
+       });
+     }
+     else
+     {
+       callback(null,{'vacio':true})
+     }
+
+}
+  });
+
+
+
+
+
+
+}
+}
+};
+
+
+
+
 // elimina un servicio de la base de datos
 servmodule.deleteServ = (id,callback)=>{
   if(connection)

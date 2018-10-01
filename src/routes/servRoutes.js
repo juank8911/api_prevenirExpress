@@ -63,6 +63,18 @@ app.get('/services/:id',(req,res)=>{
   });
 });
 
+app.get('/services/:idm/:idc',(req,res)=>{
+  let ids = {
+    idm:req.params.idm,
+    idc:req.params.idc
+  };
+
+      serv.darServiciosMunCat(ids,(err,data)=>{
+        res.json(data);
+      });
+
+});
+
 //elimina un servicio segun su id
 app.delete('/services/:id',jwts.validaAdmin,(req,res)=>{
     var id = req.params.id;
