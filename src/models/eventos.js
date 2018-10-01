@@ -122,7 +122,14 @@ eventmodule.eliminarEvento = (id,callback) =>{
 eventmodule.delEventProv = (id,callback)=>{
   if(connection)
   {
-    var sql = 'DELETE FROM events';
+    var sql = 'DELETE FROM events where id_events = ? AND servicios_idservicios = ?;';
+    connection.query(sql,[id],(err,row)=>{
+      if(err){throw err}
+      else
+      {
+        callback(null,{'borrado':true})
+      }
+    });
   }
 };
 
