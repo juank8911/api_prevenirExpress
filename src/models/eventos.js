@@ -119,17 +119,28 @@ eventmodule.eliminarEvento = (id,callback) =>{
   }
 };
 
-eventmodule.delEventProv = (id,callback)=>{
+eventmodule.delEventProv = (ev,callback)=>{
   if(connection)
   {
-    var sql = 'DELETE FROM events where id_events = ? AND servicios_idservicios = ?;';
-    connection.query(sql,[id],(err,row)=>{
+    var sel = 'SELECT servicios.id_servicios FROM servicios,provedores, events where servicios.id_provedores = provedores.id_provedor and servicios.id_servicios = events.servicios_idservicios and provedores.id_provedor = ? and events.id_eventos = ? limit 1 ';
+    connection.query(sel,[ev.idp,ev.ide],(err,row)=>{
       if(err){throw err}
       else
       {
-        callback(null,{'borrado':true})
+        row = row[0];
+        console.log(row.id_servicios);
+
+        var sql = 'DELETE FROM events where events.id_eventos = ? AND servicios_idservicios = ? ;';
+        connection.query(sql,[ev.ide,row.id_servicios],(err,row)=>{
+          if(err){throw err}
+          else
+          {
+            callback(null,{'borrado':true})
+          }
+        });
       }
     });
+
   }
 };
 
