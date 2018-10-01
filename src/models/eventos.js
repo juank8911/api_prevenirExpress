@@ -127,9 +127,8 @@ eventmodule.delEventProv = (ev,callback)=>{
       if(err){throw err}
       else
       {
-        row = row[0];
-        console.log(row.id_servicios);
-
+        //row = row[0];
+        //console.log(row.id_servicios);
         var sql = 'DELETE FROM events where events.id_eventos = ? AND servicios_idservicios = ? ;';
         connection.query(sql,[ev.ide,row.id_servicios],(err,row)=>{
           if(err){throw err}
