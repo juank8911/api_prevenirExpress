@@ -34,8 +34,11 @@ app.set('port',config.puerto);
 // } ) ;
 
 
-cron.schedule('0 6,8,10,12,14,16,18,20 * * *', () => {
+cron.schedule('5 * * * *', () => {
   console.log('running a task every two minutes');
+  horas.citaHistorial((err,res)=>{
+     console.log(res+' ok');
+   });
 });
 
 //Permisos CORS para acceso a la Api
