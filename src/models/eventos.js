@@ -134,7 +134,7 @@ eventmodule.delEventProv = (ev,callback)=>{
           if(err){throw err}
           else
           {
-            callback(null,{'borrado':true})
+            callback(null,[{'borrado':true}])
           }
         });
       }

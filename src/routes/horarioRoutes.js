@@ -46,6 +46,20 @@ app.get('/citas/:fecha/:id',(req,res)=>{
   });
 });
 
+
+// retorna las citas segun la fecha y el id del servicio
+app.get('/citaspr/:fecha/:id',(req,res)=>{
+  serv = {
+    fecha:req.params.fecha,
+    id:req.params.id
+  };
+  hora.darDiaPr(serv,(err,resp)=>{
+    res.json(resp);
+  });
+});
+
+
+
 app.get('/servcitas/:fecha/:id',(req,res)=>{
 prov  = {
   fecha:req.params.fecha,

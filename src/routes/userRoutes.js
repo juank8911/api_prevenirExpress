@@ -29,6 +29,8 @@ module.exports = function (app) {
 			res.json(resp);
 		})
 	});
+
+
 	//modifica la informacion de los usuarios en la base de datos
 	app.put('/user',jwts.valida,(req,res)=>{
 		//usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.feha_nacimiento,usu.id
