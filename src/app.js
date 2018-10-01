@@ -34,7 +34,7 @@ app.set('port',config.puerto);
 // } ) ;
 
 
-cron.schedule('5 * * * *', () => {
+cron.schedule('59 * * * *', () => {
   console.log('running a task every two minutes');
   horas.citaHistorial((err,res)=>{
      console.log(res+' ok');
