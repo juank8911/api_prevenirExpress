@@ -660,14 +660,7 @@ horarioModel.eliminarHorario = (ids,callback)=>{
         }
       });
      }
-
     });
   }
 };
-
-
-
-
-
-
 module.exports = horarioModel;
