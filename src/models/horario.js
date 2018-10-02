@@ -452,7 +452,7 @@ var dia = moment(fecha.fecha).format('dddd');
    connection.query(sql1,[fecha.id],(err,rows)=>{
      // console.log('/////////////////primera consulta*******************');
      rows = rows[0];
-     console.log(rows);
+     //console.log(rows);
      // console.log('/////////////////primera consulta*******************');
      //if cuando solo ahy citas para la mañana y la tarde esta vacia
      if(rows.de_maniana !=null && rows.de_tarde==null)

@@ -168,7 +168,7 @@ servmodule.save64 = (data, callback)=>
   });
 };
 
-//da servicios por provedor para el listado
+//da servicios por provedor para el listado de el provedor al agregar un servicio o listarlos
 servmodule.DarServiceUsu = (ids,callback) => {
   console.log('prueba de servicios')
 if(connection)
@@ -180,6 +180,13 @@ if(err)
 
 }
 else
+{
+  if (JSON.stringify(row)=='[]') {
+     //execute
+   //  console.log('vacio');
+     callback(null,[{'servicios':false}]);
+   }
+   else
 {
   var p =1;
       var sql = 'SELECT * FROM fotos where servicios_idservicios = ? LIMIT 1';
@@ -198,6 +205,7 @@ else
           else
           {
             serv.foto = resp;
+            serv.servicios = true;
             //console.log(resp);
             jsonServ.push(serv);
             // console.log('/////////******* valor p '+p)
@@ -211,7 +219,7 @@ else
           }
         });
        });
-
+}
 }
   });
 
