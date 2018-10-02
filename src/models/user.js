@@ -74,10 +74,11 @@ var cedula = usu.cedula;
 var correo = usu.email;
 var nombre = usu.nombre;
 var apellido = usu.apellido;
+var avatar = 'http://cdn.prevenirexpress.com/avatars/avatarundefined.png';
 
 console.log(usu);
-var sql = 'INSERT INTO usuarios(id,cedula,correo,nombre,apellidos,members_id,parentescos_id_parentescos) VALUES (?,?,?,?,?,?,?)';
-connection.query(sql,[id,cedula,correo,nombre,apellido,id,usu.parent],(err, row)=>{
+var sql = 'INSERT INTO usuarios(id,cedula,correo,avatar,nombre,apellidos,members_id,parentescos_id_parentescos) VALUES (?,?,?,?,?,?,?)';
+connection.query(sql,[id,cedula,correo,avatar,nombre,apellido,id,usu.parent],(err, row)=>{
 if(err)
 {
 connection.query('DELETE FROM members WHERE id = ?',[id],(err,res)=>{
