@@ -36,7 +36,7 @@ tel: req.body.tel,
 admin: req.body.esAdmin,
 face: req.body.face,
 parent: 17,
-avatar:req.body.avatar
+avatar:"http://cdn.prevenirexpress.com/avatars/avatarundefined.png"
 };
 console.log(regist);
 //console.log('//*/*/*/*/*///');

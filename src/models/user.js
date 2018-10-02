@@ -74,15 +74,15 @@ var cedula = usu.cedula;
 var correo = usu.email;
 var nombre = usu.nombre;
 var apellido = usu.apellido;
-var avatar = 'http://cdn.prevenirexpress.com/avatars/avatarundefined.png';
+var avatars =  usu.avatar;
 
-console.log(usu);
-var sql = 'INSERT INTO usuarios(id,cedula,correo,avatar,nombre,apellidos,members_id,parentescos_id_parentescos) VALUES (?,?,?,?,?,?,?)';
-connection.query(sql,[id,cedula,correo,avatar,nombre,apellido,id,usu.parent],(err, row)=>{
+console.log(avatars);
+var sql = 'INSERT INTO usuarios(id,cedula,correo,avatar,nombre,apellidos,members_id,parentescos_id_parentescos) VALUES (?,?,?,?,?,?,?,?)';
+connection.query(sql,[id,cedula,correo,avatars,nombre,apellido,id,usu.parent],(err, row)=>{
 if(err)
 {
 connection.query('DELETE FROM members WHERE id = ?',[id],(err,res)=>{
-console.log('error al agregar ususario en user.js lineas 79')
+//console.log('error al agregar ususario en user.js lineas 79')
 callback(null,{'mensaje':'error al agregar el usuario'});
 });
 throw err
