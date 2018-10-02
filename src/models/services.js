@@ -435,7 +435,7 @@ else
 
 // da servicios por el id de del servicio
 servmodule.darServiciosMunCat = (ids,callback)=>{
-  console.log('////////////////Servicios ')
+  //console.log('////////////////Servicios ')
   var idm = ids.idm;
   var idc = ids.idc;
 
@@ -443,7 +443,7 @@ if(connection)
 {
 if(idc==0)
 {
-  console.log('////////////////Servicios por muunicipios/////////// ')
+  //console.log('////////////////Servicios por muunicipios/////////// ')
   var sql = 'SELECT servicios.*, categoria.nombre as categoria from servicios, categoria, servicios_categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and categoria.id_categoria = servicios_categoria.categoria_idcategoria and municipio.id_municipio = ? GROUP BY servicios.id_servicios;';
   connection.query(sql,[idm],(err,row)=>{
 if(err)
@@ -452,7 +452,7 @@ throw err
 }
 else
 {
-  console.log(row);
+  //console.log(row);
   if (JSON.stringify(row)!='[]')
 {
   var p =1;
@@ -489,14 +489,14 @@ else
 }
 else
 {
-  callback(null,{'vacio':true})
+  callback(null,[{'vacio':true}])
 }
 }
   });
 }
 else
 {
-console.log('////////////////Servicios por municipos y categorias ')
+//console.log('////////////////Servicios por municipos y categorias ')
   var sql = 'SELECT servicios.*, categoria.nombre as categoria from servicios, categoria, servicios_categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and categoria.id_categoria = servicios_categoria.categoria_idcategoria and municipio.id_municipio = ? and categoria.id_categoria = ?  GROUP BY servicios.id_servicios;';
   connection.query(sql,[idm,idc],(err,row)=>{
 if(err)
@@ -505,7 +505,7 @@ throw err
 }
 else
 {
-  console.log(row);
+  // console.log(row);
   if (JSON.stringify(row)!='[]')
 {  var p =1;
       var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
@@ -541,7 +541,7 @@ else
      }
      else
      {
-       callback(null,{'vacio':true})
+       callback(null,[{'vacio':true}])
      }
 
 }
