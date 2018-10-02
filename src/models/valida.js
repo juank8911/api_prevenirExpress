@@ -26,7 +26,8 @@ if(connection)
     else
     {
       let usu = row[0];
-      console.log(row[0]);
+      console.log('/*/*/*/*/*/*/*/*/*//');
+      console.log(row);
       if (JSON.stringify(row)=='[]')
       {
           var em = 'SELECT * FROM members WHERE email = ?;';
@@ -37,14 +38,15 @@ if(connection)
             }
             else
             {
-              if (JSON.stringify(row)=='[]')
+            console.log(rows)
+              if (JSON.stringify(rows)=='[]')
               {
                 console.log('usuario no existe');
                 callback(null,{'existe':'false'});
               }
               else
               {
-                callback(null,{'existe':'true','campo':'email'});
+                callback(null,[{'existe':'true','campo':'email'}]);
               }
             }
           });
@@ -53,7 +55,7 @@ if(connection)
       else
       {
       console.log('validacion de campos',usu);
-      callback(null,{'existe':'true','campo':'id'});
+      callback(null,[{'existe':'true','campo':'id'}]);
       }
 
 

@@ -43,8 +43,10 @@ app.post('/register',(req, res)=>{
 	//console.log(regist);
 	jwts.registroMember(regist, (err,data)=>{
 				var valida = data.existe;
+				var datos = data;
 				//valida si existe o no en la base de datos
-				console.log(valida);
+				console.log('////////*****//////');
+				console.log(datos);
 				if(valida=='false' || valida==false)
 				{
 					//console.log('valida');
@@ -119,8 +121,8 @@ app.post('/register',(req, res)=>{
 				}
 				else
 				{
-					console.log('no se pudo agregar el usuario');
-				  res.json([{'menaje':'no se pudo agregar el usuario ya existe','existe':true},{'mensaje':''}]);
+					console.log([{'menaje':'no se pudo agregar el usuario ya existe','existe':true},datos]);
+				  res.json([{'menaje':'no se pudo agregar el usuario ya existe','existe':true},datos]);
 				}
 	});
 

@@ -116,7 +116,7 @@ jwtmodel.registroMember = (register, callback) =>{
           }
           else{
               let valido = {mensaje:'usuario ya exist',existe:'true'};
-                callback(null,valido);
+                callback(null,res);
 
               }
           });
