@@ -505,7 +505,7 @@ throw err
 }
 else
 {
-  console.log(row);
+  // console.log(row);
   if (JSON.stringify(row)!='[]')
 {  var p =1;
       var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
