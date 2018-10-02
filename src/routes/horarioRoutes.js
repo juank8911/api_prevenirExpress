@@ -60,6 +60,7 @@ app.get('/citaspr/:fecha/:id',(req,res)=>{
 
 
 
+// retorna las citas segun la fecha y el id del servicio para los provedores
 app.get('/servcitas/:fecha/:id',(req,res)=>{
 prov  = {
   fecha:req.params.fecha,
