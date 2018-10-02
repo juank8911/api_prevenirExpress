@@ -3,10 +3,10 @@ let config = require('../config');
 
 
 connection = mysql.createConnection({
-    host: config.host,
-    user: config.userbd,
-    password: config.passwordbd,
-    database: config.nombredb
+host: config.host,
+user: config.userbd,
+password: config.passwordbd,
+database: config.nombredb
 });
 
 let comentmodule = {};
@@ -14,10 +14,10 @@ let comentmodule = {};
 // agrega un comentario por cita a la base de atos con la calificacion brindada por el ususario
 comentmodule.agregarComentario(coment,callback)
 {
-  if(connection)
-  {
-    // var sql = 'SELECT'
-  }
+if(connection)
+{
+// var sql = 'SELECT'
+}
 }
 
 
