@@ -39,10 +39,11 @@ if(connection)
   var correo = usu.email;
   var nombre = usu.nombre;
   var apellido = usu.apellido;
+  var avatar = usu.avatar;
 
-  var sql = 'INSERT INTO usuarios(id,correo,nombre,apellidos,members_id,parentescos_id_parentescos) VALUES (?,?,?,?,?);';
+  var sql = 'INSERT INTO usuarios(id,correo,avatar,nombre,apellidos,members_id,parentescos_id_parentescos) VALUES (?,?,?,?,?);';
   console.log('Agregando ususario');
-  connection.query(sql,[id,correo,nombre,apellido,id,usu.parent],(err, row)=>{
+  connection.query(sql,[id,correo,avatar,nombre,apellido,id,usu.parent],(err, row)=>{
     if(err)
     {
       console.log('no agregado ususario');
@@ -149,4 +150,19 @@ userModel.setUsuario=(usu,callback)=>{
 
   }
 };
+
+userModel.putAvatar = (avs,callback)=>{
+  if(connection)
+  {
+    var av = 'UPDATE usuarios SET avatar= ? WHERE id = ? ;';
+    connection.query(av,[avs.avatar,avs.id],(err,reqs)=>{
+      if(err){throw err}
+      else
+      {
+        callback(null,{'ok':true});
+      }
+    });
+  }
+};
+
 module.exports = userModel;

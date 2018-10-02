@@ -9,11 +9,15 @@ module.exports = function (app) {
 	app.post('/login',(req, res) => {
 		var login = {
 			email: req.body.email,
-			password: req.body.pssw
+			password: req.body.pssw,
+			avatar: req.body.avatar
 		};
+		console.log(req.body);
+		//console.log(login);
 		jwts.login(login,(err, data) => {
 					//res.json(data);
 		//console.log(data);
+		//
 		res.json(data);
 		});
 });
@@ -31,7 +35,8 @@ app.post('/register',(req, res)=>{
 		tel: req.body.tel,
 		admin: req.body.esAdmin,
 		face: req.body.face,
-		parent: 17
+		parent: 17,
+		avatar:req.body.avatar
 	};
 	console.log(regist);
 	//console.log('//*/*/*/*/*///');
