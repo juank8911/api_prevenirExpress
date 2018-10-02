@@ -47,6 +47,7 @@ module.exports = function (app) {
 			telefonowatshapp:req.body.telefonowatshapp,
 			fecha_nacimiento: fecha,
 			id:req.body.id
+
 		};
 		User.setUsuario(usu,(err,resp)=>{if(err){throw err}
 			else

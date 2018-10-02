@@ -168,7 +168,7 @@ servmodule.save64 = (data, callback)=>
   });
 };
 
-//da servicios por provedor para el listado
+//da servicios por provedor para el listado de el provedor al agregar un servicio o listarlos
 servmodule.DarServiceUsu = (ids,callback) => {
   console.log('prueba de servicios')
 if(connection)
@@ -180,6 +180,13 @@ if(err)
 
 }
 else
+{
+  if (JSON.stringify(row)=='[]') {
+     //execute
+   //  console.log('vacio');
+     callback(null,[{'servicios':false}]);
+   }
+   else
 {
   var p =1;
       var sql = 'SELECT * FROM fotos where servicios_idservicios = ? LIMIT 1';
@@ -198,6 +205,7 @@ else
           else
           {
             serv.foto = resp;
+            serv.servicios = true;
             //console.log(resp);
             jsonServ.push(serv);
             // console.log('/////////******* valor p '+p)
@@ -211,7 +219,7 @@ else
           }
         });
        });
-
+}
 }
   });
 
@@ -297,7 +305,7 @@ servmodule.save = (data , callback ) => {
 
 // devuelve los servicios para el ususario
 servmodule.pruebaServicio = (callback)=>{
-  console.log('prueba de servicios')
+//  console.log('prueba de servicios')
 if(connection)
 {
   var sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios, categoria, servicios_categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios and categoria.id_categoria = servicios_categoria.categoria_idcategoria';
@@ -444,7 +452,7 @@ if(connection)
 if(idc==0)
 {
   //console.log('////////////////Servicios por muunicipios/////////// ')
-  var sql = 'SELECT servicios.*, categoria.nombre as categoria from servicios, categoria, servicios_categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and categoria.id_categoria = servicios_categoria.categoria_idcategoria and municipio.id_municipio = ? GROUP BY servicios.id_servicios;';
+  var sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ?;';
   connection.query(sql,[idm],(err,row)=>{
 if(err)
 {
@@ -452,7 +460,7 @@ throw err
 }
 else
 {
-  //console.log(row);
+  console.log(row);
   if (JSON.stringify(row)!='[]')
 {
   var p =1;
@@ -497,7 +505,7 @@ else
 else
 {
 //console.log('////////////////Servicios por municipos y categorias ')
-  var sql = 'SELECT servicios.*, categoria.nombre as categoria from servicios, categoria, servicios_categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and categoria.id_categoria = servicios_categoria.categoria_idcategoria and municipio.id_municipio = ? and categoria.id_categoria = ?  GROUP BY servicios.id_servicios;';
+  var sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ? and  categoria.id_categoria = ?  ;';
   connection.query(sql,[idm,idc],(err,row)=>{
 if(err)
 {

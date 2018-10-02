@@ -2,6 +2,7 @@ let mysql =require('mysql');
 let config = require('../config');
 let jwts = require('jsonwebtoken');
 let vals = require('./valida');
+let user = require('./user');
 connection = mysql.createConnection({
     host: config.host,
     user: config.userbd,
@@ -33,7 +34,10 @@ jwtmodel.login = (logins,callback) =>{
      var login = row[0];
      if(login!=null)
      {
+       console.log('/////***//////');
        console.log(login);
+       var av = {avatar:logins.avatar,id:login.id};
+       console.log(av);
      var member = {email:login.email,password:login.password,admin:login.admin};
       console.log(member);
        var tokenres = jwts.sign(member,config.jwt_secreto);
@@ -45,6 +49,9 @@ jwtmodel.login = (logins,callback) =>{
        else
        {
          admins=false;
+         user.putAvatar(av,(err,res)=>{
+           console.log(res);
+         });
        }
        var idU = login.id;
        let loges = {token:tokenres, login:true , esAdmin:admins, id_usuario:idU};
