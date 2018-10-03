@@ -4,7 +4,7 @@ module.exports= {
   nombredb:'prevenirexpres',
   host: 'localhost',
   userbd: 'root',
-  passwordbd: 'mysql',
+  passwordbd: 'express',
   jwt_secreto:'Frth760bBn6Ju89GZgO24FTgLSCTSAS30a0tDr',
   mailserv: 'Gmail',
   userMail: 'juankita8911@gmail.com',
