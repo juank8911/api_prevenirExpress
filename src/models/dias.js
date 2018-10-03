@@ -14,15 +14,16 @@ let diasModel={};
 
 // agrega los dias la base de datos
 diasModel.agregarDia=(dia,callback)=> {
-var sql = 'INSERT INTO dias(dia,id_horario) value (?,?)';
+var sql = 'INSERT INTO dias(dia,id_horario,servicios_id_servicios) value (?,?,?)';
 semana=dia.semanas;
 id = dia.id;
+ids=dia.idS;
 var fin = [];
 var p=0;
 for (var i = 0; i < semana.length; i++)
 {
 //console.log(semana[i]);
-connection.query(sql,[semana[i],id],(err,resp)=>{
+connection.query(sql,[semana[i],id,ids],(err,resp)=>{
 if(err){throw err}
 else
 {
