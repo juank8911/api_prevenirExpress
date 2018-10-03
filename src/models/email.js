@@ -32,8 +32,8 @@ console.log(mail);
 
   transporter.sendMail(mailOptions, function(error, info){
       if (error){
-          //console.log(error);
-        callback(null,'not send');
+          console.log(error);
+        //callback(null,'not send');
       } else {
           console.log("Email sent");
           callback(null,'send');
