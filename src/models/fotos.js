@@ -40,7 +40,7 @@ ba64.writeImageSync(newPath, fotos);
 if(!fs.existsSync(newPath))
 {
 var sql = 'UPDATE usuarios SET avatar= ? WHERE id=?;'
-connection.query(sql,[pathView+'.jpge',id],(err,row)=>{
+connection.query(sql,[pathView+'.jpeg',id],(err,row)=>{
 if(err){throw err}
 else {
 callback(null,[{'cambio':true}]);
@@ -67,12 +67,12 @@ fotoModel.setFotoProv = (foto,callback)=>{
   fotos = img;
   //console.log(img);
   var newPath = "src/public/avatars/"+name;
-  var pathView = "/avatars/"+name;
+  var pathView = "http://cdn.prevenirexpress.com/avatars/"+name;
   ba64.writeImageSync(newPath, fotos);
   if(!fs.existsSync(newPath))
   {
-  var sql = 'UPDATE provedores SET avatar= ? WHERE id=?;'
-  connection.query(sql,[pathView+'.jpge',id],(err,row)=>{
+  var sql = 'UPDATE provedores SET avatar= ? WHERE id_provedor=?;'
+  connection.query(sql,[pathView+'.jpeg',id],(err,row)=>{
   if(err){throw err}
   else {
   callback(null,[{'cambio':true}]);
