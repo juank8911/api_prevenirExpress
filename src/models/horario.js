@@ -454,13 +454,24 @@ var dia = moment(fecha.fecha).format('dddd');
 //callback(null,dia);
 if(connection)
 {
-var sql1 = 'select * from horario where id_servicios = ?';
-connection.query(sql1,[fecha.id],(err,rows)=>{
-// console.log('/////////////////primera consulta*******************');
-rows = rows[0];
-//console.log(rows);
-// console.log('/////////////////primera consulta*******************');
-//if cuando solo ahy citas para la mañana y la tarde esta vacia
+  var sql1 = 'select * from horario where id_horario = (select dias.id_horario from dias where dias.dia = ? and servicios_id_servicios = ?);';
+  connection.query(sql1,[dia,fecha.id],(err,rows)=>{
+  console.log('/////////////////primera consulta*******************');
+  var row = rows;
+  rows = rows[0];
+  console.log(row);
+  console.log('/////////////////primera consulta*******************');
+  //if cuando solo ahy citas para la mañana y la tarde esta vacia
+  if (JSON.stringify(row)=='[]')
+  {
+  //execute
+  //  console.log('vacio');
+  callback(null,[{'maniana':[{"hora": "No ahy citas",'disponible':false,"echas":0},]},{'tardes':[{"hora": "No ahy citas",'disponible':false,"echas":0},]}]);
+  }
+  else
+  {
+
+
 if(rows.de_maniana !=null && rows.de_tarde==null)
 {
 //console.log('////////////////citas en la tarde vacias *******************');
@@ -625,7 +636,7 @@ callback(null,derro);
 
 
 }
-
+}
 });
 }
 
