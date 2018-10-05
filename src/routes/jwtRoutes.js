@@ -38,8 +38,9 @@ face: req.body.face,
 parent: 17,
 avatar:"http://cdn.prevenirexpress.com/avatars/avatarundefined.png"
 };
+console.log('//*/*/*Registro/*/*///');
 console.log(regist);
-//console.log('//*/*/*/*/*///');
+
 //console.log(regist);
 jwts.registroMember(regist, (err,data)=>{
 var valida = data.existe;
