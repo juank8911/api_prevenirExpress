@@ -35,7 +35,7 @@ var name = rand1+'_'+rand2+'_'+rand3;
 fotos = img;
 //console.log(img);
 var newPath = "src/public/avatars/"+name;
-var pathView = "/avatars/"+name;
+var pathView = "http://cdn.prevenirexpress.com/avatars/"+name;
 ba64.writeImageSync(newPath, fotos);
 if(!fs.existsSync(newPath))
 {

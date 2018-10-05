@@ -22,7 +22,7 @@ if(connection)
 var email = logins.email;
 var password = logins.password;
 console.log(password);
-var sql = 'SELECT id FROM members WHERE email = ? AND password = ? ';
+var sql = 'SELECT id, email, password, admin FROM members WHERE email = ? AND password = ? ';
 // console.log('****************************');
 
 connection.query(sql,[email , password ],(err,row)=>{
@@ -52,9 +52,9 @@ admins=true;
 else
 {
 admins=false;
-user.putAvatar(av,(err,res)=>{
-console.log(res);
-});
+// user.putAvatar(av,(err,res)=>{
+// console.log(res);
+// });
 }
 var idU = login.id;
 let loges = {token:tokenres, login:true , esAdmin:admins, id_usuario:idU};
@@ -98,11 +98,11 @@ console.log(res);
 
 if(res.existe==='false')
 {
-console.log('dentro el if'+res);
+//console.log('dentro el if'+res);
 //confirma que el member no exista en la base de datos
-var sql = 'INSERT INTO members (id, email, admin, password) VALUES (?, ?, ?, ?)';
+var sql = 'INSERT INTO members (email, admin, password) VALUES ( ?, ?, ?)';
 //console.log('prueba envio email', mememail);
-connection.query(sql,[memid,mememail,isadmin,password],(err,row)=>{
+connection.query(sql,[mememail,isadmin,password],(err,row)=>{
 if(err)
 {
 throw err;
@@ -110,7 +110,8 @@ throw err;
 else
 {
 //console.log("1 record inserted, ID: ", row);
-let valido = {mensaje:'Usuario registrado con exito',existe:'false'};
+console.log(row.insertId);
+let valido = {mensaje:'Usuario registrado con exito',existe:'false',ids:row.insertId};
 console.log('agregado');
 callback(null,valido);
 

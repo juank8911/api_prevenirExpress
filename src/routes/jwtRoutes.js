@@ -25,6 +25,9 @@ res.json(data);
 
 // realiza el registro de los ususarios y provedores segun si son admins o usuarios y si es por facebook o manual
 app.post('/register',(req, res)=>{
+  // console.log('////////////////////////req.body//////////////////');
+  // console.log(req.body);
+  // console.log('////////////////////////req.body//////////////////');
 var regist = {
 nombre: req.body.nombre,
 apellido: req.body.apellido,
@@ -36,7 +39,7 @@ tel: req.body.tel,
 admin: req.body.esAdmin,
 face: req.body.face,
 parent: 17,
-avatar:"http://cdn.prevenirexpress.com/avatars/avatarundefined.png"
+avatar: req.body.avatar
 };
 console.log('//*/*/*Registro/*/*///');
 console.log(regist);
@@ -45,9 +48,11 @@ console.log(regist);
 jwts.registroMember(regist, (err,data)=>{
 var valida = data.existe;
 var datos = data;
+var id = data.ids;
+regist.id = data.ids;
 //valida si existe o no en la base de datos
-console.log('////////*****//////');
-console.log(datos);
+console.log('////////***Registro Post Member**//////');
+console.log(regist);
 if(valida=='false' || valida==false)
 {
 //console.log('valida');

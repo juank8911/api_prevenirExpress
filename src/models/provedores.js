@@ -69,7 +69,7 @@ callback(null,row)}
 
 //registra un provedor en la base de datos
 provedorModule.regProv = (prov, callback)=> {
-var id = prov.cedula;
+var id = prov.id;
 var nombre = prov.nombre;
 var correo = prov.email;
 var direccion = prov.direccion;
