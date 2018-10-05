@@ -35,16 +35,16 @@ console.log('error en la conxion a la base de datos');
 userModel.registerFace = (usu, callback)=> {
 if(connection)
 {
-var id = usu.cedula;
+var id = usu.id;
 var correo = usu.email;
 var nombre = usu.nombre;
 var apellido = usu.apellido;
 var avatar = usu.avatar;
 console.log('//////*/*/*/ID*/*/*/');
 console.log(id);
-var sql = 'INSERT INTO usuarios(id,correo,avatar,nombre,apellidos,members_id,parentescos_id_parentescos) VALUES (?,?,?,?,?,?,?);';
+var sql = 'INSERT INTO usuarios(id,correo,avatar,nombre,apellidos,members_id,parentescos_id_parentescos,id_pais) VALUES (?,?,?,?,?,?,?,?);';
 console.log('Agregando ususario');
-connection.query(sql,[id,correo,avatar,nombre,apellido,id,usu.parent],(err, row)=>{
+connection.query(sql,[id,correo,avatar,nombre,apellido,id,usu.parent,47],(err, row)=>{
 if(err)
 {
 console.log('no agregado ususario');
@@ -70,7 +70,7 @@ callback(null,{'error':'error al comunicarse con la base de datos'});
 userModel.registerUsu = (usu, callback) =>{
 if(connection)
 {
-var id = usu.cedula;
+var id = usu.id;
 var cedula = usu.cedula;
 var correo = usu.email;
 var nombre = usu.nombre;
@@ -78,8 +78,8 @@ var apellido = usu.apellido;
 var avatars =  usu.avatar;
 
 console.log(avatars);
-var sql = 'INSERT INTO usuarios(id,cedula,correo,avatar,nombre,apellidos,members_id,parentescos_id_parentescos) VALUES (?,?,?,?,?,?,?,?)';
-connection.query(sql,[id,cedula,correo,avatars,nombre,apellido,id,usu.parent],(err, row)=>{
+var sql = 'INSERT INTO usuarios(id,cedula,correo,avatar,nombre,apellidos,members_id,parentescos_id_parentescos,id_pais) VALUES (?,?,?,?,?,?,?,?,?)';
+connection.query(sql,[id,cedula,correo,avatars,nombre,apellido,id,usu.parent,47],(err, row)=>{
 if(err)
 {
 connection.query('DELETE FROM members WHERE id = ?',[id],(err,res)=>{
