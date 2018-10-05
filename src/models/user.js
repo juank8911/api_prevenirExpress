@@ -40,7 +40,7 @@ var correo = usu.email;
 var nombre = usu.nombre;
 var apellido = usu.apellido;
 var avatar = usu.avatar;
-console.log('//////*/*/*/*/*/*/');
+console.log('//////*/*/*/ID*/*/*/');
 console.log(id);
 var sql = 'INSERT INTO usuarios(id,correo,avatar,nombre,apellidos,members_id,parentescos_id_parentescos) VALUES (?,?,?,?,?,?,?);';
 console.log('Agregando ususario');
