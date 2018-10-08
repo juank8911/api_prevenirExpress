@@ -14,11 +14,13 @@ let benefModule = {};
 benefModule.agregarBeneficiario = (benef,callback)=>{
 if(connection)
 {
-var add = 'INSERT INTO usuarios (id, cedula, nombre, apellidos, telefono, telefonowatshapp,feha_nacimiento,usuariosBf_id, parentescos_id_parentescos) VALUES (id, cd, nom, ape, tel, tel,fecha,benfid, paren);';
-connection.query(add,[],(err,res)=>{
+var add = 'INSERT INTO usuarios (id,cedula, nombre, apellidos, telefono,telefonowatshapp,fecha_nacimiento,usuariosBf_id, parentescos_id_parentescos,id_pais) VALUES (?,?,?,?,?,?,?,?,?,?);';
+// console.log(benef);
+connection.query(add,[benef.ident,benef.ident,benef.nombre,benef.apellidos,benef.tel,benef.tel,benef.fecha_n,benef.id_usu,benef.parent,benef.pais],(err,res)=>{
 if(err){callback(null,err)}
 else {
 {
+  res = res.protocol41;
 callback(null,res)
 }
 }
