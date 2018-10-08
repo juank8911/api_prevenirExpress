@@ -19,4 +19,10 @@ console.log('borrando departamento con id= '+req.params.id)
 res.json(req.params.id);
 });
 
+app.get('/pais',(req,res)=>{
+  dpart.darPais((err,data)=>{
+        res.json(data);
+  });
+});
+
 }
