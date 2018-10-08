@@ -6,7 +6,7 @@ module.exports = function (app)
 //devuelve los beneficiarios segun el id usuasrio
 app.get('/benef/:id',(req,res)=>{
 var idU = req.params.id;
-benef.darBenefId(idPar,(err,data)=>{
+benef.darBenefId(idU,(err,data)=>{
 res.json(data);
 });
 });
