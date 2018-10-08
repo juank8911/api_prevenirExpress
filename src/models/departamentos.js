@@ -29,5 +29,19 @@ callback(null,row);
 }
 };
 
+departModel.darPais = (callback)=>{
+  if(connection)
+  {
+    var sql ='SELECT * FROM pais';
+    connection.query(sql,(err,row)=>{
+      if(err){throw err}
+      else
+      {
+        callback(null,row);
+      }
+    });
+  }
+};
+
 
 module.exports = departModel;
