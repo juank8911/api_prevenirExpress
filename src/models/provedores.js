@@ -74,9 +74,10 @@ var nombre = prov.nombre;
 var correo = prov.email;
 var direccion = prov.direccion;
 var tel = prov.tel;
+var nit = prov.nit;
 
-var sql = 'INSERT INTO provedores(id_provedor,nit,nombre,correo,direccion,telefono,members_id) values (?,?,?,?,?,?,?)';
-connection.query(sql,[id,id,nombre,correo,direccion,tel,id],(err, row)=>{
+var sql = 'INSERT INTO provedores(nit,nombre,correo,direccion,telefono,members_id) values (?,?,?,?,?,?)';
+connection.query(sql,[nit,nombre,correo,direccion,tel,id],(err, row)=>{
 if(err)
 {
 //console.log('no agregado ususario');
