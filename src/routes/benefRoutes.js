@@ -1,5 +1,5 @@
 const benef = require('../models/beneficiarios');
-
+const jwts = require('../models/jwt');
 module.exports = function (app)
 {
 
@@ -12,7 +12,7 @@ res.json(data);
 });
 
 
-app.post('/benef',(req,res)=>{
+app.post('/benef',jwts.valida,(req,res)=>{
   var bene = {
     ident: req.body.ident,
     nombre: req.body.nomb,
