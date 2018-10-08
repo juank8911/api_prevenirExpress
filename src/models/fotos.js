@@ -67,7 +67,7 @@ fotoModel.setFotoProv = (foto,callback)=>{
   fotos = img;
   //console.log(img);
   var newPath = "src/public/avatars/"+name;
-  var pathView = "http://cdn.prevenirexpress.com/avatars/"+name;
+  var pathView = "/avatars/"+name;
   ba64.writeImageSync(newPath, fotos);
   if(!fs.existsSync(newPath))
   {
