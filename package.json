@@ -1,6 +1,7 @@
+<<<<<<< HEAD
 {
   "name": "appexpress",
-  "version": "1.1.2",
+  "version": "1.2.9",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -26,3 +27,33 @@
     "sync-mysql": "^3.0.1"
   }
 }
+=======
+{
+  "name": "appexpress",
+  "version": "1.2.9",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ba64": "^3.0.9",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "express-form-data": "^2.0.6",
+    "express-formidable": "^1.0.0",
+    "jsonwebtoken": "^8.3.0",
+    "moment": "^2.22.2",
+    "morgan": "^1.9.0",
+    "mysql": "^2.16.0",
+    "node-cron": "^2.0.1",
+    "nodemailer": "^4.6.8",
+    "random-number": "0.0.9",
+    "sync-mysql": "^3.0.1"
+  }
+}
+>>>>>>> 9debd34dcf17662853f66957bb30dfab434cb762
