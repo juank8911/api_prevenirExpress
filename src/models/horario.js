@@ -660,7 +660,7 @@ horarioModel.eliminarHorario = (ids,callback)=>{
 if(connection)
 {
 var idH = 'SELECT id_horario FROM horario WHERE id_servicios = ?';
-var delD = 'DELETE FROM dias WHERE id_servicios = ?;';
+var delD = 'DELETE FROM dias WHERE servicios_id_servicios = ?;';
 var delH = 'DELETE FROM horario WHERE id_servicios = ?';
 connection.query(idH,[ids],(err,row)=>{
 if(err){throw err}
