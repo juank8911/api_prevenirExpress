@@ -36,7 +36,7 @@ categoria: req.body.id_ctga
 //files: req.files.imagenes
 };
 //console.log(servicio.categoria);
-serv.save64(servicio,(err,data)=>{
+serv.save(servicio,(err,data)=>{
 console.log(data);
 res.json(data);
 });

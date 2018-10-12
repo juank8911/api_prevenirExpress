@@ -18,7 +18,11 @@ database: config.nombredb
 
 let fotoModel = {};
 
+
+
+
 fotoModel.setFotoUsu = (foto,callback)=>{
+
 let img = foto.fotos;
 let id = foto.id;
 var options = {
@@ -79,6 +83,28 @@ fotoModel.setFotoProv = (foto,callback)=>{
   }
   });
   }
+};
+
+fotoModel.fotosSer = (foto,callback) =>{
+
+  var respons = [];
+  console.log('/////*************///////////********antes de insertar**********//////////////****');
+  console.log(foto);
+  var sqls = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
+  connection.query(sqls,[foto.nombre,foto.pathV,foto.id],(err,res)=> {
+  if(err)
+  {
+  //throw err
+  throw err;
+  respons=({"name": res.insertId, "carga":false});
+  }
+  else
+  {
+  respons=({"name": res.insertId, "carga": true});
+  callback(null,respons);
+  }
+  });
+
 };
 
 

@@ -19,11 +19,13 @@ horarioModel.agregarHorario = (horario,callback) =>
 var horas = horario;
 var semana = horas.semana;
 var dias={};
-//console.log(semana);
+///console.log(semana);
+console.log('/////////*********Horario Recibido Prueba de nulls*********//////////////');
+console.log(horario);
 if(connection)
 {
 console.log(horas.t_de+'/'+horas.m_de);
-if(horas.t_de==undefined)
+if(horas.t_de==undefined || horas.t_de=='undefind' || horas.t_de==null || horas.t_de=='null' )
 {
 console.log('horarios de tarde indefinido');
 
@@ -41,7 +43,7 @@ var idH = row.insertId;
 dias={
 semanas:semana,
 id:idH,
-idS:horas.id
+ids:horas.id
 };
 // console.log(dias);
 dia.agregarDia(dias,(err,resp)=>{
@@ -54,7 +56,7 @@ callback(null,{'res':resp});
 });
 
 }
-else if (horas.m_de==undefined)
+else if (horas.m_de==undefined || horas.m_de=='undefind' || horas.m_de==null || horas.m_de=='null')
 {
 console.log('horario de mañana indefinido');
 var hsql = 'INSERT INTO horario (de_tarde,a_tarde,id_servicios) VALUES (?,?,?)';
@@ -66,13 +68,18 @@ throw err
 }
 else
 {
-
+console.log('/////////************Row*************////////////');
+console.log(row);
 var idH = row.insertId;
+console.log('/////////************horas*************////////////');
+console.log(horas);
 dias={
 semanas:semana,
-id:idH
+id:idH,
+ids:horas.id
 };
-// console.log(dias);
+console.log('/////////************Dias*************////////////');
+console.log(dias);
 dia.agregarDia(dias,(err,resp)=>{
 callback(null,{'res':resp});
 });
@@ -100,7 +107,8 @@ else
 var idH = row.insertId;
 dias={
 semanas:semana,
-id:idH
+id:idH,
+ids:horas.id
 };
 // console.log(dias);
 dia.agregarDia(dias,(err,resp)=>{

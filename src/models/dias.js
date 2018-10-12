@@ -17,12 +17,14 @@ diasModel.agregarDia=(dia,callback)=> {
 var sql = 'INSERT INTO dias(dia,id_horario,servicios_id_servicios) value (?,?,?)';
 semana=dia.semanas;
 id = dia.id;
-ids=dia.idS;
+ids=dia.ids;
 var fin = [];
 var p=0;
 for (var i = 0; i < semana.length; i++)
 {
-//console.log(semana[i]);
+console.log('dia '+semana[i]);
+console.log('id_horario '+id);
+console.log('id_servicio '+ids);
 connection.query(sql,[semana[i],id,ids],(err,resp)=>{
 if(err){throw err}
 else
