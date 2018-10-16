@@ -44,7 +44,7 @@ for (var i = 0; i < row.length; i++)
 {
   var s = row[i];
   s.start =  moment(s.start).utc().format('YYYY-MM-DD hh:mm:SS a');
-  s.end = moment(s.end).utc().format();
+  s.end = moment(s.end).utc().format('YYYY-MM-DD hh:mm:SS a');
   console.log(s);
 }
 callback(null,row);
