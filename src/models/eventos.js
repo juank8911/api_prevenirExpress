@@ -43,7 +43,7 @@ console.log(row.length);
 for (var i = 0; i < row.length; i++)
 {
   var s = row[i];
-  s.start =  moment(s.start).utc().format();
+  s.start =  moment(s.start).utc().format('YYYY-MM-DD hh:mm:SS a');
   s.end = moment(s.end).utc().format();
   console.log(s);
 }
