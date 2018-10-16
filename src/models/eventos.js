@@ -53,6 +53,30 @@ callback(null,row);
 }
 };
 
+eventmodule.darEventsBenf = (id,callback)=>{
+  if(connection)
+  {
+    var sql 'SELECT events.*, servicios.nombre as nombreS, CONCAT(usuarios.nombre,' ',usuarios.apellidos) as nombreU  FROM events, servicios,usuarios WHERE events.servicios_idservicios = servicios.id_servicios AND usuarios.id = events.usuarios_id and usuarios.usuariosBf_id = ?  ORDER BY events.start asc;'
+    connection.query(sql[id],(err,row)=>{
+      if(err)
+      {
+        throw err
+      }
+      else
+      {
+        for (var i = 0; i < row.length; i++)
+        {
+          var s = row[i];
+          s.start =  moment(s.start).utc().format('YYYY-MM-DD hh:mm:SS a');
+          s.end = moment(s.end).utc().format('YYYY-MM-DD hh:mm:SS a');
+          console.log(s);
+        }
+        callback(null,row);
+      }
+    });
+  }
+};
+
 //retorna una lista de eventos por servicio
 eventmodule.darEventsIdService = (ids,callback)=>{
 if(connection)
@@ -175,6 +199,23 @@ callback(null,'eliminado');
 }
 });
 }
+};
+
+eventmodule.eventsCalendar = (ev,callback) =>{
+  if(connection)
+  {
+  var sql = 'SELECT YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events WHERE MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
+  connection.query(sql,[ev.mes,ev.anio,ev.id_servicio],(err,row)=>{
+    if(err)
+    {
+      throw err;
+    }
+    else
+    {
+      callback(null,row);
+    }
+  });
+  }
 };
 
 

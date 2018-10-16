@@ -51,6 +51,12 @@ res.json(row);
 });
 });
 
+app.get('/eventsb/:id'(req,res)=>{
+  var id = req.params.id;
+  events.darEventsBenf(id,(err,row)=>{
+    res.json(row);
+  });
+});
 // retorna eventos segun el id del servicio
 app.get('/sevents/:ids',(req,res)=>{
 var ids = req.params.ids;
@@ -65,6 +71,17 @@ var id = req.params.id;
 events.eliminarEvento(id,(err,row)=>{
 res.json(row);
 });
+});
+
+app.get('/eventser/:mes/:anio/:id_serv',(req,res)=>{
+  ev = {
+    mes: req.params.mes,
+    anio: req.params.anio,
+    id_servicio: req.params.id_serv
+  };
+  events.eventsCalendar(ev,(err,resp)=>{
+    res.json(resp);
+  });
 });
 
 app.delete('/eventss/:ide/:idp',jwts.validaAdmin, (req,res)=>{
