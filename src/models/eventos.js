@@ -56,8 +56,9 @@ callback(null,row);
 eventmodule.darEventsBenf = (id,callback)=>{
   if(connection)
   {
-    var sql 'SELECT events.*, servicios.nombre as nombreS, CONCAT(usuarios.nombre,' ',usuarios.apellidos) as nombreU  FROM events, servicios,usuarios WHERE events.servicios_idservicios = servicios.id_servicios AND usuarios.id = events.usuarios_id and usuarios.usuariosBf_id = ?  ORDER BY events.start asc;'
-    connection.query(sql[id],(err,row)=>{
+    console.log(id);
+    var sql = "SELECT events.*, servicios.nombre as nombreS, CONCAT(usuarios.nombre,' ',usuarios.apellidos) as nombreU  FROM events, servicios,usuarios WHERE events.servicios_idservicios = servicios.id_servicios AND usuarios.id = events.usuarios_id and usuarios.usuariosBf_id = ?"
+    connection.query(sql,[id],(err,row)=>{
       if(err)
       {
         throw err

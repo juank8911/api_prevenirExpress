@@ -51,8 +51,9 @@ res.json(row);
 });
 });
 
-app.get('/eventsb/:id'(req,res)=>{
+app.get('/eventsb/:id',(req,res)=>{
   var id = req.params.id;
+  console.log(id);
   events.darEventsBenf(id,(err,row)=>{
     res.json(row);
   });
