@@ -37,9 +37,16 @@ else
 {
 //console.log('prueba de git');
 console.log(moment().utc().format());
-row = row[0];
-row.start = moment(row.start).utc(-5).format();
-console.log(row);
+console.log(row.length);
+//row = row[0];
+//console.log(row);
+for (var i = 0; i < row.length; i++)
+{
+  var s = row[i];
+  s.start =  moment(s.start).utc(-5).format();
+  s.end = moment(s.end).utc(-5).format();
+  console.log(s);
+}
 callback(null,row);
 }
 });
