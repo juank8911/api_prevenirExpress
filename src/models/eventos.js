@@ -21,7 +21,10 @@ connection.query(sql,(err,row)=>{
 if(err){throw err}
 else
 {
-
+  console.log(moment().utc().format());
+  row = row[0];
+  row.start = moment(row.start).utc(-5).format();
+  console.log(row);
 callback(null,row);
 }
 });
