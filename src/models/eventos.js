@@ -43,8 +43,8 @@ console.log(row.length);
 for (var i = 0; i < row.length; i++)
 {
   var s = row[i];
-  s.start =  moment(s.start).utc(-5).format();
-  s.end = moment(s.end).utc(-5).format();
+  s.start =  moment(s.start).utc().format();
+  s.end = moment(s.end).utc().format();
   console.log(s);
 }
 callback(null,row);
