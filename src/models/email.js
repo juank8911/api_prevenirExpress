@@ -15,8 +15,7 @@ let emailModel = {};
 
 emailModel.sendMail = (mail,callback)=>{
 
-  transporter = nodemailer.createTransport({
-    host: "gmail.com",
+var  transporter = nodemailer.createTransport("SMTP",{
     service: config.mailserv,
     auth: {
         user: config.userMail,
@@ -26,7 +25,7 @@ emailModel.sendMail = (mail,callback)=>{
 console.log(mail);
 
   var mailOptions = {
-              from: mail.remitente,
+              from: config.from,
               to: mail.destino,
               subject: mail.asunto,
               text: mail.texto
