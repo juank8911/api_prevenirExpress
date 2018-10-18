@@ -1,6 +1,7 @@
 let mysql = require('mysql');
 let config = require('../config');
 var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
 
 
 connection = mysql.createConnection({
@@ -15,8 +16,9 @@ let emailModel = {};
 
 emailModel.sendMail = (mail,callback)=>{
 
-var  transporter = nodemailer.createTransport("SMTP",{
+var  transporter = nodemailer.createTransport(smtpTransport,{
     service: config.mailserv,
+    host: config.host,
     auth: {
         user: config.userMail,
         pass: config.passMailgit
