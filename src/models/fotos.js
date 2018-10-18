@@ -88,8 +88,8 @@ fotoModel.setFotoProv = (foto,callback)=>{
 fotoModel.fotosSer = (foto,callback) =>{
 
   var respons = [];
-  console.log('/////*************///////////********antes de insertar**********//////////////****');
-  console.log(foto);
+  // console.log('/////*************///////////********antes de insertar**********//////////////****');
+  // console.log(foto);
   var sqls = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
   connection.query(sqls,[foto.nombre,foto.pathV,foto.id],(err,res)=> {
   if(err)
