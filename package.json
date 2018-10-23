@@ -23,7 +23,9 @@
     "node-cron": "^2.0.1",
     "nodemailer": "^4.6.8",
     "nodemailer-smtp-transport": "^2.7.4",
+    "random-letter": "^1.0.1",
     "random-number": "0.0.9",
-    "sync-mysql": "^3.0.1"
+    "sync-mysql": "^3.0.1",
+    "xoauth2": "^1.2.0"
   }
 }

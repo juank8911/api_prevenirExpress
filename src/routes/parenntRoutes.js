@@ -9,4 +9,13 @@ parent.darParent((err,data)=>{
 res.json(data);
 });
 });
+
+
+
+
+app.get('/prus',(req,resp)=>{
+  parent.prueba((err,data)=>{
+    resp.json(data);
+  });
+});
 }

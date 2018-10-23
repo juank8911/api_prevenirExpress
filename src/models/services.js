@@ -119,7 +119,7 @@ servmodule.DarServiceUsu = (ids,callback) => {
 console.log('prueba de servicios')
 if(connection)
 {
-var sql = 'SELECT servicios.* FROM servicios WHERE id_provedores = ? ORDER BY createdupdate';
+var sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios,servicios_categoria,categoria WHERE servicios_categoria.servicios_idservicios = servicios.id_servicios and servicios_categoria.categoria_idcategoria = categoria.id_categoria and id_provedores = ? ORDER BY createdupdate';
 connection.query(sql,[ids],(err,row)=>{
 if(err)
 {

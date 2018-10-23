@@ -99,6 +99,8 @@ callback(null,mensaje);
 provedorModule.setProvedor = (prov,callback)=>{
 if(connection)
 {
+  console.log('/////////////************put Prov*********////////////');
+  console.log(prov);
 var up = 'UPDATE provedores SET nit= ?, nombre= ?, direccion=?, telefono=?, whatsapp=?, link=?, video=?, descripcion=? WHERE id_provedor=?;';
 connection.query(up,[prov.nit,prov.nombre,prov.direccion,prov.telefono,prov.whatsapp,prov.link,prov.video,prov.descripcion,prov.id],(err,res)=>{
 if(err){throw err}

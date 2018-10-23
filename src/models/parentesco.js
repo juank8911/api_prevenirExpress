@@ -1,5 +1,7 @@
 let mysql = require('mysql');
 let config = require('../config');
+var rl = require('random-letter');
+let ciclo = require('../controler/ciclos')
 
 connection = mysql.createConnection({
 host: config.domain,
@@ -26,6 +28,14 @@ callback(null,row);
 }
 });
 }
+};
+
+
+parentModule.prueba = (callback) => {
+ciclo.generaSalt((err,res)=>{
+  callback(null,res);
+});
+
 };
 
 module.exports = parentModule;

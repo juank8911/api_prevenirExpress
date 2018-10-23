@@ -28,7 +28,7 @@ telefono:req.body.telefono,
 whatsapp: req.body.whatsapp,
 link:req.body.link,
 video:req.body.video,
-descripcion: req.body.descrip,
+descripcion: req.body.descripcion,
 id:req.body.id
 };
 provers.setProvedor(prov,(err,resp)=>{

@@ -3,6 +3,7 @@ let config = require('../config');
 let jwts = require('jsonwebtoken');
 let vals = require('./valida');
 let user = require('./user');
+let ciclo = require('../controler/ciclos')
 connection = mysql.createConnection({
 host: config.host,
 user: config.userbd,
@@ -88,6 +89,7 @@ var admin = register.admin;
 //  console.log('////////////////////////////');
 //  console.log(admin);
 var isadmin;
+var cod;
 if(admin===true){isadmin = 'true';}
 else{isadmin='false';}
 //console.log(isadmin);
@@ -99,10 +101,14 @@ console.log(res);
 if(res.existe==='false')
 {
 //console.log('dentro el if'+res);
+ciclo.generaSalt((err,gen)=>{
+  cod = gen;
+});
 //confirma que el member no exista en la base de datos
-var sql = 'INSERT INTO members (email, admin, password) VALUES ( ?, ?, ?)';
+console.log(cod);
+var sql = 'INSERT INTO members (email, admin, password, salt) VALUES ( ?, ?, ?,?)';
 //console.log('prueba envio email', mememail);
-connection.query(sql,[mememail,isadmin,password],(err,row)=>{
+connection.query(sql,[mememail,isadmin,password,cod],(err,row)=>{
 if(err)
 {
 throw err;
