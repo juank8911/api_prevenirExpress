@@ -101,7 +101,7 @@ callback(null,mensaje);
 userModel.darUserId=(id,callback)=>{
 if(connection)
 {
-var sql = 'SELECT * FROM usuarios where id = ? ';
+var sql = "SELECT usuarios.*, CONCAT( usuarios.nombre,' ', usuarios.apellidos) as nombres FROM usuarios where id = ? ";
 connection.query(sql,id,(err,row)=>{if(err){throw err}else{
 callback(null,row);
 }
