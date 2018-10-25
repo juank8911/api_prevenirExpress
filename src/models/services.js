@@ -445,41 +445,95 @@ callback(null,[{'vacio':true}])
 servmodule.deleteServ = (id,callback)=>{
 if(connection)
 {
-hora.eliminarHorario(id,(err,res)=>{
-var sql1 = 'DELETE FROM fotos where servicios_idservicios = ?';
-var sql2 = 'DELETE FROM servicios_categoria WHERE servicios_idservicios = ?';
-var sql = 'DELETE FROM servicios WHERE id_servicios = ?';
-var sql3 = 'DELETE FROM medicos WHERE servicios_idservicios = ?';
+  var sql4 = 'SELECT COUNT(id_eventos) as citas from events WHERE servicios_idservicios = ?';
+  connection.query(sql4,[id],(err,row)=>{
+    if(err){throw err}
+    else
+    {
+      console.log(row)
+      row = row[0]
+      if(row.citas>=1)
+      {
+        console.log('no eliminado');
+        callback(null,false);
+      }
+      else
+      {
+        hora.eliminarHorario(id,(err,res)=>{
+        var sql1 = 'DELETE FROM fotos where servicios_idservicios = ?';
+        var sql2 = 'DELETE FROM servicios_categoria WHERE servicios_idservicios = ?';
+        var sql = 'DELETE FROM servicios WHERE id_servicios = ?';
+        var sql3 = 'DELETE FROM medicos WHERE servicios_idservicios = ?';
 
-connection.query(sql1,[id],(err,res)=>{
-if(err){throw err;}
-else {
-{
-connection.query(sql2,[id],(err,res2)=>{
-if(err){throw err;}
-else
-{    connection.query(sql3,[id],(err,res)=>{
-if(err){throw err}
-else
-{
-connection.query(sql,[id],(err,row)=>{
-if(err)
-{
-throw err
-}
-else
-{
-callback(null,{'eliminado':true});
-}
-});
-}
-});
-}
-});
-}
-}
-});
-});
+
+        connection.query(sql1,[id],(err,res)=>{
+        if(err){throw err;}
+        else {
+        {
+        connection.query(sql2,[id],(err,res2)=>{
+        if(err){throw err;}
+        else
+        {    connection.query(sql3,[id],(err,res)=>{
+        if(err){throw err}
+        else
+        {
+        connection.query(sql,[id],(err,row)=>{
+        if(err)
+        {
+        callback(null,false);
+        }
+        else
+        {
+        callback(null,true);
+        }
+        });
+        }
+        });
+        }
+        });
+        }
+        }
+        });
+        });
+      }
+    }
+  });
+// hora.eliminarHorario(id,(err,res)=>{
+// var sql1 = 'DELETE FROM fotos where servicios_idservicios = ?';
+// var sql2 = 'DELETE FROM servicios_categoria WHERE servicios_idservicios = ?';
+// var sql = 'DELETE FROM servicios WHERE id_servicios = ?';
+// var sql3 = 'DELETE FROM medicos WHERE servicios_idservicios = ?';
+//
+//
+// connection.query(sql1,[id],(err,res)=>{
+// if(err){throw err;}
+// else {
+// {
+// connection.query(sql2,[id],(err,res2)=>{
+// if(err){throw err;}
+// else
+// {    connection.query(sql3,[id],(err,res)=>{
+// if(err){throw err}
+// else
+// {
+// connection.query(sql,[id],(err,row)=>{
+// if(err)
+// {
+// callback(null,{'eliminado':false});
+// }
+// else
+// {
+// callback(null,{'eliminado':true});
+// }
+// });
+// }
+// });
+// }
+// });
+// }
+// }
+// });
+// });
 }
 };
 

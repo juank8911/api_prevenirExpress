@@ -1,5 +1,6 @@
 const email = require('../models/email');
 const jwts = require('../models/jwt');
+var http = require('http');
 
 module.exports = function (app)
 {
@@ -17,4 +18,15 @@ email.sendMail(mail,(err,data)=>{
   res.json(data);
 });
   });
+
+app.get('/confirm/:id/:salt',(req,res)=>{
+  var conf = {
+    id:req.params.id,
+    salt:req.params.salt
+  };
+console.log(conf);
+email.confirm(conf,(err,data)=>{
+  res.json(data);
+});
+});
 }

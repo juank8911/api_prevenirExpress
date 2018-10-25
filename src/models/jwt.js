@@ -4,6 +4,8 @@ let jwts = require('jsonwebtoken');
 let vals = require('./valida');
 let user = require('./user');
 let ciclo = require('../controler/ciclos')
+let email = require('./email');
+
 connection = mysql.createConnection({
 host: config.host,
 user: config.userbd,
@@ -116,10 +118,23 @@ throw err;
 else
 {
 //console.log("1 record inserted, ID: ", row);
-console.log(row.insertId);
-let valido = {mensaje:'Usuario registrado con exito',existe:'false',ids:row.insertId};
-console.log('agregado');
-callback(null,valido);
+var usu = {
+  to:mememail,
+  pss: cod,
+  id:row.insertId
+};
+
+email.cuentaBlock (usu,(err,ressp)=>{
+  console.log(ressp);
+  if(ressp==true)
+      {
+        console.log(row.insertId);
+      let valido = {mensaje:'Usuario registrado con exito',existe:'false',ids:row.insertId};
+      console.log('agregado');
+      callback(null,valido);
+    }
+});
+
 
 }
 });
