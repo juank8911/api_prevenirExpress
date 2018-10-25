@@ -30,7 +30,7 @@ callback(null,row);
 eventmodule.darEventsIdUsuario=(id,callback)=>{
 if(connection)
 {
-var sql = 'SELECT events.*, servicios.nombre FROM events, servicios WHERE events.servicios_idservicios = servicios.id_servicios AND events.usuarios_id = ? ORDER BY events.start asc;';
+var sql = 'SELECT events.*, servicios.nombre, servicios.direccion FROM events, servicios WHERE events.servicios_idservicios = servicios.id_servicios AND events.usuarios_id = ? ORDER BY events.start asc;';
 connection.query(sql,id,(err,row)=>{
 if(err){throw err}
 else

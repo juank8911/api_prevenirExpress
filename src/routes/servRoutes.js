@@ -32,10 +32,11 @@ precio: req.body.precio,
 descuento: req.body.descuento,
 categoria: req.body.id_ctga,
 horario: req.body.horarios,
-categoria: req.body.id_ctga
+categoria: req.body.id_ctga,
+direccion:req.body.direccion
 //files: req.files.imagenes
 };
-//console.log(servicio.categoria);
+console.log(servicio);
 serv.save(servicio,(err,data)=>{
 console.log(data);
 res.json(data);
