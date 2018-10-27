@@ -95,19 +95,32 @@ res.json(resp);
 });
 });
 
+app.get('/sservicio/:id',(req,res)=>{
+  var id = req.params.id;
+  serv.onlyservicio(id,(err,resp)=>{
+    res.json(resp);
+  });
+});
+
 //actualiza un servicio con la nueva informacion
-app.put('/service/:id',jwts.validaAdmin,(req,res)=>{
-var serv = {
-correo:req.body.correo,
-nit: req.body.nit,
+app.put('/servicioput',jwts.validaAdmin,(req,res)=>{
+  //console.log(req.body);
+var servi = {
 nombre: req.body.nombre,
-direccion:req.body.direcc,
-telefono: req.body.tel,
-whatsapp: req.body.whats,
-descripcion: req.body.descrip
+descripcion:req.body.descripcion,
+duracion:req.body.duracion,
+max_citas:req.body.max_citas,
+video:req.body.video.split("/").pop(),
+precio:req.body.precio,
+descuento:req.body.descuento,
+precio_cliente_prevenir:req.body.precio-(req.body.precio*(req.body.descuento/100)),
+direccion:req.body.direccion,
+categoria:req.body.id_ctga,
+id:req.body.id
 };
-serv.updateServ(serv,(err, resp)=>{
-res.json(resp);
+console.log(servi);
+serv.updateServ(servi,(err,resp)=>{
+  res.json(resp);
 });
 });
 

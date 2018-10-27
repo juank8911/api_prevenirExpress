@@ -88,10 +88,8 @@ var mailOptions = {
   text: usu.texto,
   html: '<img src="http://cdn.prevenirexpress.com/avatars/banner1a.png" alt="prevenir logo" width="100%" height="70%">'+
 
-  '</br></br><h1>BIENVENIDO A PREVENIR EXPRESS</h1></br><div>Gracias por ser parte de nuesta familia'+
-          'en donde encontraras los mejores decuentos medicos de tu ciudad, por favor <a href=cdn.prevenirexpress.com/confirm/'+usu.id+'/'+usu.pss+'>Confirma tu cuenta</a></div>'
-          +'</br></br><div>O puede copiar directamente este link en su navegador: cdn.prevenirexpress.com/confirm/'+usu.id+'/'+usu.pss+'<div>'
-};
+  '</br></br><h1>BIENVENIDO A PREVENIR EXPRESS</h1></br><div>Gracias por ser parte de nuesta familia <br>'+
+          'en donde encontraras los mejores decuentos medicos de tu ciudad, por favor ingresa este codigo en la aplicacion: <h2>'+ usu.pss + '</h2></div>'};
 
 transporter.sendMail(mailOptions, function(error, info){
     if (error){

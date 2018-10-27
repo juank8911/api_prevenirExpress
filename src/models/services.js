@@ -338,6 +338,7 @@ console.log(row);
 if (JSON.stringify(row)!='[]')
 {
 var p =1;
+var sql1 = 'SELECT * FROM fotos where servicios_idservicios = ? limit 1';
 var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
 var jsonServ = [];
 //  console.log('fuera de la consulta')
@@ -346,6 +347,14 @@ row.forEach((serv)=>{
 // console.log(serv.idservicios)
 var id = serv.id_servicios;
 //console.log(id);
+connection.query(sql1,[id],(err,ft)=>{
+  if(err){throw err}
+  else
+  {
+    ft = ft[0];
+    serv.foto = ft.ruta;
+  }
+  });
 connection.query(sql,[id],(err,resp)=>{
 // console.log('dentro de la consulta '+id)
 if(err)
@@ -354,7 +363,7 @@ if(err)
 }
 else
 {
-serv.foto = resp;
+serv.fotos = resp;
 //console.log(resp);
 jsonServ.push(serv);
 // console.log('/////////******* valor p '+p)
@@ -390,6 +399,7 @@ else
 // console.log(row);
 if (JSON.stringify(row)!='[]')
 {  var p =1;
+var sql1 = 'SELECT * FROM fotos where servicios_idservicios = ? limit 1';
 var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
 var jsonServ = [];
 //  console.log('fuera de la consulta')
@@ -398,6 +408,15 @@ row.forEach((serv)=>{
 // console.log(serv.idservicios)
 var id = serv.id_servicios;
 //console.log(id);
+
+connection.query(sql1,[id],(err,ft)=>{
+  if(err){throw err}
+  else
+  {
+    ft = ft[0];
+    serv.foto = ft.ruta;
+  }
+  });
 connection.query(sql,[id],(err,resp)=>{
 // console.log('dentro de la consulta '+id)
 if(err)
@@ -406,7 +425,7 @@ if(err)
 }
 else
 {
-serv.foto = resp;
+serv.fotos = resp;
 //console.log(resp);
 jsonServ.push(serv);
 // console.log('/////////******* valor p '+p)
@@ -428,12 +447,6 @@ callback(null,[{'vacio':true}])
 
 }
 });
-
-
-
-
-
-
 }
 }
 };
@@ -501,10 +514,47 @@ if(connection)
 }
 };
 
+servmodule.onlyservicio = (id,callback) =>{
+  let sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_cate FROM servicios, servicios_categoria, categoria, municipio WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ? ;';
+  connection.query(sql,[id],(err,row)=>{
+    if(err){throw err}
+    else
+    {
+
+      row = row[0];
+      if(row.video !='')
+      {
+      console.log(row);
+      let video = 'https://youtu.be/'+row.video;
+      row.video = video;
+      }
+      else
+      {
+        row.video = 'https://youtu.be/4Z4TxFh1tO8';
+      }
+      callback(200,row);
+    }
+  });
+};
+
 servmodule.updateServ = (serv,callback)=>{
 if(connection)
-{var sql = 'UPDATE provedores SET correo=?,nit=?,nombre=?,direccion =?,telefono=?,logo=?,whatsapp=?,descripcion=? WHERE id=?;'
-connection.query(sql,[serv],(err,resp)=>{if(err){throw err}else{callback(null,resp);}
+{
+  console.log('////////***********');
+  console.log(serv);
+var sql = 'UPDATE servicios SET nombre=?,descripcion=?,duracion=?,max_citas_ves =?,video=?,precio=?,descuento=?,precio_cliente_prevenir=?,direccion=? WHERE id_servicios=?;'
+let sql1 = 'UPDATE servicios_categoria set categoria_idcategoria = ? where servicios_idservicios = ?';
+connection.query(sql,[serv.nombre,serv.descripcion,serv.duracion,serv.max_citas,serv.video,serv.precio,serv.descuento,serv.precio_cliente_prevenir,serv.direccion,,serv.id],(err,resp)=>{if(err){throw err}
+else
+{
+connection.query(sql1,[serv.categoria,serv.id],(err,row)=>{
+  if(err){throw err}
+  else
+  {
+    callback(200,true);
+  }
+});
+}
 });
 }
 };
