@@ -28,5 +28,35 @@ else
 });
 
 
+app.get('/fotosser/:id',(req,res)=>{
+  let id = req.params.id;
+  fotos.darFotosServ(id,(err,data)=>{res.json(data)});
+});
+
+app.delete('/elmfotoser/:id',(req,res)=>{
+// console.log('//////////*************////////////');
+  // console.log(req.params);
+  let ser = {
+    id:req.params.id,
+    ruta:req.params.ruta
+  };
+  fotos.delFotoServm(ser,(err,data)=>{
+    res.json(data);
+  });
+});
+
+app.post('/infotoser',(req,res)=>{
+  let fotor = req.body.imagenes;
+  foto = {
+    fotos:fotor,
+    ids: req.body.id
+  };
+  // console.log(foto.ids);
+  //console.log(id);
+  fotos.insertFotoSer(foto,(err,resp)=>{
+    res.json(resp);
+  });
+});
+
 
 }

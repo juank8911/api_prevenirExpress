@@ -88,4 +88,29 @@ res.json(respuesta);
 }
 };
 
+diasModel.darDiasEd=(rows,callback)=>{
+  let dias = 'SELECT dias.dia FROM dias where  id_horario = ?;';
+  console.log(rows);
+  let id_horario = rows.id_horario;
+  connection.query(dias,[id_horario],(err,row2)=>{
+    if(err){throw err}
+    else
+    {
+
+      rows.dias = row2;
+      console.log(rows);
+      callback(null,rows);
+      //varia.push({row2});
+      //vars.push(row1[i]);
+
+    //row1[i].dias = row2;
+    //console.log(row1);
+    // if(row1.length-1==i)
+    // {
+    //     callback(null,row1);
+    // }
+  }
+  });
+};
+
 module.exports = diasModel;

@@ -20,7 +20,6 @@ let fotoModel = {};
 
 
 
-
 fotoModel.setFotoUsu = (foto,callback)=>{
 
 let img = foto.fotos;
@@ -106,6 +105,131 @@ fotoModel.fotosSer = (foto,callback) =>{
   });
 
 };
+
+
+fotoModel.darFotosServ = (id,callback)=>{
+  if(connection)
+  {
+    let sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
+    connection.query(sql,[id],(err,row)=>{
+      if(err){throw err}
+      else
+      {
+        console.log(row);
+        callback(null,row);
+      }
+    });
+  }
+};
+
+fotoModel.delFotoServm = (ser,callback)=>{
+  if(connection)
+  {
+    console.log(ser);
+    let sel = 'select fotos.ruta as ruta from fotos WHERE id = ?;';
+    connection.query(sel,[ser.id],(err,row)=>{
+      if(err)
+      {
+        throw err
+      }
+      else
+      {
+      console.log(row);
+      row = row[0];
+      ser.ruta = row.ruta;
+      // console.log(ser.ruta);
+      // console.log('public'+ser.ruta);
+      fs.exists('src/public'+ser.ruta,(exist)=>{
+        if(exist){console.log('si existe');
+        fs.unlink('src/public'+ser.ruta,(err)=>{
+          if(err){throw err}
+          else
+          {
+            console.log('foto eliminada');
+            let sql = 'DELETE FROM fotos where id = ?';
+            connection.query(sql,[ser.id],(err,resp)=>{if(err){throw err}
+          else
+        {
+          // console.log(resp);
+          callback(null,true);
+        }});
+          }
+        });
+          }
+          else
+          {
+            console.log('no existe');
+            callback(null,false)
+          }
+      });
+    }
+    });
+
+  }
+};
+
+fotoModel.insertFotoSer = (fotos,callback)=>{
+  console.log(fotos.ids);
+  let ids = fotos.ids;
+  let respons = [];
+  let fotoss = fotos.fotos;
+  let p = 1;
+let foto = [];
+  for (var i = 0; i < fotoss.length; i++) {
+foto = fotoss[i];
+  let img = foto.base64Image;
+  //let id = foto.id;
+  var options = {
+  min:  000000001
+  , max:  9999999999
+  , integer: true
+  }
+  var rand = rn(options);
+  var rand1 = rn(options);
+  var rand2 = rn(options);
+  var rand3 = rn(options);
+  var name = rand1+'_'+rand2+'_'+rand3;
+  // var fotos = img[0];
+  fotos = img;
+  //console.log(img);
+  var newPath = "src/public/servicios/"+name;
+  var pathView = "/servicios/"+name;
+  ba64.writeImageSync(newPath, fotos);
+  if(!fs.existsSync(newPath+'jpeg'))
+  {
+    var sqls = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
+    connection.query(sqls,[name,pathView+'.jpeg',ids],(err,res)=> {
+    if(err)
+    {
+  //   //throw err
+    throw err;
+    respons=({"name": res.insertId, "carga":false});
+    if(fotoss.length==i)
+    {
+      callback(null,respons);
+    }
+    p++;
+    }
+    else
+    {
+     respons.push({"name": res.insertId, "carga": true});
+     // console.log('p '+p);
+     // console.log('l '+fotoss.length);
+     if(fotoss.length==p)
+     {
+       callback(null,true);
+     }
+     p++;
+    }
+    });
+
+  }
+}
+
+};
+
+
+
 
 
 module.exports = fotoModel;

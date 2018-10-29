@@ -630,26 +630,56 @@ citas.countCitasOc(tarde,(err,tardes)=>{
 
 derro.push({tardes});
 callback(null,derro);
-});
+});});}}});}}});}};
 
 
-});
+horarioModel.darHorariosed = (id,callback)=>{
+  let dias = [];
+  let resp = [];
+  let p =1;
+  if(connection)
+  {
+    let horario = 'SELECT * FROM horario where  id_servicios = ?;';
+    let dias = 'SELECT dias.dia FROM dias where  id_horario = ?;';
+    connection.query(horario,[id],(err,row1)=>{
+      if(err){throw err}
+      else
+      {
+        console.log(row1.length);
+        if(row1.length>1)
+        {
+          let vars=[];
+          let varia = [];
 
-
-}
-}});
-
-
-
-
-
-}
-}
-});
-}
-
+          for (var i = 0; i < row1.length; i++) {
+            dia.darDiasEd(row1[i],(err,res)=>{
+              resp.push(res);
+              if(row1.length==p)
+              {
+                callback(null,resp);
+              }
+              p++
+            });
+          }
+        }
+        else
+        {
+        let id_horario = row1[0].id_horario;
+        console.log(id_horario);
+        connection.query(dias,[id_horario],(err,row2)=>{
+            if(err){throw err}
+          else
+          {
+          row1[0].dias = row2;
+          console.log(row1);
+          callback(null,row1)
+          }
+        });
+        }
+      }
+    });
+  }
 };
-
 
 
 
@@ -688,5 +718,9 @@ callback(null,'ok');
 }
 });
 }
+};
+
+horarioModel.prueba = (fotos,callback)=>{
+  console.log('aqui entra');
 };
 module.exports = horarioModel;

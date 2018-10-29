@@ -58,6 +58,13 @@ res.json(resp);
 });
 });
 
+app.get('/horariosed/:id',(req,res)=>{
+  let id = req.params.id;
+  hora.darHorariosed(id,(err,resp)=>{
+    res.json(resp);
+  });
+});
+
 
 
 // retorna las citas segun la fecha y el id del servicio para los provedores
@@ -70,5 +77,11 @@ hora.darDiaOc(prov,(err,resp)=>{
 res.json(resp);
 });
 });
+
+app.post('/horariosed',(req,res)=>
+{
+  console.log(req.body);
+});
+
 
 }
