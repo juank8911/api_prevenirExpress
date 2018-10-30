@@ -720,7 +720,166 @@ callback(null,'ok');
 }
 };
 
-horarioModel.prueba = (fotos,callback)=>{
-  console.log('aqui entra');
+horarioModel.eliminarHorarioEd = (idh,callback)=>{
+  if(connection)
+  {
+  var delD = 'DELETE FROM dias WHERE id_horario = ?;';
+  var delH = 'DELETE FROM horario WHERE id_horario = ?';
+  // console.log(idHo);
+  connection.query(delD,[idh],(err,resp)=>{
+  if(err){throw err}
+  else
+  {
+  connection.query(delH,[idh],(err,res)=>{
+  if(err){throw err}
+  else
+  {
+  // console.log('borrados');
+  callback(null,true);
+  }
+  });
+  }
+  });
+  }
+  };
+
+
+
+
+  //agrega el horario a la base de datos
+  horarioModel.agregarHorarioEd = (horario,callback) =>
+  {
+
+  var horas = horario;
+  var semana = horas.semana;
+  var dias={};
+  // console.log(horas);
+  // console.log(semana);
+  // console.log('/////////*********Horario Recibido Prueba de nulls*********//////////////');
+  // console.log(horario);
+  if(connection)
+  {
+  // console.log(horas.t_de+'/'+horas.m_de+'/'+horas.id);
+  if((horas.t_de==undefined && horas.m_de==undefined ) || (horas.t_de=='undefined' && horas.m_de=='undefined')||(horas.t_de==null && horas.m_de==null ) || (horas.m_de=='null' && horas.t_de=='null' ))
+  {
+ console.log('no ahy horario');
+  }
+  else if(horas.t_de==undefined || horas.t_de=='undefind' || horas.t_de==null || horas.t_de=='null' )
+  {
+  // console.log('horarios de tarde indefinido');
+
+  var hsql = 'INSERT INTO horario (de_maniana,a_maniana,id_servicios) VALUES (?,?,?)';
+
+  connection.query(hsql,[horas.m_de,horas.m_hasta,horas.id],(err,row)=>{
+  if(err)
+  {
+  throw err
+  }
+  else
+  {
+
+  var idH = row.insertId;
+  dias={
+  semanas:semana,
+  id:idH,
+  ids:horas.id
+  };
+   // console.log(dias);
+  dia.agregarDia(dias,(err,resp)=>{
+  callback(null,resp);
+  });
+
+
+  }
+
+  });
+
+  }
+  else if (horas.m_de==undefined || horas.m_de=='undefind' || horas.m_de==null || horas.m_de=='null')
+  {
+  // console.log('horario de mañana indefinido');
+  var hsql = 'INSERT INTO horario (de_tarde,a_tarde,id_servicios) VALUES (?,?,?)';
+
+  connection.query(hsql,[horas.t_de,horas.t_hasta,horas.id],(err,row)=>{
+  if(err)
+  {
+  throw err
+  }
+  else
+  {
+  // console.log('/////////************Row*************////////////');
+  // console.log(row);
+  var idH = row.insertId;
+  // console.log('/////////************horas*************////////////');
+  // console.log(horas);
+  dias={
+  semanas:semana,
+  id:idH,
+  ids:horas.id
+  };
+  // console.log(dias);
+  // console.log('/////////************Dias*************////////////');
+  dia.agregarDia(dias,(err,resp)=>{
+  callback(null,resp);
+  });
+
+
+  }
+
+  });
+
+
+
+  }
+  else
+  {
+  var hsql = 'INSERT INTO horario (de_maniana,a_maniana,de_tarde,a_tarde,id_servicios) VALUES (?,?,?,?,?)';
+
+  connection.query(hsql,[horas.m_de,horas.m_hasta,horas.t_de,horas.t_hasta,horas.id],(err,row)=>{
+  if(err)
+  {
+  throw err
+  }
+  else
+  {
+
+  var idH = row.insertId;
+  dias={
+  semanas:semana,
+  id:idH,
+  ids:horas.id
+  };
+  // console.log(dias);
+  dia.agregarDia(dias,(err,resp)=>{
+  callback(null,resp);
+  });
+
+
+  }
+
+  });
+  }
+
+
+  }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = horarioModel;

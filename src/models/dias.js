@@ -22,20 +22,20 @@ var fin = [];
 var p=0;
 for (var i = 0; i < semana.length; i++)
 {
-console.log('dia '+semana[i]);
-console.log('id_horario '+id);
-console.log('id_servicio '+ids);
+// console.log('dia '+semana[i]);
+// console.log('id_horario '+id);
+// console.log('id_servicio '+ids);
 connection.query(sql,[semana[i],id,ids],(err,resp)=>{
 if(err){throw err}
 else
 {
 fin.push({id:resp.insertId});
-console.log(fin);
-console.log(p);
+// console.log(fin);
+// console.log(p);
 p++;
 if(p>=semana.length)
 {
-callback(null,fin);
+callback(null,true);
 }
 }
 });

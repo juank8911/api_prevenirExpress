@@ -21,7 +21,7 @@ let servmodule = {};
 
 // guardaba servicios pero no funciona
 servmodule.save = (data , callback ) => {
-  console.log('adentro del save nuevo vamo a ver');
+  // console.log('adentro del save nuevo vamo a ver');
   img = data.foto64;
   nombre = data.nombre;
   horario = data.horario;
@@ -53,15 +53,16 @@ servmodule.save = (data , callback ) => {
                 if(horas.m_de!=null || horas.t_de!=null )
                 {
                   horas.id=idinsert;
-                  //console.log(horas);
+                  console.log('/////////////////******************Horario******************////');
+                  console.log(horas);
                     regH.agregarHorario(horas,(err,resp)=>{
-                    console.log('////////////////*************HORARIO AGREGADO////////////*****************');
+                    //console.log('////////////////*************HORARIO AGREGADO////////////*****************');
                     respuesta.push(resp);
                     });
                 }
           }
           sqlss = 'INSERT INTO servicios_categoria (servicios_idservicios, categoria_idcategoria) VALUES (?, ?)';
-          console.log('id_Servicio'+idInd+'/*/*/*'+'Id Cate'+data.categoria);
+          // console.log('id_Servicio'+idInd+'/*/*/*'+'Id Cate'+data.categoria);
           connection.query(sqlss,[idInd,data.categoria],(err,row)=>{
           if(err)
           {
@@ -92,12 +93,12 @@ servmodule.save = (data , callback ) => {
               pathV:pathView,
               pathI:newPath
             };
-            console.log(fotoe);
+            // console.log(fotoe);
             fotoss.fotosSer(fotoe,(err,res)=>{
-                  console.log(res);
+                  // console.log(res);
                   if(p==img.length)
                   {
-                  console.log(respons[1]);
+                  // console.log(respons[1]);
                   var mensaje = [{'agregado':true}];
                   mensaje.fotos = respons;
 

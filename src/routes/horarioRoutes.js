@@ -1,4 +1,5 @@
 const hora = require('../models/horario');
+const jwts = require('../models/jwt');
 
 module.exports=function(app)
 {
@@ -79,8 +80,34 @@ res.json(resp);
 });
 
 app.post('/horariosed',(req,res)=>
+{ let hor = req.body.horarios;
+  let p = 0;
+  hor = hor[0];
+  hor=hor.horario;
+  // console.log(hor);
+// console.log(hor.length);
+for (var i = 0; i < hor.length; i++)
 {
-  console.log(req.body);
+// console.log(hor[i]);
+hora.agregarHorarioEd(hor[i],(err,data)=>{
+// console.log('P '+p);
+// console.log('L '+hor.length);
+    if(hor.length==p)
+    {
+      res.json(data);
+    }
+
+});
+  p++
+}
+
+});
+
+app.delete('/horariodel/:id',jwts.validaAdmin,(req,res)=>{
+  let id = req.params.id;
+  hora.eliminarHorarioEd(id,(err,resp)=>{
+    res.json(resp);
+  });
 });
 
 
