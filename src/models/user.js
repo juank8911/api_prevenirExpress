@@ -5,7 +5,8 @@ connection = mysql.createConnection({
 host: config.host,
 user: config.userbd,
 password: config.passwordbd,
-database: config.nombredb
+database: config.nombredb,
+connectTimeout: 30000
 });
 
 let userModel={};
@@ -16,7 +17,9 @@ if(connection)
 console.log('conexion a la base de datos');
 connection.query(
 'SELECT * FROM usuarios limit 1;',(err, row)=>
-{if(err){
+{console.log('reliza consulta');
+console.log(err);
+  if(err){
 throw err;
 }else{
 callback(null,row);

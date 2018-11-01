@@ -1,0 +1,60 @@
+let mysql =require('mysql');
+let config = require('../config');
+var moment = require('moment');
+
+
+connection = mysql.createConnection({
+host: config.host,
+user: config.userbd,
+password: config.passwordbd,
+database: config.nombredb
+});
+
+let eventMascModule = {};
+
+
+
+eventMascModule.darEventsMasc = (id,callback)=>{
+  if(connection)
+  {
+    var p = 0;
+    console.log(id);
+    var sql = 'SELECT events_masc.id_eventos,events_masc.color,events_masc.start,events_masc.end,events_masc.id_mascotas as usuarios_id,events_masc.id_servicios,servicios.nombre as nombres, mascotas.nombre as nombreU FROM events_masc, servicios, mascotas WHERE events_masc.id_servicios = servicios.id_servicios and events_masc.id_mascotas = mascotas.id_mascotas AND mascotas.id_usuarios = ? ;';
+    connection.query(sql,[id],(err,row)=>{
+      if(err)
+      {
+        throw err
+      }
+      else
+      {
+        console.log('***********///////////');
+        console.log(row);
+        //console.log('aqui llege');
+        console.log(row.length);
+        for (var i = 0; i < row.length; i++)
+        {
+          var s = row[i];
+          s.prueba = 'prueba';
+          s.usuarios_id = s.id_mascotas;
+          s.start =  moment(s.start).utc().format('YYYY-MM-DD hh:mm:SS a');
+          s.end = moment(s.end).utc().format('YYYY-MM-DD hh:mm:SS a');
+          console.log(s);
+          row[i]=s;
+          console.log(s);
+          if(row.length==p)
+          {
+            callback(null,row);
+          }
+          p++;
+        }
+
+      }
+    });
+  }
+};
+
+eventMascModule.pruebaMasc = (id,callback)=>{
+  callback(id);
+};
+
+module.exports = eventMascModule;

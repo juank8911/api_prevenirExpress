@@ -38,6 +38,7 @@ res.json(respuesta);
 
 // retorna las citas segun la fecha y el id del servicio
 app.get('/citas/:fecha/:id',(req,res)=>{
+  console.log(req.params);
 serv = {
 fecha:req.params.fecha,
 id:req.params.id

@@ -57,7 +57,7 @@ eventmodule.darEventsBenf = (id,callback)=>{
   if(connection)
   {
     console.log(id);
-    var sql = "SELECT events.*, servicios.nombre as nombreS, CONCAT(usuarios.nombre,' ',usuarios.apellidos) as nombreU  FROM events, servicios,usuarios WHERE events.servicios_idservicios = servicios.id_servicios AND usuarios.id = events.usuarios_id and usuarios.usuariosBf_id = ?"
+    var sql = "SELECT events.*, servicios.nombre as nombres, CONCAT(usuarios.nombre,' ',usuarios.apellidos) as nombreU  FROM events, servicios,usuarios WHERE events.servicios_idservicios = servicios.id_servicios AND usuarios.id = events.usuarios_id and usuarios.usuariosBf_id = ?"
     connection.query(sql,[id],(err,row)=>{
       if(err)
       {
@@ -78,6 +78,34 @@ eventmodule.darEventsBenf = (id,callback)=>{
   }
 };
 
+eventmodule.darEventsMasc = (id,callback)=>{
+  if(connection)
+  {
+    console.log(id);
+    var sql = 'SELECT events_masc.*, servicios.nombre as nombres, mascotas.nombre as nombreU FROM events_masc, servicios, mascotas WHERE events_masc.id_servicios = servicios.id_servicios and events_masc.id_mascotas = mascotas.id_mascotas AND mascotas.id_usuarios = ? ;';
+    connection.query(sql,[id],(err,row)=>{
+      if(err)
+      {
+        throw err
+      }
+      else
+      {
+        console.log('aqui llege');
+        for (var i = 0; i < row.length; i++)
+        {
+          var s = row[i];
+          s.start =  moment(s.start).utc().format('YYYY-MM-DD hh:mm:SS a');
+          s.end = moment(s.end).utc().format('YYYY-MM-DD hh:mm:SS a');
+          console.log(s);
+        }
+        callback(null,row);
+      }
+    });
+  }
+};
+
+
+
 //retorna una lista de eventos por servicio
 eventmodule.darEventsIdService = (ids,callback)=>{
 if(connection)
@@ -93,8 +121,18 @@ if(err){throw err}else{callback(null,row);}
 eventmodule.agregarEvento = (events,callback) =>{
 if(connection){
 console.log(events);
-var valida = 'SELECT createdAT,start FROM events where usuarios_id = ? and DATE(start) = DATE(?); ';
-var sql = 'INSERT INTO events(color,start,end,usuarios_id,servicios_idservicios) VALUES (?,?,?,?,?)';
+console.log(events.servicio+'///////////*************************');
+if(events.mascota==true)
+{
+  var sql = 'INSERT INTO events_masc(color,start,end,id_mascotas,id_servicios) VALUES (?,?,?,?,?)';
+  var valida = 'SELECT createdAT,start FROM events_masc where id_mascotas = ? and DATE(start) = DATE(?); ';
+}
+else
+{
+  var sql = 'INSERT INTO events(color,start,end,usuarios_id,servicios_idservicios) VALUES (?,?,?,?,?)';
+  var valida = 'SELECT createdAT,start FROM events where usuarios_id = ? and DATE(start) = DATE(?); ';
+}
+
 connection.query(valida,[events.usuario,events.start],(err,res)=>{
 if(err){throw err}
 else {
@@ -157,6 +195,7 @@ callback(null,{'borrado':false})
 eventmodule.delEventProv = (ev,callback)=>{
 if(connection)
 {
+  //selecciona el id del servicio con el id de los provedores
 var sel = 'SELECT servicios.id_servicios FROM servicios,provedores, events where servicios.id_provedores = provedores.id_provedor and servicios.id_servicios = events.servicios_idservicios and provedores.id_provedor = ? and events.id_eventos = ? limit 1 ';
 connection.query(sel,[ev.idp,ev.ide],(err,row)=>{
 if(err){throw err}
@@ -205,7 +244,14 @@ callback(null,'eliminado');
 eventmodule.eventsCalendar = (ev,callback) =>{
   if(connection)
   {
-  var sql = 'SELECT YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events WHERE MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
+    if(ev.id_servicio==20)
+    {
+    var sql = 'SELECT YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc WHERE MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
+    }
+    else
+    {
+    var sql = 'SELECT YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events WHERE MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
+    }
   connection.query(sql,[ev.mes,ev.anio,ev.id_servicio],(err,row)=>{
     if(err)
     {

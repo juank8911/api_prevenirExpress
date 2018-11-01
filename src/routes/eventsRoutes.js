@@ -35,7 +35,8 @@ color: req.body.color,
 start: starts,
 end: ends,
 usuario: req.body.usuario,
-servicio: req.body.servicio
+servicio: req.body.servicio,
+mascota:req.body.mascota
 };
 //console.log(starts + " "+ends);
 events.agregarEvento(eventss,(err,data)=>{
@@ -55,6 +56,14 @@ app.get('/eventsb/:id',(req,res)=>{
   var id = req.params.id;
   console.log(id);
   events.darEventsBenf(id,(err,row)=>{
+    res.json(row);
+  });
+});
+
+app.get('/eventsm/:id',(req,res)=>{
+  var id = req.params.id;
+  //console.log(id);
+  events.darEventsMasc(id,(err,row)=>{
     res.json(row);
   });
 });

@@ -27,6 +27,20 @@ else
 }
 });
 
+//cambia la foto de las mascotas en la base de datos
+app.put('/fotom',jwts.valida,(req,res)=>{
+  //console.log('///////////////////////////************************')
+  //console.log(req.body);
+var foto = {
+fotos:req.body.imagen,
+id:req.body.id
+};
+fotos.setFotoMasc(foto,(err,data)=>{
+res.json(data);
+});
+
+});
+
 
 app.get('/fotosser/:id',(req,res)=>{
   let id = req.params.id;

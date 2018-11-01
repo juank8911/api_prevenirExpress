@@ -32,7 +32,7 @@ callback(null,res)
 
 //mascotas por el id del usuario
 mascotasModule.darMascotasId = (id,callback)=>{
-var sel = "SELECT mascotas.*, concat(usuarios.nombre,' ',usuarios.apellidos) as dueño FROM mascotas, usuarios WHERE mascotas.id_usuarios = usuarios.id AND usuarios.id = ? ;";
+var sel = "SELECT mascotas.*, concat(usuarios.nombre,' ',usuarios.apellidos) as dueño, usuarios.telefono FROM mascotas, usuarios WHERE mascotas.id_usuarios = usuarios.id AND usuarios.id = ? ;";
 if(connection)
 {
 connection.query(sel,[id],(err,row)=>{

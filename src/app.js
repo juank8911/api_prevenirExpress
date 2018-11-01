@@ -89,7 +89,9 @@ require('./routes/fotosRoutes')(app);
 require('./routes/emailRoutes')(app);
 require('./routes/benefRoutes')(app);
 require('./routes/parenntRoutes')(app);
+require('./routes/eMascRoutes')(app);
 require('./routes/mascRoutes')(app);
+// require('./routes/eventsMascRoutes')(apps);
 //app.use(rutas);
 
 app.listen(app.get('port'),()=>{
