@@ -36,7 +36,7 @@ var rand3 = rn(options);
 var name = rand1+'_'+rand2+'_'+rand3;
 // var fotos = img[0];
 fotos = img;
-//console.log(img);
+////console.log(.log(img);
 var newPath = "src/public/avatars/"+name;
 var pathView = "http://cdn.prevenirexpress.com/avatars/"+name;
 ba64.writeImageSync(newPath, fotos);
@@ -68,7 +68,7 @@ var rand3 = rn(options);
 var name = rand1+'_'+rand2+'_'+rand3;
 // var fotos = img[0];
 fotos = img;
-//console.log(img);
+////console.log(.log(img);
 var newPath = "src/public/avatars/"+name;
 var pathView = "http://cdn.prevenirexpress.com/avatars/"+name;
 ba64.writeImageSync(newPath, fotos);
@@ -100,7 +100,7 @@ fotoModel.setFotoProv = (foto,callback)=>{
   var name = rand1+'_'+rand2+'_'+rand3;
   // var fotos = img[0];
   fotos = img;
-  //console.log(img);
+  ////console.log(.log(img);
   var newPath = "src/public/avatars/"+name;
   var pathView = "/avatars/"+name;
   ba64.writeImageSync(newPath, fotos);
@@ -119,8 +119,8 @@ fotoModel.setFotoProv = (foto,callback)=>{
 fotoModel.fotosSer = (foto,callback) =>{
 
   var respons = [];
-  // console.log('/////*************///////////********antes de insertar**********//////////////****');
-  // console.log(foto);
+  // //console.log(.log('/////*************///////////********antes de insertar**********//////////////****');
+  // //console.log(.log(foto);
   var sqls = 'INSERT INTO fotos (nombre,ruta,servicios_idservicios) VALUES (?,?,?)';
   connection.query(sqls,[foto.nombre,foto.pathV,foto.id],(err,res)=> {
   if(err)
@@ -147,7 +147,7 @@ fotoModel.darFotosServ = (id,callback)=>{
       if(err){throw err}
       else
       {
-        console.log(row);
+        //console.log(.log(row);
         callback(null,row);
       }
     });
@@ -157,7 +157,7 @@ fotoModel.darFotosServ = (id,callback)=>{
 fotoModel.delFotoServm = (ser,callback)=>{
   if(connection)
   {
-    console.log(ser);
+    //console.log(.log(ser);
     let sel = 'select fotos.ruta as ruta from fotos WHERE id = ?;';
     connection.query(sel,[ser.id],(err,row)=>{
       if(err)
@@ -166,23 +166,23 @@ fotoModel.delFotoServm = (ser,callback)=>{
       }
       else
       {
-      console.log(row);
+      //console.log(.log(row);
       row = row[0];
       ser.ruta = row.ruta;
-      // console.log(ser.ruta);
-      // console.log('public'+ser.ruta);
+      // //console.log(.log(ser.ruta);
+      // //console.log(.log('public'+ser.ruta);
       fs.exists('src/public'+ser.ruta,(exist)=>{
-        if(exist){console.log('si existe');
+        if(exist){//console.log(.log('si existe');
         fs.unlink('src/public'+ser.ruta,(err)=>{
           if(err){throw err}
           else
           {
-            console.log('foto eliminada');
+            //console.log(.log('foto eliminada');
             let sql = 'DELETE FROM fotos where id = ?';
             connection.query(sql,[ser.id],(err,resp)=>{if(err){throw err}
           else
         {
-          // console.log(resp);
+          // //console.log(.log(resp);
           callback(null,true);
         }});
           }
@@ -190,7 +190,7 @@ fotoModel.delFotoServm = (ser,callback)=>{
           }
           else
           {
-            console.log('no existe');
+            //console.log(.log('no existe');
             callback(null,false)
           }
       });
@@ -201,7 +201,7 @@ fotoModel.delFotoServm = (ser,callback)=>{
 };
 
 fotoModel.insertFotoSer = (fotos,callback)=>{
-  console.log(fotos.ids);
+  //console.log(.log(fotos.ids);
   let ids = fotos.ids;
   let respons = [];
   let fotoss = fotos.fotos;
@@ -223,7 +223,7 @@ foto = fotoss[i];
   var name = rand1+'_'+rand2+'_'+rand3;
   // var fotos = img[0];
   fotos = img;
-  //console.log(img);
+  ////console.log(.log(img);
   var newPath = "src/public/servicios/"+name;
   var pathView = "/servicios/"+name;
   ba64.writeImageSync(newPath, fotos);
@@ -245,8 +245,8 @@ foto = fotoss[i];
     else
     {
      respons.push({"name": res.insertId, "carga": true});
-     // console.log('p '+p);
-     // console.log('l '+fotoss.length);
+     // //console.log(.log('p '+p);
+     // //console.log(.log('l '+fotoss.length);
      if(fotoss.length==p)
      {
        callback(null,true);

@@ -15,7 +15,7 @@ let cateModule = {};
 cateModule.darCategoria = (callback)=>{
 if(connection)
 {
-console.log('prueba');
+//console.lo.log('prueba');
 var sql = 'SELECT id_categoria,nombre FROM categoria;';
 connection.query(sql,(err,row)=>{
 if(err)

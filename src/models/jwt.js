@@ -24,7 +24,7 @@ if(connection)
 {
 var email = logins.email;
 var password = logins.password;
-console.log(password);
+// console.log(password);
 var sql = 'SELECT id, email, password, admin FROM members WHERE email = ? AND password = ? ';
 // console.log('****************************');
 
@@ -35,17 +35,17 @@ throw err;
 }
 else
 {
-  console.log('////***LOGIN*****///');
-  console.log(row);
+  // console.log('////***LOGIN*****///');
+  // console.log(row);
 var login = row[0];
 if(login!=null)
 {
-console.log('/////***//////');
-console.log(login);
+// console.log('/////***//////');
+// console.log(login);
 var av = {avatar:logins.avatar,id:login.id};
-console.log(av);
+// console.log(av);
 var member = {email:login.email,password:login.password,admin:login.admin};
-console.log(member);
+// console.log(member);
 var tokenres = jwts.sign(member,config.jwt_secreto);
 var admins = login.admin;
 if(admins=='true')
@@ -61,8 +61,8 @@ admins=false;
 }
 var idU = login.id;
 let loges = {token:tokenres, login:true , esAdmin:admins, id_usuario:idU};
-console.log(admins);
-console.log(loges);
+// console.log(admins);
+// console.log(loges);
 callback(null,loges);}
 else {
 let error = {menaje:'usuario o contraseña incorrecto', login:false};
@@ -72,7 +72,7 @@ callback(null,error);
 });
 }
 else {
-console.log('error en la conxion a la base de datos');
+// console.log('error en la conxion a la base de datos');
 }
 };
 
@@ -97,8 +97,8 @@ else{isadmin='false';}
 //console.log(isadmin);
 var val = {email:mememail,id:memid};
 vals.vRegistro(val,(err,res)=>{
-console.log('/////////////////*************///////');
-console.log(res);
+// console.log('/////////////////*************///////');
+// console.log(res);
 
 if(res.existe==='false')
 {
@@ -107,7 +107,7 @@ ciclo.generaSalt((err,gen)=>{
   cod = gen;
 });
 //confirma que el member no exista en la base de datos
-console.log(cod);
+// console.log(cod);
 var sql = 'INSERT INTO members (email, admin, password, salt) VALUES ( ?, ?, ?,?)';
 //console.log('prueba envio email', mememail);
 connection.query(sql,[mememail,isadmin,password,cod],(err,row)=>{
@@ -125,12 +125,12 @@ var usu = {
 };
 
 email.cuentaBlock (usu,(err,ressp)=>{
-  console.log(ressp);
+  // console.log(ressp);
   if(ressp==true)
       {
-        console.log(row.insertId);
+        // console.log(row.insertId);
       let valido = {mensaje:'Usuario registrado con exito',existe:'false',ids:row.insertId};
-      console.log('agregado');
+      // console.log('agregado');
       callback(null,valido);
     }
 });
@@ -152,13 +152,13 @@ callback(null,res);
 jwtmodel.valida = (req, res,next) =>
 {
 var token = req.body.token || req.query.token || req.headers['x-access-token'];
-console.log(token);
+// console.log(token);
 if(token)
 {
 jwts.verify(token,config.jwt_secreto,(err, decoded)=>{
 if(err)
 {
-console.log(err);
+// console.log(err);
 return res.status(403).send({'mensaje':'error al validar usuario, inicie sesion de nuevo'});
 }
 else
@@ -186,11 +186,11 @@ if(token)
 jwts.verify(token,config.jwt_secreto,(err, decoded)=>{
 if(err)
 {
-console.log(err);
+// console.log(err);
 return res.status(403).send({'mensaje':'error al validar usuario, inicie sesion de nuevo'});
 }
 req.decoded = decoded;
-console.log(decoded);
+// console.log(decoded);
 if(decoded.admin==true || decoded.admin=='true' )
 {
 next();
@@ -205,7 +205,7 @@ return res.status(403).send({'mensaje':'error al validar usuario, no es admin'})
 }
 else
 {
-console.log('no ahy token');
+// console.log('no ahy token');
 return res.status(305).send({'mensaje':'error al validar ususario'});
 }
 };

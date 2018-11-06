@@ -28,7 +28,7 @@ var sql = 'INSERT INTO provedores(id_provedor,nombre,correo,members_id) values (
 connection.query(sql,[id,nombre,correo,id],(err, row)=>{
 if(err)
 {
-console.log('no agregado ususario');
+// console.log('no agregado ususario');
 var error = {'mensaje':'error al agregar usuario', 'agregado':false};
 connection.query('DELETE FROM members WHERE id = ?',[id],(err,res)=>{
 callback(err,mensaje);
@@ -37,7 +37,7 @@ throw err
 }
 else
 {
-console.log('Agregado el ususario');
+// console.log('Agregado el ususario');
 var mensaje = {'mensaje':'usuario agregado con exito','existe':'false','id_usuario':id};
 callback(null,mensaje);
 }
@@ -99,14 +99,14 @@ callback(null,mensaje);
 provedorModule.setProvedor = (prov,callback)=>{
 if(connection)
 {
-  console.log('/////////////************put Prov*********////////////');
-  console.log(prov);
+  // console.log('/////////////************put Prov*********////////////');
+  // console.log(prov);
 var up = 'UPDATE provedores SET nit= ?, nombre= ?, direccion=?, telefono=?, whatsapp=?, link=?, video=?, descripcion=? WHERE id_provedor=?;';
 connection.query(up,[prov.nit,prov.nombre,prov.direccion,prov.telefono,prov.whatsapp,prov.link,prov.video,prov.descripcion,prov.id],(err,res)=>{
 if(err){throw err}
 else
 {
-console.log(res);
+// console.log(res);
 callback(null,{'update':true});
 }
 });

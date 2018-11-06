@@ -45,7 +45,7 @@ servmodule.save = (data , callback ) => {
     //obteniendo el horario
     horarios = horario[0];
     horarios = horarios.horario;
-    console.log(horarios);
+    // console.log(horarios);
         for (var i = 0; i < horarios.length; i++)
           {
               var horas = horarios[i];
@@ -53,8 +53,8 @@ servmodule.save = (data , callback ) => {
                 if(horas.m_de!=null || horas.t_de!=null )
                 {
                   horas.id=idinsert;
-                  console.log('/////////////////******************Horario******************////');
-                  console.log(horas);
+                  // console.log('/////////////////******************Horario******************////');
+                  // console.log(horas);
                     regH.agregarHorario(horas,(err,resp)=>{
                     //console.log('////////////////*************HORARIO AGREGADO////////////*****************');
                     respuesta.push(resp);
@@ -117,7 +117,7 @@ servmodule.save = (data , callback ) => {
 
 //da servicios por provedor para el listado de el provedor al agregar un servicio o listarlos
 servmodule.DarServiceUsu = (ids,callback) => {
-console.log('prueba de servicios')
+// console.log('prueba de servicios')
 if(connection)
 {
 var sql = 'SELECT servicios.*, categoria.nombre as categoria,categoria.id_categoria FROM servicios,servicios_categoria,categoria WHERE servicios_categoria.servicios_idservicios = servicios.id_servicios and servicios_categoria.categoria_idcategoria = categoria.id_categoria and id_provedores = ? ORDER BY createdupdate';
@@ -160,7 +160,7 @@ jsonServ.push(serv);
 if(p>=row.length)
 {
 callback(null,jsonServ);
-console.log('find de la consulta');
+// console.log('find de la consulta');
 }
 p++
 }
@@ -171,7 +171,7 @@ p++
 });
 
 }
-console.log('prueba');
+// console.log('prueba');
 
 };
 
@@ -180,10 +180,10 @@ console.log('prueba');
 
 // devuelve los servicios para el ususario
 servmodule.pruebaServicio = (callback)=>{
-console.log('prueba de servicios')
+// console.log('prueba de servicios')
 if(connection)
 {
-  console.log('************///**/*/*///////////////*/*/*/*/*/*/*/*/*/*/*/');
+  // console.log('************///**/*/*///////////////*/*/*/*/*/*/*/*/*/*/*/');
 var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria  FROM servicios, categoria, servicios_categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios and categoria.id_categoria = servicios_categoria.categoria_idcategoria';
 connection.query(sql,(err,row)=>{
 if(err)
@@ -237,12 +237,12 @@ servmodule.darServicios = (callback)=>{
 var jsonServicios=[];
 if(connection)
 {
-console.log('servicios/2do rchivo');
+// console.log('servicios/2do rchivo');
 var sql = 'SELECT servicios.* FROM servicios ';
 connection.query('SELECT servicios.* FROM servicios',(err,row)=>{
 if(err)
 {
-console.log('error');
+// console.log('error');
 var mensaje = {'mensaje':'error al cargar servicios','carga':'false'};
 callback(null,mensaje);
 }
@@ -266,7 +266,7 @@ callback(null,resp);
 };
 // da servicios por el id de del servicio
 servmodule.darServiciosIdS = (id,callback)=>{
-console.log('prueba de servicios')
+// console.log('prueba de servicios')
 if(connection)
 {
 var sql = 'SELECT servicios.*, categoria.nombre as categoria, FROM servicios, categoria, servicios_categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios and categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ?';
@@ -277,7 +277,7 @@ if(err)
 }
 else
 {
-console.log(row);
+// console.log(row);
 var p =1;
 var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
 var jsonServ = [];
@@ -336,7 +336,7 @@ throw err
 }
 else
 {
-console.log(row);
+// console.log(row);
 if (JSON.stringify(row)!='[]')
 {
 var p =1;
@@ -465,11 +465,11 @@ if(connection)
     if(err){throw err}
     else
     {
-      console.log(row)
+      // console.log(row)
       row = row[0]
       if(row.citas>=1)
       {
-        console.log('no eliminado');
+        // console.log('no eliminado');
         callback(null,false);
       }
       else
@@ -517,7 +517,7 @@ if(connection)
 };
 
 servmodule.onlyservicio = (id,callback) =>{
-  let sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_cate, municipio.id_municipio as id_muni, municipio.id_departamento as id_depar FROM servicios, servicios_categoria, categoria, municipio WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ? ;';
+  let sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_cate, municipio.id_municipio as id_muni, departamento.id_departamento, departamento.nombre as depar, municipio.nombre as muni FROM servicios, servicios_categoria, categoria, municipio, departamento WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_departamento = departamento.id_departamento AND servicios.municipio_id_municipio = municipio.id_municipio AND servicios.id_servicios = ? GROUP BY id_servicios;';
   connection.query(sql,[id],(err,row)=>{
     if(err){throw err}
     else
@@ -526,7 +526,7 @@ servmodule.onlyservicio = (id,callback) =>{
       row = row[0];
       if(row.video !='')
       {
-      console.log(row);
+      // console.log(row);
       let video = 'https://youtu.be/'+row.video;
       row.video = video;
       }
@@ -542,8 +542,8 @@ servmodule.onlyservicio = (id,callback) =>{
 servmodule.updateServ = (serv,callback)=>{
 if(connection)
 {
-  console.log('////////***********');
-  console.log(serv);
+  // console.log('////////***********');
+  // console.log(serv);
 var sql = 'UPDATE servicios SET nombre=?,descripcion=?,duracion=?,max_citas_ves =?,video=?,precio=?,descuento=?,precio_cliente_prevenir=?,direccion=? WHERE id_servicios=?;'
 let sql1 = 'UPDATE servicios_categoria set categoria_idcategoria = ? where servicios_idservicios = ?';
 connection.query(sql,[serv.nombre,serv.descripcion,serv.duracion,serv.max_citas,serv.video,serv.precio,serv.descuento,serv.precio_cliente_prevenir,serv.direccion,,serv.id],(err,resp)=>{if(err){throw err}

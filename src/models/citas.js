@@ -17,30 +17,30 @@ citasModel.countCitas = (row,callback)=>{
 var hora =0;
 let p=1;
 let jsonHd = [];
- console.log('***************////CONTEO DE CITAS//');
-console.log(row);
+ //console.lo.log('***************////CONTEO DE CITAS//');
+//console.lo.log(row);
 var cate = row.cate;
-console.log(cate);
+//console.lo.log(cate);
 var serv = {};
 
 for (var i = 0; i < row.length; i++)
 {
 hora=row[i];
-//console.log(hora.hora);
+////console.lo.log(hora.hora);
 serv = {
 hora:hora.hora,
 id:row.id,
 cate:row.cate
 };
-//console.log(serv);
+////console.lo.log(serv);
 eject.darLibres(serv,(err,resp)=> {
-//console.log(resp);
+////console.lo.log(resp);
 p++;
 jsonHd.push(resp);
 if(row.length==p)
 {
-//console.log('jsonHd');
-//console.log(jsonHd);
+////console.lo.log('jsonHd');
+////console.lo.log(jsonHd);
 callback(null,jsonHd);
 }
 });
@@ -54,28 +54,28 @@ citasModel.countCitasOc = (row,callback)=>{
 var hora =0;
 let p=0;
 let jsonHd = [];
-//console.log(row.id);
+////console.lo.log(row.id);
 var serv = {};
 
 for (var i = 0; i < row.length; i++)
 {
 hora=row[i];
-console.log('/**************CONTeO DE CITAS');
-console.log(hora.hora);
+//console.lo.log('/**************CONTeO DE CITAS');
+//console.lo.log(hora.hora);
 serv = {
 hora:hora.hora,
 id:row.id,
 cate:row.cate
 };
-//console.log(serv);
+////console.lo.log(serv);
 eject.darCitasOc(serv,(err,resp)=> {
-//console.log(resp);
+////console.lo.log(resp);
 p++;
 jsonHd.push(resp);
 if(p>=row.length)
 {
-//console.log('jsonHd');
-//console.log(jsonHd);
+////console.lo.log('jsonHd');
+////console.lo.log(jsonHd);
 callback(null,jsonHd);
 }
 });
@@ -94,10 +94,10 @@ if(err){throw err}
 else
 {
 moment.locale('es');
-console.log(moment().utc().format());
+//console.lo.log(moment().utc().format());
 row = row[0];
 row.start = moment(row.start).utc(-5).format();
-console.log(row);
+//console.lo.log(row);
 callback(null,row);
 }
 });

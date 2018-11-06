@@ -16,9 +16,9 @@ let imgmodule = {};
 
 //sube las imagenes al servidor
 imgmodule.subida = (img,res) =>{
-console.log(img);
+// console.log(img);
 var name = img.path.split("\\").pop();
-console.log(name);
+// console.log(name);
 //var ext =;
 var newPath = "src/public/servicios/"+name
 fs.copyFile(img.path,newPath,(err)=>{
@@ -27,9 +27,9 @@ if(err)
 throw err
 }
 else {
-console.log('renamed complete');
+// console.log('renamed complete');
 res.send('ok')
-console.log(img);
+// console.log(img);
 }
 });
 };
@@ -75,16 +75,16 @@ imgmodule.darImagenesServ = (row,callback)=>
 {
 if(connection)
 {
-console.log('antes del ciclo');
+// console.log('antes del ciclo');
 for (var i = 0; i < row.length; i++)
 {
-console.log('en el ciclo');
+// console.log('en el ciclo');
 var serv = row[i];
 var id = serv.idservicios;
 var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
 connection.query(sql,[id],(err,resp)=>
 {
-console.log(resp);
+// console.log(resp);
 row.fotos = resp;
 
 //codigo que crga la nueva consulta al json row
@@ -109,7 +109,7 @@ if(err)
 }
 else
 {
-console.log(res);
+// console.log(res);
 res.json(res);
 }
 });

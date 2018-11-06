@@ -20,14 +20,14 @@ var horas = horario;
 var semana = horas.semana;
 var dias={};
 ///console.log(semana);
-console.log('/////////*********Horario Recibido Prueba de nulls*********//////////////');
-console.log(horario);
+// console.log('/////////*********Horario Recibido Prueba de nulls*********//////////////');
+//console.log(horario);
 if(connection)
 {
-console.log(horas.t_de+'/'+horas.m_de);
+//console.log(horas.t_de+'/'+horas.m_de);
 if(horas.t_de==undefined || horas.t_de=='undefind' || horas.t_de==null || horas.t_de=='null' )
 {
-console.log('horarios de tarde indefinido');
+//console.log('horarios de tarde indefinido');
 
 var hsql = 'INSERT INTO horario (de_maniana,a_maniana,id_servicios) VALUES (?,?,?)';
 
@@ -45,7 +45,7 @@ semanas:semana,
 id:idH,
 ids:horas.id
 };
-// console.log(dias);
+// //console.log(dias);
 dia.agregarDia(dias,(err,resp)=>{
 callback(null,{'res':resp});
 });
@@ -58,7 +58,7 @@ callback(null,{'res':resp});
 }
 else if (horas.m_de==undefined || horas.m_de=='undefind' || horas.m_de==null || horas.m_de=='null')
 {
-console.log('horario de mañana indefinido');
+//console.log(.log('horario de mañana indefinido');
 var hsql = 'INSERT INTO horario (de_tarde,a_tarde,id_servicios) VALUES (?,?,?)';
 
 connection.query(hsql,[horas.t_de,horas.t_hasta,horas.id],(err,row)=>{
@@ -68,18 +68,18 @@ throw err
 }
 else
 {
-console.log('/////////************Row*************////////////');
-console.log(row);
+//console.log(.log('/////////************Row*************////////////');
+//console.log(.log(row);
 var idH = row.insertId;
-console.log('/////////************horas*************////////////');
-console.log(horas);
+//console.log(.log('/////////************horas*************////////////');
+//console.log(.log(horas);
 dias={
 semanas:semana,
 id:idH,
 ids:horas.id
 };
-console.log('/////////************Dias*************////////////');
-console.log(dias);
+//console.log(.log('/////////************Dias*************////////////');
+//console.log(.log(dias);
 dia.agregarDia(dias,(err,resp)=>{
 callback(null,{'res':resp});
 });
@@ -110,7 +110,7 @@ semanas:semana,
 id:idH,
 ids:horas.id
 };
-// console.log(dias);
+// //console.log(.log(dias);
 dia.agregarDia(dias,(err,resp)=>{
 callback(null,{'res':resp});
 });
@@ -135,15 +135,15 @@ var hora = 0;
 moment.locale('es');
 
 var dia = moment(fecha.fecha).format('dddd');
-// console.log(fecha.id);
+// //console.log(.log(fecha.id);
 //callback(null,dia);
 if(connection)
 {
 var sql1 = 'select * from horario where id_servicios = ?';
 connection.query(sql1,[fecha.id],(err,rows)=>{
-console.log('/////////////////primera consulta*******************');
-console.log(rows);
-console.log('/////////////////primera consulta*******************');
+//console.log(.log('/////////////////primera consulta*******************');
+//console.log(.log(rows);
+//console.log(.log('/////////////////primera consulta*******************');
 });
 
 

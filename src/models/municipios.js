@@ -20,7 +20,7 @@ var sql = 'SELECT id_municipio,nombre FROM municipio WHERE id_departamento = ?'
 connection.query(sql,[id],(err,row)=>{
 if(err)
 {
-console.log(err);
+// console.log(err);
 callback(null,'error al buscar en la base de datos');
 }
 else

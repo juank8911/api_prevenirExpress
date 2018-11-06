@@ -22,16 +22,16 @@ var fin = [];
 var p=0;
 for (var i = 0; i < semana.length; i++)
 {
-// console.log('dia '+semana[i]);
-// console.log('id_horario '+id);
-// console.log('id_servicio '+ids);
+// //console.lo.log('dia '+semana[i]);
+// //console.lo.log('id_horario '+id);
+// //console.lo.log('id_servicio '+ids);
 connection.query(sql,[semana[i],id,ids],(err,resp)=>{
 if(err){throw err}
 else
 {
 fin.push({id:resp.insertId});
-// console.log(fin);
-// console.log(p);
+// //console.lo.log(fin);
+// //console.lo.log(p);
 p++;
 if(p>=semana.length)
 {
@@ -47,26 +47,26 @@ callback(null,true);
 // retorna los dias de la semana
 diasModel.controlH=(horario,callback)=>{
 
-//console.log(req.body);
+////console.lo.log(req.body);
 var id = horario.id;
 horarios = horario[0];
 horarios = horarios.horario;
 //horarios = horarios.horario;
-console.log(horarios);
+//console.lo.log(horarios);
 //id=horario.id;
 //semana = horario.semana;
-//console.log(horarios.length);
-//  console.log(id);
+////console.lo.log(horarios.length);
+//  //console.lo.log(id);
 for (var i = 0; i < horarios.length; i++)
 {
-// console.log("horarios nuemro" + i);
-// console.log(horarios[i]);
+// //console.lo.log("horarios nuemro" + i);
+// //console.lo.log(horarios[i]);
 var horas = horarios[i];
 horas.id =   id;
-console.log(horas.semana);
+//console.lo.log(horas.semana);
 hora.darDia(horas,(err,resp)=>{
 respuesta.push(resp);
-console.log(p);
+//console.lo.log(p);
 p++;
 if(p>=horarios.length)
 {
@@ -76,7 +76,7 @@ res.json(respuesta);
 ////////////////////////////////////////////////////
 // hora.agregarHorario(horas,(err,resp)=>{
 //      respuesta.push(resp);
-//      console.log(p);
+//      //console.lo.log(p);
 //       p++;
 //      if(p>=horarios.length)
 //      {
@@ -90,7 +90,7 @@ res.json(respuesta);
 
 diasModel.darDiasEd=(rows,callback)=>{
   let dias = 'SELECT dias.dia FROM dias where  id_horario = ?;';
-  console.log(rows);
+  //console.lo.log(rows);
   let id_horario = rows.id_horario;
   connection.query(dias,[id_horario],(err,row2)=>{
     if(err){throw err}
@@ -98,13 +98,13 @@ diasModel.darDiasEd=(rows,callback)=>{
     {
 
       rows.dias = row2;
-      console.log(rows);
+      //console.lo.log(rows);
       callback(null,rows);
       //varia.push({row2});
       //vars.push(row1[i]);
 
     //row1[i].dias = row2;
-    //console.log(row1);
+    ////console.lo.log(row1);
     // if(row1.length-1==i)
     // {
     //     callback(null,row1);

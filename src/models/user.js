@@ -14,11 +14,12 @@ let userModel={};
 userModel.getUsers = (callback) => {
 if(connection)
 {
-console.log('conexion a la base de datos');
+// console.log('conexion a la base de datos');
 connection.query(
 'SELECT * FROM usuarios limit 1;',(err, row)=>
-{console.log('reliza consulta');
-console.log(err);
+{
+  // console.log('reliza consulta');
+// console.log(err);
   if(err){
 throw err;
 }else{
@@ -29,7 +30,7 @@ callback(null,row);
 }
 else
 {
-console.log('error en la conxion a la base de datos');
+// console.log('error en la conxion a la base de datos');
 }
 };
 
@@ -43,14 +44,14 @@ var correo = usu.email;
 var nombre = usu.nombre;
 var apellido = usu.apellido;
 var avatar = usu.avatar;
-console.log('//////*/*/*/ID*/*/*/');
-console.log(id);
+// console.log('//////*/*/*/ID*/*/*/');
+// console.log(id);
 var sql = 'INSERT INTO usuarios(id,correo,avatar,nombre,apellidos,members_id,parentescos_id_parentescos,id_pais) VALUES (?,?,?,?,?,?,?,?);';
-console.log('Agregando ususario');
+// console.log('Agregando ususario');
 connection.query(sql,[id,correo,avatar,nombre,apellido,id,usu.parent,47],(err, row)=>{
 if(err)
 {
-console.log('no agregado ususario');
+// console.log('no agregado ususario');
 connection.query('DELETE FROM members WHERE id = ?',[id],(err,res)=>{
 throw err
 });
@@ -58,7 +59,7 @@ throw err
 }
 else
 {
-console.log('Agregado el ususario');
+// console.log('Agregado el ususario');
 var mensaje = {'mensaje':'usuario agregado con exito','existe':false,'id_usuario':id};
 callback(null,mensaje);
 }
@@ -80,7 +81,7 @@ var nombre = usu.nombre;
 var apellido = usu.apellido;
 var avatars =  usu.avatar;
 
-console.log(avatars);
+// console.log(avatars);
 var sql = 'INSERT INTO usuarios(id,cedula,correo,avatar,nombre,apellidos,members_id,parentescos_id_parentescos,id_pais) VALUES (?,?,?,?,?,?,?,?,?)';
 connection.query(sql,[id,cedula,correo,avatars,nombre,apellido,id,usu.parent,47],(err, row)=>{
 if(err)
@@ -93,7 +94,7 @@ throw err
 }
 else
 {
-console.log('Agregado el ususario');
+// console.log('Agregado el ususario');
 var mensaje = {'mensaje':'usuario agregado con exito','existe':false,'id_usuario':id};
 callback(null,mensaje);
 }
@@ -117,12 +118,12 @@ if(connection)
 {
 var darF = 'SELECT cedula,fecha_nacimiento,telefono,telefonowatshapp FROM usuarios WHERE id = ?';
 connection.query(darF,[id],(err,row)=>{
-console.log(id);
+// console.log(id);
 if(err){throw err}
 else {
 {
 row = row[0];
-console.log(row);
+// console.log(row);
 if(row.fecha_nacimiento ==null || row.cedula==null || row.telefono==null )
 {
 //console.log({'datos':false});
@@ -142,13 +143,13 @@ callback(null,{'datos':true});
 userModel.setUsuario=(usu,callback)=>{
 if(connection)
 {
-console.log(usu.fecha_nacimiento);
+// console.log(usu.fecha_nacimiento);
 var sql = 'UPDATE usuarios SET cedula=?, nombre= ?, apellidos=?, direccion=?, telefono=?,telefonowatshapp=?,fecha_nacimiento=? WHERE id= ? and parentescos_id_parentescos = 17;'
 connection.query(sql,[usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.fecha_nacimiento,usu.id],(err,row)=>{
 if(err){callback(null,{'update':false})}
 else
 {
-console.log({'update':true});
+// console.log({'update':true});
 callback(null,{'update':true});
 }
 });

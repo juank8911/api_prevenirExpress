@@ -40,7 +40,7 @@ var  transporter = nodemailer.createTransport(smtpTransport({
             })
           }
           }));
-console.log(mail);
+//console.lo.log(mail);
 
   var mailOptions = {
               from: mail.remite, //config.from,
@@ -51,11 +51,11 @@ console.log(mail);
 
   transporter.sendMail(mailOptions, function(error, info){
       if (error){
-          console.log(error);
+          //console.lo.log(error);
           callback(null,false);
         //callback(null,'not send');
       } else {
-          console.log("Email sent");
+          //console.lo.log("Email sent");
           callback(null,true);
       }
   });
@@ -93,11 +93,11 @@ var mailOptions = {
 
 transporter.sendMail(mailOptions, function(error, info){
     if (error){
-        console.log(error);
+        //console.lo.log(error);
         callback(null,false);
       //callback(null,'not send');
     } else {
-        console.log("Email sent");
+        //console.lo.log("Email sent");
         callback(null,true);
     }
 });
@@ -118,10 +118,10 @@ emailModel.confirm = (conf,callback) =>{
     else
     {
       row = row[0];
-      console.log(row.id);
+      //console.lo.log(row.id);
       if(row.id==conf.id)
       {
-        console.log('iguales');
+        //console.lo.log('iguales');
         let sql = 'UPDATE members SET locked= 1 WHERE id=?;';
         connection.query(sql,[row.id],(err,rows)=>{
           if(err)
@@ -130,7 +130,7 @@ emailModel.confirm = (conf,callback) =>{
           }
           else
           {
-            console.log(rows);
+            //console.lo.log(rows);
           if(rows.affectedRows==1)
           {
               //window.close();
@@ -146,7 +146,7 @@ emailModel.confirm = (conf,callback) =>{
       }
       else
       {
-        console.log('algo falla');
+        //console.lo.log('algo falla');
         callback(null,false);
       }
 
@@ -181,16 +181,16 @@ var  transporter = nodemailer.createTransport(smtpTransport({
             })
           }
           }));
-console.log(mail);
+//console.lo.log(mail);
 let mailOptions = mail;
 
   transporter.sendMail(mailOptions, function(error, info){
       if (error){
-          console.log(error);
+          //console.lo.log(error);
           callback(null,false);
         //callback(null,'not send');
       } else {
-          console.log("Email sent");
+          //console.lo.log("Email sent");
           callback(null,true);
       }
   });
@@ -202,7 +202,7 @@ let mailOptions = mail;
 emailModel.emailCitaPr = (mail,callback) =>{
   if(connection)
   {
-    console.log(mail);
+    //console.lo.log(mail);
     callback(null,true);
   }
 };

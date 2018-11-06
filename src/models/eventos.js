@@ -37,11 +37,11 @@ connection.query(sql,id,(err,row)=>{
 if(err){throw err}
 else
 {
-//console.log('prueba de git');
-console.log(moment().utc().format());
-console.log(row.length);
+////console.lo.log('prueba de git');
+//console.lo.log(moment().utc().format());
+//console.lo.log(row.length);
 //row = row[0];
-//console.log(row);
+////console.lo.log(row);
 if(row.length==0)
 {
   callback(null,row)
@@ -51,7 +51,7 @@ for (var i = 0; i < row.length; i++)
   var s = row[i];
   s.start =  moment(s.start).utc(+5).format('YYYY-MM-DD hh:mm:SS a');
   s.end = moment(s.end).utc(+5).format('YYYY-MM-DD hh:mm:SS a');
-  console.log(s);
+  //console.lo.log(s);
   if(row.length==p)
   {
     callback(null,row);
@@ -66,7 +66,7 @@ for (var i = 0; i < row.length; i++)
 eventmodule.darEventsBenf = (id,callback)=>{
   if(connection)
   {
-    console.log(id);
+    //console.lo.log(id);
     var sql = "SELECT events.*, servicios.nombre as nombres, CONCAT(usuarios.nombre,' ',usuarios.apellidos) as nombreU  FROM events, servicios,usuarios WHERE events.servicios_idservicios = servicios.id_servicios AND usuarios.id = events.usuarios_id and usuarios.usuariosBf_id = ?"
     connection.query(sql,[id],(err,row)=>{
       if(err)
@@ -80,7 +80,7 @@ eventmodule.darEventsBenf = (id,callback)=>{
           var s = row[i];
           s.start =  moment(s.start).utc(+5).format('YYYY-MM-DD hh:mm:SS a');
           s.end = moment(s.end).utc(+5).format('YYYY-MM-DD hh:mm:SS a');
-          console.log(s);
+          //console.lo.log(s);
         }
         callback(null,row);
       }
@@ -91,7 +91,7 @@ eventmodule.darEventsBenf = (id,callback)=>{
 eventmodule.darEventsMasc = (id,callback)=>{
   if(connection)
   {
-    console.log(id);
+    //console.lo.log(id);
     var sql = 'SELECT events_masc.*, servicios.nombre as nombres, mascotas.nombre as nombreU FROM events_masc, servicios, mascotas WHERE events_masc.id_servicios = servicios.id_servicios and events_masc.id_mascotas = mascotas.id_mascotas AND mascotas.id_usuarios = ? ;';
     connection.query(sql,[id],(err,row)=>{
       if(err)
@@ -100,13 +100,13 @@ eventmodule.darEventsMasc = (id,callback)=>{
       }
       else
       {
-        console.log('aqui llege');
+        //console.lo.log('aqui llege');
         for (var i = 0; i < row.length; i++)
         {
           var s = row[i];
           s.start =  moment(s.start).utc(+5).format('YYYY-MM-DD hh:mm:SS a');
           s.end = moment(s.end).utc(+5).format('YYYY-MM-DD hh:mm:SS a');
-          console.log(s);
+          //console.lo.log(s);
         }
         callback(null,row);
       }
@@ -130,8 +130,8 @@ if(err){throw err}else{callback(null,row);}
 //agrega los eventos a la base de datos
 eventmodule.agregarEvento = (events,callback) =>{
 if(connection){
-console.log(events);
-console.log(events.servicio+'///////////*************************');
+//console.lo.log(events);
+//console.lo.log(events.servicio+'///////////*************************');
 if(events.mascota==true)
 {
   var sql = 'INSERT INTO events_masc(color,start,end,id_mascotas,id_servicios) VALUES (?,?,?,?,?)';
@@ -148,7 +148,7 @@ if(err){throw err}
 else {
 
 // res = res[0];
-console.log(res);
+//console.lo.log(res);
 if(JSON.stringify(res)=='[]')
 {
 connection.query(sql,[events.color,events.start,events.end,events.usuario,events.servicio],(err,row)=>{
@@ -171,7 +171,9 @@ eject.correCita(corr,(err,resps)=>{
 });
 
 }
-else{  console.log('vacio'); callback(null,[{'reservado':true}]);}
+else{
+  //console.lo.log('vacio');
+callback(null,[{'reservado':true}]);}
 }
 
 });
@@ -187,7 +189,7 @@ eventmodule.eliminarEvento = (ev,callback) =>{
   let id = ev.id;
   let masc = ev.masc;
 var now = moment().format('YYYY-MM-DD hh:mm:ss a');
-console.log('hoy'+now);
+//console.lo.log('hoy'+now);
 if(connection)
 {
 if(masc == true || masc == 'true' )
@@ -205,9 +207,9 @@ connection.query(valida,id,(err,resp)=>
 resp = resp[0];
 resp = resp.start
 resp = moment(resp).format('YYYY-MM-DD hh:mm:ss a');
-console.log('original'+resp);
+//console.lo.log('original'+resp);
 resp =  moment(resp).subtract(1, 'day').format('YYYY-MM-DD hh:mm:ss a');
-console.log('resta'+resp);
+//console.lo.log('resta'+resp);
 if(moment(now).isSameOrBefore(resp))
 {
 connection.query(del,[id],(err,row)=>{
@@ -230,13 +232,13 @@ if(connection)
   //selecciona el id del servicio con el id de los provedores
   if(ev.cate == 20 || ev.cate == '20')
   {
-    console.log('mascota');
+    //console.lo.log('mascota');
     var sel = 'SELECT servicios.id_servicios FROM servicios,provedores, events_masc where servicios.id_provedores = provedores.id_provedor and servicios.id_servicios = events_masc.id_servicios and provedores.id_provedor = ? and events_masc.id_eventos = ? limit 1;';
     var sql = 'DELETE FROM events_masc where events_masc.id_eventos = ? AND events_masc.id_servicios = ? ;';
   }
   else
   {
-    console.log('humano');
+    //console.lo.log('humano');
     var sel = 'SELECT servicios.id_servicios FROM servicios,provedores, events where servicios.id_provedores = provedores.id_provedor and servicios.id_servicios = events.servicios_idservicios and provedores.id_provedor = ? and events.id_eventos = ? limit 1 ';
     var sql = 'DELETE FROM events where events.id_eventos = ? AND servicios_idservicios = ? ;';
   }
@@ -246,7 +248,7 @@ if(err){throw err}
 else
 {
 row = row[0];
-console.log(row);
+//console.lo.log(row);
 
 connection.query(sql,[ev.ide,row.id_servicios],(err,row)=>{
 if(err){throw err}
@@ -276,7 +278,7 @@ connection.query(del,[h],(err,resp)=>{
 if(err){throw err}
 else
 {
-console.log(h);
+//console.lo.log(h);
 callback(null,'eliminado');
 }
 });
@@ -288,15 +290,15 @@ callback(null,'eliminado');
 eventmodule.eventsCalendar = (ev,callback) =>{
   if(connection)
   {
-    console.log(ev.id_mascotas);
+    //console.lo.log(ev.id_mascotas);
     if(ev.id_mascotas==20 || ev.id_mascotas=='20')
     {
-      console.log('dentro del if');
+      //console.lo.log('dentro del if');
       var sql = 'SELECT YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc WHERE MONTH(start) = ? AND YEAR(start) = ? and id_servicios = ?'
     }
     else
     {
-      console.log('no entro al if');
+      //console.lo.log('no entro al if');
       var sql = 'SELECT YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events WHERE MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
     }
 

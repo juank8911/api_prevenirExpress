@@ -18,7 +18,7 @@ eventMascModule.darEventsMasc = (id,callback)=>{
   if(connection)
   {
     var p = 1;
-    // console.log(id);
+    // //console.log(.log(id);
     var sql = 'SELECT events_masc.id_eventos,events_masc.color,events_masc.start,events_masc.end,events_masc.id_mascotas as usuarios_id,events_masc.id_servicios,servicios.nombre as nombres, mascotas.nombre as nombreU FROM events_masc, servicios, mascotas WHERE events_masc.id_servicios = servicios.id_servicios and events_masc.id_mascotas = mascotas.id_mascotas AND mascotas.id_usuarios = ? ;';
     connection.query(sql,[id],(err,row)=>{
       if(err)
@@ -27,10 +27,10 @@ eventMascModule.darEventsMasc = (id,callback)=>{
       }
       else
       {
-        // console.log('***********///////////');
-        // console.log(row);
-        //console.log('aqui llege');
-        console.log(row.length);
+        // //console.log(.log('***********///////////');
+        // //console.log(.log(row);
+        ////console.log(.log('aqui llege');
+        //console.log(.log(row.length);
         if(row.length==0)
         {
           callback(null,row)
@@ -42,9 +42,9 @@ eventMascModule.darEventsMasc = (id,callback)=>{
           //s.usuarios_id = s.id_mascotas;
           s.start =  moment(s.start).utc(+5).format('YYYY-MM-DD hh:mm a');
           s.end = moment(s.end).utc(+5).format('YYYY-MM-DD hh:mm a');
-          // console.log(s);
+          // //console.log(.log(s);
           row[i]=s;
-          // console.log(s);
+          // //console.log(.log(s);
           if(row.length==p)
           {
             callback(null,row);
