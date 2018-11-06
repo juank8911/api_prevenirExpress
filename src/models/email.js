@@ -159,7 +159,7 @@ emailModel.confirm = (conf,callback) =>{
 
 emailModel.sendMailCita = (mail,callback)=>{
 
-
+console.log('///**/*/*/*/*/*/*/*/* enviando correro');
 
 var  transporter = nodemailer.createTransport(smtpTransport({
     service: 'gmail',
