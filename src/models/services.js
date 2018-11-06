@@ -266,18 +266,18 @@ callback(null,resp);
 };
 // da servicios por el id de del servicio
 servmodule.darServiciosIdS = (id,callback)=>{
-// console.log('prueba de servicios')
+ console.log('prueba de servicios')
 if(connection)
 {
-var sql = 'SELECT servicios.*, categoria.nombre as categoria, FROM servicios, categoria, servicios_categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios and categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ?';
+var sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios, categoria, servicios_categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios and categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ?';
 connection.query(sql,[id],(err,row)=>{
 if(err)
 {
-
+throw err;
 }
 else
 {
-// console.log(row);
+console.log(row);
 var p =1;
 var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
 var jsonServ = [];
@@ -291,7 +291,7 @@ connection.query(sql,[id],(err,resp)=>{
 // console.log('dentro de la consulta '+id)
 if(err)
 {
-
+throw err
 }
 else
 {
