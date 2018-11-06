@@ -86,9 +86,9 @@ var mailOptions = {
   to: usu.to,
   subject: 'ACTIVACION CUENTA',
   text: usu.texto,
-  html: '<img src="http://cdn.prevenirexpress.com/avatars/banner1a.png" alt="prevenir logo" width="100%" height="70%">'+
+  html: '<img src="http://cdn.prevenirexpress.com/avatars/banner1a.png" alt="prevenir logo" width="80%" height="50%">'+
 
-  '</br></br><h1>BIENVENIDO A PREVENIR EXPRESS</h1></br><div>Gracias por ser parte de nuesta familia <br>'+
+  '</br></br><h3>BIENVENIDO A PREVENIR EXPRESS</h3></br><div>Gracias por ser parte de nuesta familia '+
           'en donde encontraras los mejores decuentos medicos de tu ciudad, por favor ingresa este codigo en la aplicacion: <h2>'+ usu.pss + '</h2></div>'};
 
 transporter.sendMail(mailOptions, function(error, info){
