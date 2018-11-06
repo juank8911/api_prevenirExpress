@@ -65,10 +65,11 @@ res.json(data);
 });
 
 // da los servicios por id de municipio e id de categoria
-app.get('/services/:idm/:idc',(req,res)=>{
+app.get('/services/:idm/:idc/:cat',(req,res)=>{
 let ids = {
 idm:req.params.idm,
-idc:req.params.idc
+idc:req.params.idc,
+cat:req.params.cat
 };
 
 serv.darServiciosMunCat(ids,(err,data)=>{

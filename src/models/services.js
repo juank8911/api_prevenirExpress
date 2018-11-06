@@ -322,13 +322,22 @@ servmodule.darServiciosMunCat = (ids,callback)=>{
 //console.log('////////////////Servicios ')
 var idm = ids.idm;
 var idc = ids.idc;
+var cat = ids.cat;
 
 if(connection)
 {
 if(idc==0)
 {
 //console.log('////////////////Servicios por muunicipios/////////// ')
-var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ?;';
+if(cat!=20)
+{
+  var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ? AND categoria_idcategoria != 20;';
+}
+else
+{
+  var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ?;';  
+}
+
 connection.query(sql,[idm],(err,row)=>{
 if(err)
 {
