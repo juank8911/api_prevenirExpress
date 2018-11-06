@@ -95,12 +95,7 @@ res.json(resp);
 });
 });
 
-app.get('/sservicio/:id',(req,res)=>{
-  var id = req.params.id;
-  serv.onlyservicio(id,(err,resp)=>{
-    res.json(resp);
-  });
-});
+
 
 //actualiza un servicio con la nueva informacion
 app.put('/servicioput',jwts.validaAdmin,(req,res)=>{
