@@ -546,7 +546,7 @@ if(connection)
   // console.log(serv);
 var sql = 'UPDATE servicios SET nombre=?,descripcion=?,duracion=?,max_citas_ves =?,video=?,precio=?,descuento=?,precio_cliente_prevenir=?,direccion=? WHERE id_servicios=?;'
 let sql1 = 'UPDATE servicios_categoria set categoria_idcategoria = ? where servicios_idservicios = ?';
-connection.query(sql,[serv.nombre,serv.descripcion,serv.duracion,serv.max_citas,serv.video,serv.precio,serv.descuento,serv.precio_cliente_prevenir,serv.direccion,,serv.id],(err,resp)=>{if(err){throw err}
+connection.query(sql,[serv.nombre,serv.descripcion,serv.duracion,serv.max_citas,serv.video,serv.precio,serv.descuento,serv.precio_cliente_prevenir,serv.direccion,serv.id],(err,resp)=>{if(err){throw err}
 else
 {
 connection.query(sql1,[serv.categoria,serv.id],(err,row)=>{
