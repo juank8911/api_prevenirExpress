@@ -517,7 +517,7 @@ if(connection)
 };
 
 servmodule.onlyservicio = (id,callback) =>{
-  let sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_cate, municipio.id_municipio as id_muni, departamento.id_departamento, departamento.nombre as depar, municipio.nombre as muni FROM servicios, servicios_categoria, categoria, municipio, departamento WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_departamento = departamento.id_departamento AND servicios.municipio_id_municipio = municipio.id_municipio AND servicios.id_servicios = ? GROUP BY id_servicios;';
+  let sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_cate, municipio.id_municipio as id_muni, departamento.id_departamento, departamento.nombre as depar, municipio.nombre as muni FROM servicios, servicios_categoria, categoria, municipio, departamento WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_departamento = departamento.id_departamento AND servicios.municipio_id_municipio = municipio.id_municipio AND servicios.id_servicios = ? ';
   connection.query(sql,[id],(err,row)=>{
     if(err){throw err}
     else
