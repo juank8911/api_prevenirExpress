@@ -87,7 +87,13 @@ res.json(resp);
 });
 });
 
-
+// retorna un servicio con su id
+app.get('/servicess/:id',(req,res)=>{
+var id = req.params.id;
+serv.darServiciosIdS(id,(err,resp)=>{
+res.json(resp);
+});
+});
 
 app.get('/sservicio/:id',(req,res)=>{
   var id = req.params.id;
