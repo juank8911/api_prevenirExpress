@@ -19,7 +19,7 @@ eventMascModule.darEventsMasc = (id,callback)=>{
   {
     var p = 1;
     // //console.log(.log(id);
-    var sql = 'SELECT events_masc.id_eventos,events_masc.color,events_masc.start,events_masc.end,events_masc.id_mascotas as usuarios_id,events_masc.id_servicios,servicios.nombre as nombres, mascotas.nombre as nombreU FROM events_masc, servicios, mascotas WHERE events_masc.id_servicios = servicios.id_servicios and events_masc.id_mascotas = mascotas.id_mascotas AND mascotas.id_usuarios = ? ;';
+    var sql = 'SELECT events_masc.id_eventos,events_masc.color,events_masc.start,events_masc.end,events_masc.id_mascotas as usuarios_id,events_masc.id_servicios,servicios.nombre as nombre,servicios.direccion, mascotas.nombre as nombreU FROM events_masc, servicios, mascotas WHERE events_masc.id_servicios = servicios.id_servicios and events_masc.id_mascotas = mascotas.id_mascotas AND mascotas.id_usuarios = ? ;';
     connection.query(sql,[id],(err,row)=>{
       if(err)
       {
