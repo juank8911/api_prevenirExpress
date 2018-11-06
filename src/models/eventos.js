@@ -162,10 +162,10 @@ var corr = {
   masc:events.mascota
 
 };
-eject.correCita(corr,(err,resps)=>{
+// eject.correCita(corr,(err,resps)=>{
 
   callback(null,[{'agregado':true}]);
-});
+// });
 
 }
 });
