@@ -15,9 +15,12 @@ let citasModel = {};
 // cuenta las citas
 citasModel.countCitas = (row,callback)=>{
 var hora =0;
-let p=0;
+let p=1;
 let jsonHd = [];
-//console.log(row.id);
+ console.log('***************////CONTEO DE CITAS//');
+console.log(row);
+var cate = row.cate;
+console.log(cate);
 var serv = {};
 
 for (var i = 0; i < row.length; i++)
@@ -26,14 +29,15 @@ hora=row[i];
 //console.log(hora.hora);
 serv = {
 hora:hora.hora,
-id:row.id
+id:row.id,
+cate:row.cate
 };
 //console.log(serv);
 eject.darLibres(serv,(err,resp)=> {
 //console.log(resp);
 p++;
 jsonHd.push(resp);
-if(p>=row.length)
+if(row.length==p)
 {
 //console.log('jsonHd');
 //console.log(jsonHd);
@@ -56,10 +60,12 @@ var serv = {};
 for (var i = 0; i < row.length; i++)
 {
 hora=row[i];
-//console.log(hora.hora);
+console.log('/**************CONTeO DE CITAS');
+console.log(hora.hora);
 serv = {
 hora:hora.hora,
-id:row.id
+id:row.id,
+cate:row.cate
 };
 //console.log(serv);
 eject.darCitasOc(serv,(err,resp)=> {

@@ -37,12 +37,14 @@ res.json(respuesta);
 });
 
 // retorna las citas segun la fecha y el id del servicio
-app.get('/citas/:fecha/:id',(req,res)=>{
+app.get('/citas/:fecha/:id/:masc',(req,res)=>{
   console.log(req.params);
 serv = {
 fecha:req.params.fecha,
-id:req.params.id
+id:req.params.id,
+cate:req.params.masc
 };
+console.log(serv);
 hora.darDia(serv,(err,resp)=>{
 res.json(resp);
 });
@@ -70,10 +72,11 @@ app.get('/horariosed/:id',(req,res)=>{
 
 
 // retorna las citas segun la fecha y el id del servicio para los provedores
-app.get('/servcitas/:fecha/:id',(req,res)=>{
+app.get('/servcitas/:fecha/:id/:masc',(req,res)=>{
 prov  = {
 fecha:req.params.fecha,
-id:req.params.id
+id:req.params.id,
+cat:req.params.masc
 };
 hora.darDiaOc(prov,(err,resp)=>{
 res.json(resp);

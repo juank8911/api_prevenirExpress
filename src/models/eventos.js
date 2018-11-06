@@ -1,6 +1,7 @@
 let mysql =require('mysql');
 let config = require('../config');
 var moment = require('moment');
+var eject = require('./ejecucion');
 
 
 connection = mysql.createConnection({
@@ -30,6 +31,7 @@ callback(null,row);
 eventmodule.darEventsIdUsuario=(id,callback)=>{
 if(connection)
 {
+  var p = 1;
 var sql = 'SELECT events.*, servicios.nombre, servicios.direccion FROM events, servicios WHERE events.servicios_idservicios = servicios.id_servicios AND events.usuarios_id = ? ORDER BY events.start asc;';
 connection.query(sql,id,(err,row)=>{
 if(err){throw err}
@@ -40,14 +42,22 @@ console.log(moment().utc().format());
 console.log(row.length);
 //row = row[0];
 //console.log(row);
+if(row.length==0)
+{
+  callback(null,row)
+}
 for (var i = 0; i < row.length; i++)
 {
   var s = row[i];
-  s.start =  moment(s.start).utc().format('YYYY-MM-DD hh:mm:SS a');
-  s.end = moment(s.end).utc().format('YYYY-MM-DD hh:mm:SS a');
+  s.start =  moment(s.start).utc(+5).format('YYYY-MM-DD hh:mm:SS a');
+  s.end = moment(s.end).utc(+5).format('YYYY-MM-DD hh:mm:SS a');
   console.log(s);
+  if(row.length==p)
+  {
+    callback(null,row);
+  }
+  p++;
 }
-callback(null,row);
 }
 });
 }
@@ -68,8 +78,8 @@ eventmodule.darEventsBenf = (id,callback)=>{
         for (var i = 0; i < row.length; i++)
         {
           var s = row[i];
-          s.start =  moment(s.start).utc().format('YYYY-MM-DD hh:mm:SS a');
-          s.end = moment(s.end).utc().format('YYYY-MM-DD hh:mm:SS a');
+          s.start =  moment(s.start).utc(+5).format('YYYY-MM-DD hh:mm:SS a');
+          s.end = moment(s.end).utc(+5).format('YYYY-MM-DD hh:mm:SS a');
           console.log(s);
         }
         callback(null,row);
@@ -94,8 +104,8 @@ eventmodule.darEventsMasc = (id,callback)=>{
         for (var i = 0; i < row.length; i++)
         {
           var s = row[i];
-          s.start =  moment(s.start).utc().format('YYYY-MM-DD hh:mm:SS a');
-          s.end = moment(s.end).utc().format('YYYY-MM-DD hh:mm:SS a');
+          s.start =  moment(s.start).utc(+5).format('YYYY-MM-DD hh:mm:SS a');
+          s.end = moment(s.end).utc(+5).format('YYYY-MM-DD hh:mm:SS a');
           console.log(s);
         }
         callback(null,row);
@@ -145,7 +155,18 @@ connection.query(sql,[events.color,events.start,events.end,events.usuario,events
 if(err){throw err}
 else
 {
-callback(null,[{'agregado':true}]);
+var corr = {
+  id_serv: events.servicio,
+  start: events.start,
+  id_usu:events.usuario,
+  masc:events.mascota
+
+};
+eject.correCita(corr,(err,resps)=>{
+
+  callback(null,[{'agregado':true}]);
+});
+
 }
 });
 
@@ -162,13 +183,25 @@ else{  console.log('vacio'); callback(null,[{'reservado':true}]);}
 
 
 // ELIMINA UN EVENTO DE LA BASE DE DATOS
-eventmodule.eliminarEvento = (id,callback) =>{
+eventmodule.eliminarEvento = (ev,callback) =>{
+  let id = ev.id;
+  let masc = ev.masc;
 var now = moment().format('YYYY-MM-DD hh:mm:ss a');
 console.log('hoy'+now);
 if(connection)
 {
+if(masc == true || masc == 'true' )
+{
+  var valida = 'SELECT start FROM events_masc WHERE id_eventos = ?';
+  var del = ' DELETE FROM events_masc where id_eventos = ?';
+}
+else
+{
 var valida = 'SELECT start FROM events WHERE id_eventos = ?';
-connection.query(valida,id,(err,resp)=>{
+var del = ' DELETE FROM events where id_eventos = ?';
+}
+connection.query(valida,id,(err,resp)=>
+{
 resp = resp[0];
 resp = resp.start
 resp = moment(resp).format('YYYY-MM-DD hh:mm:ss a');
@@ -177,7 +210,6 @@ resp =  moment(resp).subtract(1, 'day').format('YYYY-MM-DD hh:mm:ss a');
 console.log('resta'+resp);
 if(moment(now).isSameOrBefore(resp))
 {
-var del = ' DELETE FROM events where id_eventos = ?';
 connection.query(del,[id],(err,row)=>{
 if(err){throw err}else{callback(null,{'borrado':true});}
 });
@@ -196,14 +228,26 @@ eventmodule.delEventProv = (ev,callback)=>{
 if(connection)
 {
   //selecciona el id del servicio con el id de los provedores
-var sel = 'SELECT servicios.id_servicios FROM servicios,provedores, events where servicios.id_provedores = provedores.id_provedor and servicios.id_servicios = events.servicios_idservicios and provedores.id_provedor = ? and events.id_eventos = ? limit 1 ';
+  if(ev.cate == 20 || ev.cate == '20')
+  {
+    console.log('mascota');
+    var sel = 'SELECT servicios.id_servicios FROM servicios,provedores, events_masc where servicios.id_provedores = provedores.id_provedor and servicios.id_servicios = events_masc.id_servicios and provedores.id_provedor = ? and events_masc.id_eventos = ? limit 1;';
+    var sql = 'DELETE FROM events_masc where events_masc.id_eventos = ? AND events_masc.id_servicios = ? ;';
+  }
+  else
+  {
+    console.log('humano');
+    var sel = 'SELECT servicios.id_servicios FROM servicios,provedores, events where servicios.id_provedores = provedores.id_provedor and servicios.id_servicios = events.servicios_idservicios and provedores.id_provedor = ? and events.id_eventos = ? limit 1 ';
+    var sql = 'DELETE FROM events where events.id_eventos = ? AND servicios_idservicios = ? ;';
+  }
+
 connection.query(sel,[ev.idp,ev.ide],(err,row)=>{
 if(err){throw err}
 else
 {
 row = row[0];
-// console.log(row.id_servicios);
-var sql = 'DELETE FROM events where events.id_eventos = ? AND servicios_idservicios = ? ;';
+console.log(row);
+
 connection.query(sql,[ev.ide,row.id_servicios],(err,row)=>{
 if(err){throw err}
 else
@@ -244,14 +288,19 @@ callback(null,'eliminado');
 eventmodule.eventsCalendar = (ev,callback) =>{
   if(connection)
   {
-    if(ev.id_servicio==20)
+    console.log(ev.id_mascotas);
+    if(ev.id_mascotas==20 || ev.id_mascotas=='20')
     {
-    var sql = 'SELECT YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc WHERE MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
+      console.log('dentro del if');
+      var sql = 'SELECT YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc WHERE MONTH(start) = ? AND YEAR(start) = ? and id_servicios = ?'
     }
     else
     {
-    var sql = 'SELECT YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events WHERE MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
+      console.log('no entro al if');
+      var sql = 'SELECT YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events WHERE MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
     }
+
+
   connection.query(sql,[ev.mes,ev.anio,ev.id_servicio],(err,row)=>{
     if(err)
     {

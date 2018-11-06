@@ -155,4 +155,62 @@ emailModel.confirm = (conf,callback) =>{
 }
 };
 
+
+
+emailModel.sendMailCita = (mail,callback)=>{
+
+
+
+var  transporter = nodemailer.createTransport(smtpTransport({
+    service: 'gmail',
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+            xoauth2: xoauth2.createXOAuth2Generator({
+              // user:'contactoprevenir@gmail.com',
+              // clientId:'669854799910-42brst8bu1gpn3eh49n5efrd88cn2sg2.apps.googleusercontent.com',
+              // clientSeret:'DGVpQslRBho94BcwiTcdzmJp',
+              // refreshToken:'1/5SsC1sH4qOr4jDwn9bda19nXrQX3zkRSomdDZ1DY1R0'
+              type: 'OAuth2',
+              user: 'contactoprevenir@gmail.com',
+              clientId: '669854799910-42brst8bu1gpn3eh49n5efrd88cn2sg2.apps.googleusercontent.com',
+              clientSecret: 'DGVpQslRBho94BcwiTcdzmJp',
+              refreshToken: '1/5SsC1sH4qOr4jDwn9bda19nXrQX3zkRSomdDZ1DY1R0',
+              accessToken: 'ya29.Gls-BrbFCF8zI7Rb1LbYJFWNl9JsPRAYdoZTcFe_nXd-XDmmyHlC9YKsWSwSt0Y7VCqcwTNWbtnMEflHjv-JQkhngdMa-iyZQjo_7JhXARYKdvCexkamvfeHn8V2'
+            })
+          }
+          }));
+console.log(mail);
+let mailOptions = mail;
+
+  transporter.sendMail(mailOptions, function(error, info){
+      if (error){
+          console.log(error);
+          callback(null,false);
+        //callback(null,'not send');
+      } else {
+          console.log("Email sent");
+          callback(null,true);
+      }
+  });
+
+};
+
+
+
+emailModel.emailCitaPr = (mail,callback) =>{
+  if(connection)
+  {
+    console.log(mail);
+    callback(null,true);
+  }
+};
+
+
+
+
+
+
+
 module.exports = emailModel;

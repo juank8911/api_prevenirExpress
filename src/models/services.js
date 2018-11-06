@@ -120,7 +120,7 @@ servmodule.DarServiceUsu = (ids,callback) => {
 console.log('prueba de servicios')
 if(connection)
 {
-var sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios,servicios_categoria,categoria WHERE servicios_categoria.servicios_idservicios = servicios.id_servicios and servicios_categoria.categoria_idcategoria = categoria.id_categoria and id_provedores = ? ORDER BY createdupdate';
+var sql = 'SELECT servicios.*, categoria.nombre as categoria,categoria.id_categoria FROM servicios,servicios_categoria,categoria WHERE servicios_categoria.servicios_idservicios = servicios.id_servicios and servicios_categoria.categoria_idcategoria = categoria.id_categoria and id_provedores = ? ORDER BY createdupdate';
 connection.query(sql,[ids],(err,row)=>{
 if(err)
 {
@@ -147,7 +147,7 @@ connection.query(sql,[id],(err,resp)=>{
 // console.log('dentro de la consulta '+id)
 if(err)
 {
-
+throw err
 }
 else
 {
@@ -180,10 +180,11 @@ console.log('prueba');
 
 // devuelve los servicios para el ususario
 servmodule.pruebaServicio = (callback)=>{
-//  console.log('prueba de servicios')
+console.log('prueba de servicios')
 if(connection)
 {
-var sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios, categoria, servicios_categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios and categoria.id_categoria = servicios_categoria.categoria_idcategoria';
+  console.log('************///**/*/*///////////////*/*/*/*/*/*/*/*/*/*/*/');
+var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria  FROM servicios, categoria, servicios_categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios and categoria.id_categoria = servicios_categoria.categoria_idcategoria';
 connection.query(sql,(err,row)=>{
 if(err)
 {
@@ -268,7 +269,7 @@ servmodule.darServiciosIdS = (id,callback)=>{
 console.log('prueba de servicios')
 if(connection)
 {
-var sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios, categoria, servicios_categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios and categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ?';
+var sql = 'SELECT servicios.*, categoria.nombre as categoria, FROM servicios, categoria, servicios_categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios and categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ?';
 connection.query(sql,[id],(err,row)=>{
 if(err)
 {
@@ -327,7 +328,7 @@ if(connection)
 if(idc==0)
 {
 //console.log('////////////////Servicios por muunicipios/////////// ')
-var sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ?;';
+var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ?;';
 connection.query(sql,[idm],(err,row)=>{
 if(err)
 {
@@ -389,7 +390,7 @@ callback(null,[{'vacio':true}])
 else
 {
 //console.log('////////////////Servicios por municipos y categorias ')
-var sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ? and  categoria.id_categoria = ?  ;';
+var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ? and  categoria.id_categoria = ?  ;';
 connection.query(sql,[idm,idc],(err,row)=>{
 if(err)
 {
@@ -516,7 +517,7 @@ if(connection)
 };
 
 servmodule.onlyservicio = (id,callback) =>{
-  let sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_cate FROM servicios, servicios_categoria, categoria, municipio WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ? ;';
+  let sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_cate, municipio.id_municipio as id_muni, municipio.id_departamento as id_depar FROM servicios, servicios_categoria, categoria, municipio WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ? ;';
   connection.query(sql,[id],(err,row)=>{
     if(err){throw err}
     else

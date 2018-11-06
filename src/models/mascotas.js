@@ -36,10 +36,21 @@ var sel = "SELECT mascotas.*, concat(usuarios.nombre,' ',usuarios.apellidos) as 
 if(connection)
 {
 connection.query(sel,[id],(err,row)=>{
-if(err){callback(500,err)}
+if(err){throw err}
 else{callback(null,row)}
 });
 }
+};
+
+mascotasModule.darMascotaIDm = (id,callback)=>{
+  var sel = "SELECT mascotas.*, concat(usuarios.nombre,' ',usuarios.apellidos) as dueño, usuarios.telefono FROM mascotas, usuarios WHERE mascotas.id_usuarios = usuarios.id AND mascotas.id_mascotas = ? ;";
+  if(connection)
+  {
+  connection.query(sel,[id],(err,row)=>{
+  if(err){throw err}
+  else{callback(null,row)}
+  });
+  }
 };
 
 

@@ -60,13 +60,6 @@ app.get('/eventsb/:id',(req,res)=>{
   });
 });
 
-app.get('/eventsm/:id',(req,res)=>{
-  var id = req.params.id;
-  //console.log(id);
-  events.darEventsMasc(id,(err,row)=>{
-    res.json(row);
-  });
-});
 // retorna eventos segun el id del servicio
 app.get('/sevents/:ids',(req,res)=>{
 var ids = req.params.ids;
@@ -76,28 +69,34 @@ res.json(row);
 });
 
 // elimina eventos segun el id del evento
-app.delete('/events/:id',jwts.valida,(req,res)=>{
-var id = req.params.id;
-events.eliminarEvento(id,(err,row)=>{
+app.delete('/events/:id/:masc',jwts.valida,(req,res)=>{
+var el = {
+  id: req.params.id,
+  masc: req.params.masc
+};
+console.log(el);
+events.eliminarEvento(el,(err,row)=>{
 res.json(row);
 });
 });
 
-app.get('/eventser/:mes/:anio/:id_serv',(req,res)=>{
+app.get('/eventser/:mes/:anio/:id_serv/:masc',(req,res)=>{
   ev = {
     mes: req.params.mes,
     anio: req.params.anio,
-    id_servicio: req.params.id_serv
+    id_servicio: req.params.id_serv,
+    id_mascotas: req.params.masc
   };
   events.eventsCalendar(ev,(err,resp)=>{
     res.json(resp);
   });
 });
 
-app.delete('/eventss/:ide/:idp',jwts.validaAdmin, (req,res)=>{
+app.delete('/eventss/:ide/:idp/:masc',jwts.validaAdmin, (req,res)=>{
 let ev = {
 ide:req.params.ide,
-idp: req.params.idp
+idp: req.params.idp,
+cate:req.params.masc
 };
 //console.log(ev);
 events.delEventProv(ev,(err,resp)=>{

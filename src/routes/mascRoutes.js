@@ -28,6 +28,13 @@ app.get('/mascota/:id',(req,res)=>{
   });
 });
 
+app.get('/mascotam/:id',(req,res)=>{
+  let id = req.params.id;
+  masc.darMascotaIDm(id,(err,row)=>{
+    res.json(row);
+  });
+});
+
 
 
 }

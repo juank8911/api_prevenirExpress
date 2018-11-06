@@ -5,7 +5,7 @@ module.exports = function (app)
 {
   app.get('/eventsm/:id',(req,res)=>{
     let id = req.params.id;
-    eventsm.pruebaMasc(id,(err,resp)=>{
+    eventsm.darEventsMasc(id,(err,resp)=>{
           res.json(resp);
     });
   });
