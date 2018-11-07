@@ -15,7 +15,7 @@ let ejectModel = {};
 //retorna una lista de horarios libres para la citas medicas
 ejectModel.darLibres = (serv,callback)=>
 {
-////console.lo.log(serv);
+console.log(serv);
 if(connection)
 {
 var sql = 'SELECT servicios.max_citas_ves-count(events.id_eventos) as libres  FROM servicios, events WHERE servicios.id_servicios = events.servicios_idservicios and start = ? AND servicios_idservicios = ? ;'
@@ -38,17 +38,35 @@ callback(null,serv);
 // retorna las citas por servicio cuando ahy una cita separada
 ejectModel.darCitasOc = (serv,callback)=>
 {
-////console.lo.log(serv);
+  console.log('************////////////////////');
+console.log(serv);
 if(connection)
 {
-var sql = "SELECT events.* ,concat(usuarios.nombre,' ',usuarios.apellidos) as nombres FROM servicios, events, usuarios WHERE servicios.id_servicios = events.servicios_idservicios and usuarios.id = events.usuarios_id and start = ? AND servicios_idservicios = ? ;"
+  if(serv.cate==20)
+  {
+    console.log('Mascotas');
+    var sql = "SELECT events_masc.id_eventos,events_masc.id_mascotas as usuarios_id,events_masc.id_servicios as servicios_idservicios,events_masc.start,events_masc.end, mascotas.nombre as nombres FROM events_masc, mascotas, servicios WHERE mascotas.id_mascotas = events_masc.id_mascotas AND servicios.id_servicios = events_masc.id_servicios AND start = ? AND events_masc.id_servicios = ?;"
+  }
+  else
+  {
+    var sql = "SELECT events.* ,concat(usuarios.nombre,' ',usuarios.apellidos) as nombres FROM servicios, events, usuarios WHERE servicios.id_servicios = events.servicios_idservicios and usuarios.id = events.usuarios_id and start = ? AND servicios_idservicios = ? ;"
+  }
+
 ////console.lo.log(sql);
 connection.query(sql,[serv.hora,serv.id],(err,res)=>{
 //res;
 //res=res.libres;
 ////console.lo.log('///////////****//////////');
 ////console.lo.log(res);
+if(serv.cate==20)
+{
+  console.log('Contando mascotas');
+  var sql1 = 'SELECT count(events_masc.id_eventos) as echas  FROM servicios, events_masc WHERE servicios.id_servicios = events_masc.id_servicios and start = ? AND events_masc.id_servicios = ?;';
+}
+else
+{
 var sql1 = 'SELECT count(events.id_eventos) as echas  FROM servicios, events WHERE servicios.id_servicios = events.servicios_idservicios and start = ? AND servicios_idservicios = ? ';
+}
 connection.query(sql1,[serv.hora,serv.id],(err,resp)=>{
 resp = resp[0];
 resp = resp.echas

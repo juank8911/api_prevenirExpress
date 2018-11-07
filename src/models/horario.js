@@ -475,16 +475,16 @@ if(connection)
 {
   var sql1 = 'select * from horario where id_horario = (select dias.id_horario from dias where dias.dia = ? and servicios_id_servicios = ?);';
   connection.query(sql1,[dia,fecha.id],(err,rows)=>{
-  console.log('/////////////////primera consulta*******************');
+  // console.log('/////////////////primera consulta*******************');
   var row = rows;
   rows = rows[0];
-  console.log(row);
-  console.log('/////////////////primera consulta*******************');
+  // console.log(row);
+  // console.log('/////////////////primera consulta*******************');
   //if cuando solo ahy citas para la mañana y la tarde esta vacia
   if (JSON.stringify(row)=='[]')
   {
   //execute
-   // console.log('vacio');
+   console.log('vacio');
   callback(null,[{'maniana':[{"hora": "No ahy citas",'disponible':false,"echas":0},]},{'tardes':[{"hora": "No ahy citas",'disponible':false,"echas":0},]}]);
   }
   else
@@ -493,8 +493,8 @@ if(connection)
 
 if(rows.de_maniana !=null && rows.de_tarde==null)
 {
-  console.log('si ahy horario en la mañana');
-//console.log('////////////////citas en la tarde vacias *******************');
+  // console.log('si ahy horario en la mañana');
+// console.log('////////////////citas en la tarde vacias *******************');
 var sql = 'SELECT dias.*, horario.id_horario,horario.de_maniana, horario.a_maniana,horario.id_servicios from dias,horario WHERE dias.id_horario = horario.id_horario and dias.dia = ? and  id_servicios = ? ';
 connection.query(sql,[dia,fecha.id],(err,row)=>{
 if(err){throw err}
@@ -519,7 +519,7 @@ var m_hasta = fecha.fecha+" "+hd.a_maniana;
 horaD = moment(m_de).format('YYYY-MM-DD HH:mm:ss');
 // horaT = moment(t_de).format('YYYY-MM-DD HH:mm:ss');
 m_hasta = moment(m_hasta).format('YYYY-MM-DD HH:mm:ss');
-m_hasta = moment(m_hasta).add(1,'hour');
+// m_hasta = moment(m_hasta).add(1,'hour');
 // t_hasta = moment(t_hasta).format('YYYY-MM-DD HH:mm:ss');
 do {
 hora = moment(horaD).format('YYYY-MM-DD HH:mm:ss');
@@ -531,10 +531,10 @@ horaD = moment(horaD).add(1,'hour');
 } while (horaD.isBefore(m_hasta));
 hora = moment(m_hasta).format('YYYY-MM-DD HH:mm:ss');
 manana.push({hora,'disponible':true});
-console.log('dentro de while**********////////////////////');
+// console.log('dentro de while**********////////////////////');
 manana.id = parseInt(fecha.id);
 manana.cate = cat;
-console.log(manana);
+// console.log(manana);
 citas.countCitasOc(manana,(err,maniana)=>{
 //tardes.push({tarde});
 derro.push({maniana},{tardes});
@@ -545,7 +545,7 @@ callback(null,derro);
 }
 else if(rows.de_maniana ==null && rows.de_tarde!=null)
 {
-console.log('////////////////si ahy horario en la tarde');
+// console.log('////////////////si ahy horario en la tarde');
 var sql = 'SELECT dias.*, horario.id_horario,horario.de_tarde, horario.a_tarde,horario.id_servicios from dias,horario WHERE dias.id_horario = horario.id_horario and dias.dia = ? and  id_servicios = ? ';
 connection.query(sql,[dia,fecha.id],(err,row)=>{
 if(err){throw err}
@@ -555,7 +555,7 @@ else
 if (JSON.stringify(row)=='[]') {
 //execute
 //  console.log('vacio');
-callback(null,[{'maniana':[{"hora": "No ahy atencion en este horario",'disponible':false,"echas":0},]},{'tardes':[{"hora": "No ahy atencion en este horario",'disponible':false,"echas":0},]}]);
+callback(null,[{'maniana':[{"hora": "No ahy citas",'disponible':false,"echas":0},]},{'tardes':[{"hora": "No ahy atencion en este horario",'disponible':false,"echas":0},]}]);
 }
 else
 {
@@ -569,8 +569,8 @@ var t_hasta = fecha.fecha+" "+hd.a_tarde;
 horaT = moment(t_de).format('YYYY-MM-DD HH:mm:ss');
 //m_hasta = moment(m_hasta).format('YYYY-MM-DD HH:mm:ss');
 t_hasta = moment(t_hasta).format('YYYY-MM-DD HH:mm:ss');
-m_hasta = moment(m_hasta).add(1,'hour');
-var maniana = [{"hora": "No ahy atencion en este horario",'disponible':false,"echas":0}];
+// m_hasta = moment(m_hasta).add(1,'hour');
+var maniana = [{"hora": "No ahy citas",'disponible':false,"echas":0}];
 
 do {
 // console.log('////////////TARDE///////////')
@@ -599,6 +599,7 @@ callback(null,derro);
 }
 else if (rows.de_maniana !=null && rows.de_tarde!=null)
 {
+  // console.log('/////***** dos horarios');
 var sql = 'SELECT dias.*, horario.* from dias,horario WHERE dias.id_horario = horario.id_horario and dias.dia = ? and  id_servicios = ? ';
 connection.query(sql,[dia,fecha.id],(err,row)=>{
 if(err){throw err}
@@ -610,7 +611,7 @@ else
 if (JSON.stringify(row)=='[]') {
 //execute
 //  console.log('vacio');
-callback(null,[{'maniana':[{"hora": "No ahy atencion en este horario",'disponible':false,"echas":0},]},{'tardes':[{"hora": "No ahy citas",'disponible':false,"echas":0},]}]);
+callback(null,[{'maniana':[{"hora": "No ahy citas",'disponible':false,"echas":0},]},{'tardes':[{"hora": "No ahy citas",'disponible':false,"echas":0},]}]);
 }
 else
 {
@@ -638,8 +639,8 @@ hora = moment(m_hasta).format('YYYY-MM-DD HH:mm:ss');
 manana.push({hora,'disponible':true});
 manana.id = parseInt(fecha.id);
 manana.cate=cat;
-console.log('*/*/*/*/*/*/*/* vista de manana');
-console.log(manana);
+// console.log('*/*/*/*/*/*/*/* vista de manana');
+// console.log(manana);
 citas.countCitasOc(manana,(err,maniana)=>{
 derro.push({maniana});
 //console.log(derro[0]);
@@ -654,7 +655,7 @@ hora = moment(t_hasta).format('YYYY-MM-DD HH:mm:ss');
 tarde.push({hora});
 tarde.id = parseInt(fecha.id);
 tarde.cate = cat;
-console.log('*/*/*/*/*/*/*/* vista de tarde');
+// console.log('*/*/*/*/*/*/*/* vista de tarde');
 console.log(tarde);
 citas.countCitasOc(tarde,(err,tardes)=>{
 
@@ -675,7 +676,7 @@ horarioModel.darHorariosed = (id,callback)=>{
       if(err){throw err}
       else
       {
-        console.log(row1.length);
+        // console.log(row1.length);
         if(row1.length>1)
         {
           let vars=[];
