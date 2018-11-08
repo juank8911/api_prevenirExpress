@@ -2,6 +2,7 @@ let mysql =require('mysql');
 let config = require('../config');
 var moment = require('moment');
 var eject = require('./ejecucion');
+var email = require('./email');
 
 
 connection = mysql.createConnection({
@@ -163,8 +164,10 @@ var corr = {
 
 };
 // eject.correCita(corr,(err,resps)=>{
+email.emailCitaPr(corr,(err,rowss)=>{
 
   callback(null,[{'agregado':true}]);
+});
 // });
 
 }

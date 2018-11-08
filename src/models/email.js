@@ -2,6 +2,7 @@ let mysql = require('mysql');
 let config = require('../config');
 var nodemailer = require('nodemailer');
 var xoauth2 = require('xoauth2');
+var moment = require('moment');
 var smtpTransport = require('nodemailer-smtp-transport');
 var connection = require('../controler/connection');
 
@@ -86,7 +87,7 @@ var mailOptions = {
   to: usu.to,
   subject: 'ACTIVACION CUENTA',
   text: usu.texto,
-  html: '<img src="http://cdn.prevenirexpress.com/avatars/banner1a.png" alt="prevenir logo" width="80%" height="50%">'+
+  html: '<img src="http://cdn.prevenirexpress.com/avatars/banner1a.png" alt="prevenir logo" width="70%" height="50%">'+
 
   '</br></br><h3>BIENVENIDO A PREVENIR EXPRESS</h3></br><div>Gracias por ser parte de nuesta familia '+
           'en donde encontraras los mejores decuentos medicos de tu ciudad, por favor ingresa este codigo en la aplicacion: <h2>'+ usu.pss + '</h2></div>'};
@@ -200,10 +201,63 @@ let mailOptions = mail;
 
 
 emailModel.emailCitaPr = (mail,callback) =>{
+  let cfrom ='';
+  let prov = '';
   if(connection)
   {
-    //console.lo.log(mail);
-    callback(null,true);
+    console.log(mail);
+    let corr = 'SELECT provedores.correo, provedores.nombre FROM provedores, servicios WHERE servicios.id_provedores = provedores.id_provedor AND servicios.id_servicios = ?;';
+    connection.query(corr,[mail.id_serv],(err,rowc)=>{
+      rowc = rowc[0];
+      cfrom = rowc.correo;
+      prov = rowc.nombre
+      let fecha = moment(mail.start).format('DD-MM-YYYY');
+      let hora = moment(mail.start).format('HH:mm a');
+      var mailOptions = {
+
+        from: 'PREVENIR EXPRESS NUEVA', //config.from,
+        to: cfrom,
+        subject: 'NUEVA CITA',
+        text: '',
+        html: '<img src="http://cdn.prevenirexpress.com/avatars/banner1a.png" alt="prevenir logo" width="60%" height="40%"> <br/>'+
+              '<h2>Tienes una nueva cita a traves de la app "PREVENIR EXPRESS DESCUENTOS MEDICOS"</h2> <br/>'+
+              'Señor@(es): '+prov+
+              '<br/><div> Se a registrado una nueva cita, para el '+fecha+' a las '+hora+' en nuestra aplicacion, por favor revisa tus citas en nuesta app'};
+
+              var  transporter = nodemailer.createTransport(smtpTransport({
+                  service: 'gmail',
+                  host: "smtp.gmail.com",
+                  port: 465,
+                  secure: true,
+                  auth: {
+                          xoauth2: xoauth2.createXOAuth2Generator({
+                            // user:'contactoprevenir@gmail.com',
+                            // clientId:'669854799910-42brst8bu1gpn3eh49n5efrd88cn2sg2.apps.googleusercontent.com',
+                            // clientSeret:'DGVpQslRBho94BcwiTcdzmJp',
+                            // refreshToken:'1/5SsC1sH4qOr4jDwn9bda19nXrQX3zkRSomdDZ1DY1R0'
+                            type: 'OAuth2',
+                            user: 'contactoprevenir@gmail.com',
+                            clientId: '669854799910-42brst8bu1gpn3eh49n5efrd88cn2sg2.apps.googleusercontent.com',
+                            clientSecret: 'DGVpQslRBho94BcwiTcdzmJp',
+                            refreshToken: '1/5SsC1sH4qOr4jDwn9bda19nXrQX3zkRSomdDZ1DY1R0',
+                            accessToken: 'ya29.Gls-BrbFCF8zI7Rb1LbYJFWNl9JsPRAYdoZTcFe_nXd-XDmmyHlC9YKsWSwSt0Y7VCqcwTNWbtnMEflHjv-JQkhngdMa-iyZQjo_7JhXARYKdvCexkamvfeHn8V2'
+                          })
+                        }
+                        }));
+
+
+                        transporter.sendMail(mailOptions, function(error, info){
+                            if (error){
+                                console.log(error);
+                                callback(null,false);
+                              //callback(null,'not send');
+                            } else {
+                                console.log("Email sent");
+                                callback(null,true);
+                            }
+                        });
+
+    });
   }
 };
 
