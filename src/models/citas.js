@@ -107,4 +107,7 @@ callback(null,row);
 
 
 
+
+
+
 module.exports = citasModel;

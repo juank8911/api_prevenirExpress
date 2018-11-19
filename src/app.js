@@ -6,6 +6,8 @@ let jwt = require('jsonwebtoken');
 let formidable = require('express-form-data');
 var  cron  = require ('node-cron');
 var horas = require('./models/eventos');
+var moment = require('moment');
+var eject = require('./models/ejecucion');
 
 //configuracion de la aplicacion
 let config = require('./config');
@@ -35,11 +37,50 @@ app.set('port',config.puerto);
 
 
 cron.schedule('30 * * * *', () => {
-  console.log('running a task every two minutes');
+  console.log('running a task every 30 minutes');
   horas.citaHistorial((err,res)=>{
-     console.log(res+' ok');
+    horas.citaHistorialM((err,resp)=>{
+      console.log(res+' ok '+resp);
+    });
+
    });
 });
+
+// cron.schedule('* */1 * * *', () => {
+//   horas.citaHistorial((err,res)=>{
+//     horas.citaHistorialM((err,resp)=>{
+//       console.log(res+' ok '+resp);
+//     });
+//
+//    });
+// //   console.log('corre cada minuto * */1 * * *');
+// //   eject.notificaCitaHumanos((err,row)=>{
+// //     eject.notiCitasPeluditos((err,row)=>{
+// //       console.log('Citas notificadas');
+// //     });
+// //   });
+// });
+//
+// cron.schedule('22 * * * *', () => {
+//   console.log('corre cada hora min 22 22 * * * *');
+//   console.log(moment().format('YYYY-MM-DD hh:mm:ss a'));
+// });
+
+cron.schedule('0 * * * *', () => {
+  console.log('corre cada hora min 0 0 * * * *');
+  console.log(moment().format('YYYY-MM-DD hh:mm:ss a'));
+  eject.notificaCitaHumanos((err,row)=>{
+    eject.notiCitasPeluditos((err,row)=>{
+      console.log('Citas notificadas');
+    });
+  });
+
+});
+
+// cron.schedule('* * 1 * *', () => {
+//   console.log('corre cada hora * * 1 * * ');
+//   console.log(moment().format('YYYY-MM-DD hh:mm:ss a'));
+// });
 
 //Permisos CORS para acceso a la Api
 app.all('*', function(req, res,next) {
@@ -74,6 +115,8 @@ app.all('*', function(req, res,next) {
 //let rutas = express.Router();
 //rutas de el servidor
 //rutas.route('/login').post(ses.login);
+require('./routes/historialRoutes')(app);
+require('./routes/pushRoutes')(app);
 require('./routes/userRoutes')(app);
 require('./routes/jwtRoutes')(app);
 require('./routes/imgRoutes')(app);
@@ -91,6 +134,7 @@ require('./routes/benefRoutes')(app);
 require('./routes/parenntRoutes')(app);
 require('./routes/eMascRoutes')(app);
 require('./routes/mascRoutes')(app);
+// require('./routes/pushRoutes')(app);
 // require('./routes/eventsMascRoutes')(apps);
 //app.use(rutas);
 

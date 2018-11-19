@@ -25,9 +25,8 @@ if(connection)
 var email = logins.email;
 var password = logins.password;
 // console.log(password);
-var sql = 'SELECT id, email, password, admin FROM members WHERE email = ? AND password = ? ';
+var sql = 'SELECT id, email, password, admin FROM members WHERE email = ? AND password = ?; ';
 // console.log('****************************');
-
 connection.query(sql,[email , password ],(err,row)=>{
 if(err)
 {

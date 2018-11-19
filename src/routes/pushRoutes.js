@@ -5,19 +5,29 @@ module.exports=function(app)
 {
 //guarda las imagenes en el servido y en la base de datos
 app.put('/push',(req, res)=>{
+  // console.log(req.body);
 var token = {
   token:req.body.token,
   id:req.body.id,
-  admin:req.body.admin
+  admines: req.body.admin
 };
+console.log(token);
 
-img.subida(imagen,req);
-//  var img = {
-//  creador: res.locals.user_id
-//  };
+push.addtoken(token,(err,resp)=>{
+  res.json(resp);
+});
 
 });
 
-app.get('/images',(req,res)=>{img.ver((err,data)=>{res.json(data);});});
-app.get('/',jwts.valida,(req, res) => {User.getUsers((err, data) => {res.json(data);});});
+
+app.post('/push',(req,res)=>{
+  disp={
+    to:'cDN3ljN80nY:APA91bE23ly2oG-rzVAI8i_oiPMZI_CBdU59a6dVznyjdK9FyGi2oPI_sQIQJTAV-xp6YQ6F7MlYYW_7Br0nGdbTIuicwIP4oR99Mf8KysM1ZEJiCmASeyxnOHO4ajgqTDIX6prWpQpG',
+    body:'Gracias por ser parte de nuestra comunidad te invitamos a llenar tu informacion y podras realizar tu primera cita',
+    title:'BIENVENIDO A PREVENIR EXPRESS DESCUENTOS MEDICOS'
+  };
+  push.sendPush(disp,(err,resp)=>{res.json(resp)})
+});
+
+
 }

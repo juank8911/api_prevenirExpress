@@ -3,6 +3,8 @@ let config = require('../config');
 var moment = require('moment');
 var eject = require('./ejecucion');
 var email = require('./email');
+var pushs = require('./push');
+var sleep = require('system-sleep');
 
 
 connection = mysql.createConnection({
@@ -164,10 +166,37 @@ var corr = {
 
 };
 // eject.correCita(corr,(err,resps)=>{
-email.emailCitaPr(corr,(err,rowss)=>{
+var psh = 'SELECT members.tokenpsh, members.email, servicios.nombre FROM members,provedores,servicios WHERE provedores.members_id = members.id AND servicios.id_provedores = provedores.id_provedor AND servicios.id_servicios = ?;';
+connection.query(psh,[events.servicio],(err,rowph)=>{
+  if(err){throw err}
+  else
+{
 
-  callback(null,[{'agregado':true}]);
+  email.emailCitaPr(corr,(err,rowss)=>{
+      // console.log(psh);
+    // console.log('enviando e-mail');
+    // console.log('/////////////////////*******************//////////////////');
+    rowph = rowph[0];
+    // console.log('cDN3ljN80nY:APA91bE23ly2oG-rzVAI8i_oiPMZI_CBdU59a6dVznyjdK9FyGi2oPI_sQIQJTAV-xp6YQ6F7MlYYW_7Br0nGdbTIuicwIP4oR99Mf8KysM1ZEJiCmASeyxnOHO4ajgqTDIX6prWpQpG');
+    console.log('ROW DE LA BASE DE DATOS');
+    console.log(rowph);
+    var disp = {
+      to:rowph.tokenpsh,
+      body:'Tienes una nueva cita de '+rowph.nombre+', a traves de nuesta app de descuentos medicos para el: '+moment(events.start).format('DD-MM-YYYY')+' a las: '+moment(events.start).format('HH:mm a')+' por favor revisa tus citas en la aplicacion',
+      title:'NUEVA CITA'
+    };
+    // console.log(disp);
+  pushs.sendPush(disp,(err,respus)=>{
+    sleep(1000);
+    console.log(respus);
+    console.log('enviando respuesta');
+    callback(null,[{'agregado':respus}]);
+  });
+
+  });
+}
 });
+
 // });
 
 }
@@ -199,11 +228,13 @@ if(masc == true || masc == 'true' )
 {
   var valida = 'SELECT start FROM events_masc WHERE id_eventos = ?';
   var del = ' DELETE FROM events_masc where id_eventos = ?';
+  var psh ='SELECT members.tokenpsh, servicios.nombre, events_masc.start FROM members, provedores, servicios, events_masc WHERE members.id = provedores.members_id AND servicios.id_provedores = provedores.id_provedor AND events_masc.id_servicios = servicios.id_servicios AND events_masc.id_eventos = ?;';
 }
 else
 {
 var valida = 'SELECT start FROM events WHERE id_eventos = ?';
 var del = ' DELETE FROM events where id_eventos = ?';
+var psh = 'SELECT members.tokenpsh, servicios.nombre, events.start FROM members, provedores, servicios, events WHERE members.id = provedores.members_id AND servicios.id_provedores = provedores.id_provedor AND events.servicios_idservicios = servicios.id_servicios AND events.id_eventos = ?;';
 }
 connection.query(valida,id,(err,resp)=>
 {
@@ -215,12 +246,29 @@ resp =  moment(resp).subtract(1, 'day').format('YYYY-MM-DD hh:mm:ss a');
 //console.lo.log('resta'+resp);
 if(moment(now).isSameOrBefore(resp))
 {
-connection.query(del,[id],(err,row)=>{
-if(err){throw err}else{callback(null,{'borrado':true});}
+  let env = {
+    id:id,
+    sql:psh
+  };
+eject.eliminaNotifica(env,(err,rowss)=>{
+  if(rowss.borrado==true)
+  {
+    connection.query(del,[id],(err,row)=>{
+    if(err){throw err}
+    else
+    {
+      // console.log('/*/*/*/*/*/*/*/*/*Respuesta la eliminacion de la cuita');
+      // console.log(row);
+        callback(null,{'borrado':true})
+    }
+    });
+
+  }
 });
 }
 else
 {
+
 callback(null,{'borrado':false})
 
 }
@@ -244,6 +292,7 @@ if(connection)
     //console.lo.log('humano');
     var sel = 'SELECT servicios.id_servicios FROM servicios,provedores, events where servicios.id_provedores = provedores.id_provedor and servicios.id_servicios = events.servicios_idservicios and provedores.id_provedor = ? and events.id_eventos = ? limit 1 ';
     var sql = 'DELETE FROM events where events.id_eventos = ? AND servicios_idservicios = ? ;';
+    var psh = 'SELECT members.tokenpsh, servicios.nombre, events.start FROM events, usuarios, members, servicios WHERE events.usuarios_id = usuarios.id AND members.id = usuarios.id AND events.servicios_idservicios = servicios.id_servicios and events.id_eventos = ?;';
   }
 
 connection.query(sel,[ev.idp,ev.ide],(err,row)=>{
@@ -252,13 +301,21 @@ else
 {
 row = row[0];
 //console.lo.log(row);
-
-connection.query(sql,[ev.ide,row.id_servicios],(err,row)=>{
-if(err){throw err}
-else
-{
-callback(null,[{'borrado':true}])
-}
+let evs = {
+  id:ev.ide,
+  sql:psh
+};
+eject.eliminaNotifica(evs,(err,rowss)=>{
+  if(rowss.borrado==true)
+  {
+    connection.query(sql,[ev.ide,row.id_servicios],(err,row)=>{
+    if(err){throw err}
+    else
+    {
+    callback(null,[{'borrado':true}])
+    }
+    });
+  }
 });
 }
 });
@@ -289,6 +346,31 @@ callback(null,'eliminado');
 });
 }
 };
+
+eventmodule.citaHistorialM = (callback)=>{
+if(connection)
+{
+var h = moment().format('YYYY-MM-DD HH:mm:ss');
+var citas = 'insert into historial_masc SELECT * FROM events_masc WHERE end < ?;'
+var del = 'DELETE FROM events_masc WHERE end < ?;'
+connection.query(citas,[h],(err,res)=>{
+if(err){throw err}
+else
+{
+connection.query(del,[h],(err,resp)=>{
+if(err){throw err}
+else
+{
+//console.lo.log(h);
+callback(null,'eliminado');
+}
+});
+}
+});
+}
+};
+
+
 
 eventmodule.eventsCalendar = (ev,callback) =>{
   if(connection)

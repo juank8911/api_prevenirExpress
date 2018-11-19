@@ -1,6 +1,8 @@
 const mysql = require('mysql');
 let config = require('../config');
 let moment = require('moment');
+let pushs = require('./push')
+var sleep = require('system-sleep');
 
 connection = mysql.createConnection({
 host: config.host,
@@ -97,6 +99,148 @@ var fecha2 = moment('2018-11-12');  //fecha actual
 
 //console.lo.log(fecha2.diff(fecha1, 'years.days'), ' años de diferencia');
 };
+
+
+ejectModel.eliminaNotifica = (env,callback) =>
+{
+  console.log(env);
+  // sleep(5000);
+  connection.query(env.sql,[env.id],(err,rowph)=>{
+    if(err){throw err}
+    else
+    {
+        console.log(rowph);
+        // console.log('enviando e-mail');
+        // console.log('/////////////////////*******************//////////////////');
+        rowph = rowph[0];
+        // console.log('cDN3ljN80nY:APA91bE23ly2oG-rzVAI8i_oiPMZI_CBdU59a6dVznyjdK9FyGi2oPI_sQIQJTAV-xp6YQ6F7MlYYW_7Br0nGdbTIuicwIP4oR99Mf8KysM1ZEJiCmASeyxnOHO4ajgqTDIX6prWpQpG');
+        console.log('ROW DE LA BASE DE DATOS');
+        console.log(rowph);
+        var disp = {
+          to:rowph.tokenpsh,
+          body:'Su cita de '+rowph.nombre+', separada para el dia: '+moment(rowph.start).format('DD-MM-YYYY')+' a las: '+moment(rowph.start).format('HH:mm a')+' fue cancelada por inconvenientes ajenos a nostros por favor revisa tus citas',
+          title:'CITA CANCELADA'
+        };
+        // console.log(disp);
+      pushs.sendPush(disp,(err,respus)=>{
+
+        console.log(respus);
+        console.log('enviando respuesta');
+        callback(null,{'borrado':true});
+      });
+
+
+    }
+  });
+};
+
+
+ejectModel.notificaCitaHumanos = (callback) =>{
+if(connection)
+{
+    var disp = {};
+  let hora = moment().add(3,'hours').format('YYYY-MM-DD HH:mm:ss');
+  // let hora = '2018-11-19 16:00:00';
+  console.log('Inicio de notificaciones a los usuarios ////////////********************');
+  console.log(hora);
+  var sele = 'SELECT events.usuarios_id, events.start, CONCAT(jhg.nombre," ",jhg.apellidos) as nombres,servicios.nombre, if(jhg.usuariosBf_id !="",(SELECT members.tokenpsh FROM usuarios as pr, usuarios as bf,members WHERE pr.id = bf.usuariosBf_id AND members.id = pr.members_id AND bf.id = jhg.id ), (SELECT members.tokenpsh FROM members,usuarios WHERE members.id = usuarios.id AND usuarios.id = jhg.id)) as tokenpsh  FROM events, usuarios as jhg, servicios where jhg.id = events.usuarios_id AND servicios.id_servicios = events.servicios_idservicios AND start = ?;';
+  connection.query(sele,[hora],(err,row)=>{
+    if(err){throw err}
+    else
+    {
+      for (var i = 0; i < row.length; i++) {
+        // console.log('eject de row');
+      // console.log(row[i]);
+      let rowps = row[i];
+      disp = {
+        to:rowps.tokenpsh,
+        body:'No olvide su cita de '+rowps.nombre+' para '+rowps.nombres+', separada para el dia: '+moment(rowps.start).format('DD-MM-YYYY')+' a las: '+moment(rowps.start).format('hh:mm a')+' por favor verifique su horario en la aplicacion y en caso de no asisitir comuniquese con el centro prestador del servicio',
+        title:'RECORDATORIO DE CITA'
+      };
+      // console.log(disp);
+      pushs.sendPush(disp,(err,respus)=>{
+        console.log(respus);
+        // console.log('enviando respuesta');
+      });
+
+      }
+      callback(null,{'notificado':true});
+      // console.log(hora);
+    }
+  });
+
+}
+
+};
+
+ejectModel.notiCitasPeluditos = (callback)=>{
+if(connection)
+{
+  let disp = {};
+  let hora = moment().add(3,'hours').format('YYYY-MM-DD HH:mm:ss');
+  // let hora = '2018-11-19 16:00:00';
+  console.log(hora);
+  var sele ='SELECT events_masc.start, mascotas.nombre as peludito, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombres ,servicios.nombre , members.tokenpsh FROM events_masc, mascotas, usuarios, members, servicios WHERE mascotas.id_mascotas = events_masc.id_mascotas AND mascotas.id_usuarios = usuarios.id AND usuarios.members_id = members.id AND servicios.id_servicios = events_masc.id_servicios AND events_masc.start = ?;';
+  connection.query(sele,[hora],(err,row)=>{
+    if(err){throw err}
+    else
+    {
+      if(row.length>0)
+      {
+        for (var i = 0; i < row.length; i++)
+        {
+          let rowps = row[i];
+          disp = {
+            to:rowps.tokenpsh,
+            body:'Señor@ '+rowps.nombres+' no olvide su cita de '+rowps.nombre+' a para su peludit@ '+rowps.peludito+', separada para el dia: '+moment(rowps.start).format('DD-MM-YYYY')+' a las: '+moment(rowps.start).format('hh:mm a')+' por favor verifique su horario en la aplicacion y en caso de no asisitir comuniquese con el centro prestador del servicio',
+            title:'RECORDATORIO DE CITA'
+          };
+          pushs.sendPush(disp,(err,respus)=>{
+            console.log(respus);
+            // console.log('enviando respuesta');
+          });
+        }
+      }
+      callback(null,{'notificado':true});
+    }
+  });
+
+}
+
+};
+
+ejectModel.histrialBenf = (row,callback)=>{
+  console.log(row);
+  let pens = [];
+  let p = 1;
+  if(connection)
+  {
+    let sel = 'SELECT historial.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombres, servicios.nombre as servicio FROM historial, usuarios, servicios WHERE usuarios.id = historial.usuarios_id AND servicios.id_servicios = historial.servicios_idservicios AND usuarios_id = ? ORDER BY historial.calificada asc, historial.start asc; ;';
+    for (var i = 0; i < row.length; i++) {
+      console.log(row[i]);
+      connection.query(sel,[row[i]],(err,resp)=>{
+        console.log('en historial ejecutando');
+        // console.log(resp);
+        for (var k = 0; k < resp.length; k++) {
+          resp[k]
+          pens.push(resp[k]);
+          console.log(p+'  '+row.length);
+          if(p==row.length)
+          {
+            console.log(pens);
+            callback(null,pens);
+          }
+        }
+    p++;
+
+      });
+
+    }
+  }
+
+};
+
+
 
 
 module.exports = ejectModel;
