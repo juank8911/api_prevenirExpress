@@ -69,6 +69,13 @@ connection.query(ins,[coment.comentario,coment.califica,coment.id_servicio,comen
 }
 };
 
+comentmodule.dartrComent = (id,callback)=>{
+  if(connection)
+  {
+    
+  }
+};
+
 
 
 

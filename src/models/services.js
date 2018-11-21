@@ -121,6 +121,7 @@ servmodule.DarServiceUsu = (ids,callback) => {
 if(connection)
 {
 var sql = 'SELECT servicios.*, categoria.nombre as categoria,categoria.id_categoria FROM servicios,servicios_categoria,categoria WHERE servicios_categoria.servicios_idservicios = servicios.id_servicios and servicios_categoria.categoria_idcategoria = categoria.id_categoria and id_provedores = ? ORDER BY createdupdate';
+var sel = 'SELECT comentarios.*,usuarios.avatar, usuarios.nombre FROM comentarios,servicios,usuarios WHERE comentarios.servicios_idservicios = servicios.id_servicios AND usuarios.id = comentarios.usuarios_id AND servicios.id_servicios = ? ORDER BY comentarios.createdAt asc LIMIT 3;';
 connection.query(sql,[ids],(err,row)=>{
 if(err)
 {
@@ -128,45 +129,58 @@ if(err)
 }
 else
 {
-if (JSON.stringify(row)=='[]') {
-//execute
-//  console.log('vacio');
-callback(null,[{'servicios':false}]);
-}
-else
-{
-var p =1;
-var sql = 'SELECT * FROM fotos where servicios_idservicios = ? LIMIT 1';
-var jsonServ = [];
-//  console.log('fuera de la consulta')
-var jsonServ = [];
-row.forEach((serv)=>{
-// console.log(serv.idservicios)
-var id = serv.id_servicios;
-connection.query(sql,[id],(err,resp)=>{
-// console.log('dentro de la consulta '+id)
-if(err)
-{
-throw err
-}
-else
-{
-serv.foto = resp;
-serv.servicios = true;
-//console.log(resp);
-jsonServ.push(serv);
-// console.log('/////////******* valor p '+p)
-// console.log('/////////******* valor row '+row.length);
-if(p>=row.length)
-{
-callback(null,jsonServ);
-// console.log('find de la consulta');
-}
-p++
-}
-});
-});
-}
+  if (JSON.stringify(row)!='[]')
+  {
+  var p =1;
+  var sql1 = 'SELECT * FROM fotos where servicios_idservicios = ? limit 1';
+  var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
+  var jsonServ = [];
+  //  console.log('fuera de la consulta')
+  var jsonServ = [];
+  row.forEach((serv)=>{
+  // console.log(serv.idservicios)
+  var id = serv.id_servicios;
+  //console.log(id);
+  connection.query(sql1,[id],(err,ft)=>{
+    if(err){throw err}
+    else
+    {
+      ft = ft[0];
+      serv.foto = ft.ruta;
+    }
+    });
+  connection.query(sql,[id],(err,resp)=>{
+  // console.log('dentro de la consulta '+id)
+  if(err)
+  {
+
+  }
+  else
+  {
+  serv.fotos = resp;
+  //console.log(resp);
+  connection.query(sel,[id],(err,com)=>{
+    if(err){throw err}
+    else
+    {
+      serv.coment = com;
+      jsonServ.push(serv);
+      if(p>=row.length)
+      {
+      callback(null,jsonServ);
+      //console.log('find de la consulta');
+      }
+      p++
+    }
+  });
+  }
+  });
+  });
+  }
+  else
+  {
+  callback(null,[{'vacio':true}])
+  }
 }
 });
 
@@ -194,6 +208,7 @@ else
 {
 var p =1;
 var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
+
 var jsonServ = [];
 //  console.log('fuera de la consulta')
 var jsonServ = [];
@@ -205,21 +220,29 @@ connection.query(sql,[id],(err,resp)=>{
 // console.log('dentro de la consulta '+id)
 if(err)
 {
-
+ throw err;
 }
 else
 {
 serv.foto = resp;
 //console.log(resp);
-jsonServ.push(serv);
 // console.log('/////////******* valor p '+p)
 //console.log('/////////******* valor row '+row.length);
-if(p>=row.length)
-{
-callback(null,jsonServ);
-//console.log('find de la consulta');
-}
-p++
+connection.query(sel,[id],(err,com)=>{
+  if(err){throw err}
+  else
+  {
+    serv.coment = com;
+    jsonServ.push(serv);
+    if(p>=row.length)
+    {
+    callback(null,jsonServ);
+    //console.log('find de la consulta');
+    }
+    p++
+  }
+});
+
 }
 });
 });
@@ -269,7 +292,8 @@ servmodule.darServiciosIdS = (id,callback)=>{
  console.log('prueba de servicios')
 if(connection)
 {
-var sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios, categoria, servicios_categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios and categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ?';
+var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ?';
+var sel = 'SELECT comentarios.*,usuarios.avatar, usuarios.nombre FROM comentarios,servicios,usuarios WHERE comentarios.servicios_idservicios = servicios.id_servicios AND usuarios.id = comentarios.usuarios_id AND servicios.id_servicios = ? ORDER BY comentarios.createdAt asc LIMIT 3;';
 connection.query(sql,[id],(err,row)=>{
 if(err)
 {
@@ -295,17 +319,59 @@ throw err
 }
 else
 {
-serv.foto = resp;
-//console.log(resp);
-jsonServ.push(serv);
-// console.log('/////////******* valor p '+p)
-//console.log('/////////******* valor row '+row.length);
-if(p>=row.length)
-{
-callback(null,jsonServ);
-//console.log('find de la consulta');
-}
-p++
+  // console.log(row);
+  if (JSON.stringify(row)!='[]')
+  {
+  var p =1;
+  var sql1 = 'SELECT * FROM fotos where servicios_idservicios = ? limit 1';
+  var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
+  var jsonServ = [];
+  //  console.log('fuera de la consulta')
+  var jsonServ = [];
+  row.forEach((serv)=>{
+  // console.log(serv.idservicios)
+  var id = serv.id_servicios;
+  //console.log(id);
+  connection.query(sql1,[id],(err,ft)=>{
+    if(err){throw err}
+    else
+    {
+      ft = ft[0];
+      serv.foto = ft.ruta;
+    }
+    });
+  connection.query(sql,[id],(err,resp)=>{
+  // console.log('dentro de la consulta '+id)
+  if(err)
+  {
+
+  }
+  else
+  {
+  serv.fotos = resp;
+  //console.log(resp);
+  connection.query(sel,[id],(err,com)=>{
+    if(err){throw err}
+    else
+    {
+      serv.coment = com;
+      jsonServ.push(serv);
+      if(p>=row.length)
+      {
+      callback(null,jsonServ);
+      //console.log('find de la consulta');
+      }
+      p++
+    }
+  });
+  }
+  });
+  });
+  }
+  else
+  {
+  callback(null,[{'vacio':true}])
+  }
 }
 });
 });
@@ -328,13 +394,16 @@ if(connection)
 if(idc==0)
 {
 //console.log('////////////////Servicios por muunicipios/////////// ')
+
 if(idc!=20)
 {
   var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ? AND categoria_idcategoria != 20;';
+  var sel = 'SELECT comentarios.*,usuarios.avatar, usuarios.nombre FROM comentarios,servicios,usuarios WHERE comentarios.servicios_idservicios = servicios.id_servicios AND usuarios.id = comentarios.usuarios_id AND servicios.id_servicios = ? ORDER BY comentarios.createdAt asc LIMIT 3;';
 }
 else
 {
   var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ?;';
+  var sel ='SELECT comentarios_masc.*,mascotas.avatar, mascotas.nombre FROM comentarios_masc,servicios,mascotas WHERE comentarios_masc.id_servicios = servicios.id_servicios AND mascotas.id_mascotas = comentarios_masc.id_mascotas AND servicios.id_servicios = ?  ORDER BY comentarios_masc.createdAt asc LIMIT 3;';
 }
 
 connection.query(sql,[idm],(err,row)=>{
@@ -375,15 +444,20 @@ else
 {
 serv.fotos = resp;
 //console.log(resp);
-jsonServ.push(serv);
-// console.log('/////////******* valor p '+p)
-//console.log('/////////******* valor row '+row.length);
-if(p>=row.length)
-{
-callback(null,jsonServ);
-//console.log('find de la consulta');
-}
-p++
+connection.query(sel,[id],(err,com)=>{
+  if(err){throw err}
+  else
+  {
+    serv.coment = com;
+    jsonServ.push(serv);
+    if(p>=row.length)
+    {
+    callback(null,jsonServ);
+    //console.log('find de la consulta');
+    }
+    p++
+  }
+});
 }
 });
 });
@@ -400,10 +474,12 @@ else
   if(idc!=20)
   {
     var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ? and  categoria.id_categoria = ? AND categoria_idcategoria != 20;';
+    var sel = 'SELECT comentarios.*,usuarios.avatar, usuarios.nombre FROM comentarios,servicios,usuarios WHERE comentarios.servicios_idservicios = servicios.id_servicios AND usuarios.id = comentarios.usuarios_id AND servicios.id_servicios = ? ORDER BY comentarios.createdAt asc LIMIT 3;';
   }
   else
   {
     var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ? and  categoria.id_categoria = ?  ;';
+    var sel ='SELECT comentarios_masc.*,mascotas.avatar, mascotas.nombre FROM comentarios_masc,servicios,mascotas WHERE comentarios_masc.id_servicios = servicios.id_servicios AND mascotas.id_mascotas = comentarios_masc.id_mascotas AND servicios.id_servicios = ?  ORDER BY comentarios_masc.createdAt asc LIMIT 3;';
   }
 //console.log('////////////////Servicios por municipos y categorias ')
 connection.query(sql,[idm,idc],(err,row)=>{
@@ -444,15 +520,20 @@ else
 {
 serv.fotos = resp;
 //console.log(resp);
-jsonServ.push(serv);
-// console.log('/////////******* valor p '+p)
-//console.log('/////////******* valor row '+row.length);
-if(p>=row.length)
-{
-callback(null,jsonServ);
-//console.log('find de la consulta');
-}
-p++
+connection.query(sel,[id],(err,com)=>{
+  if(err){throw err}
+  else
+  {
+    serv.coment = com;
+    jsonServ.push(serv);
+    if(p>=row.length)
+    {
+    callback(null,jsonServ);
+    //console.log('find de la consulta');
+    }
+    p++
+  }
+});
 }
 });
 });

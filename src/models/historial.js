@@ -19,7 +19,7 @@ histModule.darHistorialU = (id,callback)=>{
     if(connection)
   {
     // let benf = 'SELECT usuarios.id FROM usuarios WHERE usuariosBf_id = ? ;';
-    let sel = 'SELECT historial.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombres, servicios.nombre as servicio FROM historial, usuarios, servicios WHERE usuarios.id = historial.usuarios_id AND servicios.id_servicios = historial.servicios_idservicios AND usuarios_id = ? ORDER BY historial.calificada asc, historial.start asc;';
+    let sel = 'SELECT historial.*,servicios.direccion, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombres, servicios.nombre as servicio FROM historial, usuarios, servicios WHERE usuarios.id = historial.usuarios_id AND servicios.id_servicios = historial.servicios_idservicios AND usuarios_id = ? ORDER BY historial.calificada asc, historial.start asc;';
     // connection.query(benf,[id],(err,benf)=>{
     //   if(err){throw err}
     //   else
@@ -63,7 +63,7 @@ histModule.darHistorialB = (id,callback)=>{
     if(connection)
   {
     let benf = 'SELECT usuarios.id FROM usuarios WHERE usuariosBf_id = ? ;';
-    let sel = 'SELECT historial.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombres, servicios.nombre as servicio FROM historial, usuarios, servicios WHERE usuarios.id = historial.usuarios_id AND servicios.id_servicios = historial.servicios_idservicios AND usuarios_id = ? ORDER BY historial.calificada asc, historial.start asc;;';
+    let sel = 'SELECT historial.*,servicios.direccion, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombres, servicios.nombre as servicio FROM historial, usuarios, servicios WHERE usuarios.id = historial.usuarios_id AND servicios.id_servicios = historial.servicios_idservicios AND usuarios_id = ? ORDER BY historial.calificada asc, historial.start asc;;';
     connection.query(benf,[id],(err,benf)=>{
       if(err){throw err}
       else
@@ -103,7 +103,7 @@ histModule.darHistorialB = (id,callback)=>{
 histModule.historialPel = (id,callback)=>{
 if(connection)
 {
-  let mas = 'SELECT historial_masc.*,historial_masc.id_servicios as servicios_idservicios, servicios.nombre as servicio, mascotas.nombre as nombres FROM mascotas, usuarios, historial_masc, servicios WHERE mascotas.id_usuarios = usuarios.id AND mascotas.id_mascotas = historial_masc.id_mascotas AND servicios.id_servicios = historial_masc.id_servicios AND usuarios.id = ? ORDER BY historial_masc.calificada asc, historial_masc.start asc;';
+  let mas = 'SELECT historial_masc.*,historial_masc.id_servicios as servicios_idservicios, servicios.nombre as servicio, mascotas.nombre as nombres, servicios.direccion FROM mascotas, usuarios, historial_masc, servicios WHERE mascotas.id_usuarios = usuarios.id AND mascotas.id_mascotas = historial_masc.id_mascotas AND servicios.id_servicios = historial_masc.id_servicios AND usuarios.id = ? ORDER BY historial_masc.calificada asc, historial_masc.start asc;';
   connection.query(mas,[id],(err,row)=>{
     callback(null,row);
   });

@@ -70,7 +70,7 @@ cron.schedule('0 * * * *', () => {
   console.log('corre cada hora min 0 0 * * * *');
   console.log(moment().format('YYYY-MM-DD hh:mm:ss a'));
   eject.notificaCitaHumanos((err,row)=>{
-    eject.notiCitasPeluditos((err,row)=>{
+    eject.notiCitasPeluditos((err,rows)=>{
       console.log('Citas notificadas');
     });
   });
