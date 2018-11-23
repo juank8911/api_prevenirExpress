@@ -121,7 +121,7 @@ servmodule.DarServiceUsu = (ids,callback) => {
 if(connection)
 {
 var sql = 'SELECT servicios.*, categoria.nombre as categoria,categoria.id_categoria FROM servicios,servicios_categoria,categoria WHERE servicios_categoria.servicios_idservicios = servicios.id_servicios and servicios_categoria.categoria_idcategoria = categoria.id_categoria and id_provedores = ? ORDER BY createdupdate';
-var sel = 'SELECT comentarios.*,usuarios.avatar, usuarios.nombre FROM comentarios,servicios,usuarios WHERE comentarios.servicios_idservicios = servicios.id_servicios AND usuarios.id = comentarios.usuarios_id AND servicios.id_servicios = ? ORDER BY comentarios.createdAt asc LIMIT 3;';
+var sel = 'SELECT comentarios.*,usuarios.avatar, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombre FROM comentarios,servicios,usuarios WHERE comentarios.servicios_idservicios = servicios.id_servicios AND usuarios.id = comentarios.usuarios_id AND servicios.id_servicios = ? ORDER BY comentarios.createdAt asc LIMIT 3;';
 connection.query(sql,[ids],(err,row)=>{
 if(err)
 {
@@ -293,7 +293,7 @@ servmodule.darServiciosIdS = (id,callback)=>{
 if(connection)
 {
 var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ?';
-var sel = 'SELECT comentarios.*,usuarios.avatar, usuarios.nombre FROM comentarios,servicios,usuarios WHERE comentarios.servicios_idservicios = servicios.id_servicios AND usuarios.id = comentarios.usuarios_id AND servicios.id_servicios = ? ORDER BY comentarios.createdAt asc LIMIT 3;';
+var sel = 'SELECT comentarios.*,usuarios.avatar, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombre FROM comentarios,servicios,usuarios WHERE comentarios.servicios_idservicios = servicios.id_servicios AND usuarios.id = comentarios.usuarios_id AND servicios.id_servicios = ? ORDER BY comentarios.createdAt asc LIMIT 3;';
 connection.query(sql,[id],(err,row)=>{
 if(err)
 {
@@ -398,7 +398,7 @@ if(idc==0)
 if(idc!=20)
 {
   var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ? AND categoria_idcategoria != 20;';
-  var sel = 'SELECT comentarios.*,usuarios.avatar, usuarios.nombre FROM comentarios,servicios,usuarios WHERE comentarios.servicios_idservicios = servicios.id_servicios AND usuarios.id = comentarios.usuarios_id AND servicios.id_servicios = ? ORDER BY comentarios.createdAt asc LIMIT 3;';
+  var sel = 'SELECT comentarios.*,usuarios.avatar, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombre FROM comentarios,servicios,usuarios WHERE comentarios.servicios_idservicios = servicios.id_servicios AND usuarios.id = comentarios.usuarios_id AND servicios.id_servicios = ? ORDER BY comentarios.createdAt asc LIMIT 3;';
 }
 else
 {

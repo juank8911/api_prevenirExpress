@@ -4,6 +4,7 @@ let jwts = require('jsonwebtoken');
 let vals = require('./valida');
 let fs = require('fs');
 let imgmodule = require('./imagenes')
+let topic = require('./topics');
 
 
 connection = mysql.createConnection({
@@ -60,10 +61,19 @@ if(err){throw err;}else{callback(null,row)}
 //retorna a un provedor por su id
 
 provedorModule.darProvedorid = (id,callback)=>{
+  let vl = {};
 var sql = 'SELECT * FROM provedores WHERE id_provedor = ?';
 connection.query(sql,[id],(err,row)=>{
-if(err){throw err}else{//console.log(row);
-callback(null,row)}
+if(err){throw err}else{
+//console.log(row);
+vl = row[0];
+topic.topicsProvedor(id,(err,rsp)=>{
+  // console.log(row[0]);
+  vl.topics=rsp;
+  console.log(vl);
+  callback(null,vl)
+});
+}
 });
 };
 

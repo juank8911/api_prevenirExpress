@@ -2,7 +2,7 @@ let mysql =require('mysql');
 let config = require('../config');
 var FCM = require('fcm-node');
 var sleep = require('system-sleep');
-var serverKey = 'AAAARa8Q05U:APA91bEDZozi0dVllH76miGkzV6ou88VJB57C7vlQk8aeX09sCrgDgeBIGenvfoiT_8BDTHLdVg3K11cTrc8VdIUy5Ok-uLssRBuoUFhFFlTdYGFBJCP4eeiOon1q_8GkE4x8vgq9Sbi'; //put your server key here
+var serverKey = 'AAAAtPm79JA:APA91bGrapXQuteyB4S-Um89wdLXNv058NnLd-tsRNA2DMDZ5cgJX6G9bq2ojHjiCuh_RizGovsQMV_FcNA2_VOsIO9JDOdHL5aWMWMPjdAvErR65EEAf4iTC-4qV8hLpHZPFJngIHe4'; //put your server key here
 var fcm = new FCM(serverKey);
 
 connection = mysql.createConnection({
@@ -17,8 +17,8 @@ let pushmodule = {};
 pushmodule.addtoken = (token,callback)=>{
   if(connection)
   {
-    // console.log('Informacion desde la apk');
-    // console.log(token);
+    console.log('Informacion desde la apk');
+    console.log(token);
     if(token.admines==true)
     {
       var sel = 'SELECT id, tokenpsh FROM members,provedores WHERE members.id = provedores.members_id AND id_provedor = ?;';
@@ -28,19 +28,22 @@ pushmodule.addtoken = (token,callback)=>{
          {
            // sleep(1000);
             res = res[0];
-          if(res.tokenpsh == token.token)
+            console.log('************/////////////////*************');
+            console.log(res);
+            console.log(token);
+          if(res.tokenpsh != token.token)
           {
-            // console.log('dentro del if del token');
+            console.log('dentro del if del token');
 
           // console.log('true 1');
           // console.log(res);
 
           var upd = 'UPDATE members SET tokenpsh = ? WHERE id = ?;';
-          connection.query(upd,[token.token,res.members_id],(err,resp)=>{
+          connection.query(upd,[token.token,token.id],(err,resp)=>{
             if(err){throw err}
             else
             {
-              // console.log('true 2');
+              console.log(resp);
               callback(null,true);
             }
           });

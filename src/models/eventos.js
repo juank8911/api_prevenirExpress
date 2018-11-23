@@ -133,7 +133,7 @@ if(err){throw err}else{callback(null,row);}
 //agrega los eventos a la base de datos
 eventmodule.agregarEvento = (events,callback) =>{
 if(connection){
-//console.lo.log(events);
+console.log(events);
 //console.lo.log(events.servicio+'///////////*************************');
 if(events.mascota==true)
 {
