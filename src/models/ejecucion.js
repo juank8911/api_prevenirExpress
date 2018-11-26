@@ -139,7 +139,7 @@ ejectModel.notificaCitaHumanos = (callback) =>{
 if(connection)
 {
     var disp = {};
-  let hora = let hora = moment().tz('America/Bogota');format('YYYY-MM-DD HH:mm:ss');
+  let hora = moment().tz('America/Bogota');format('YYYY-MM-DD HH:mm:ss');
   hora.add(3,'hours');
 
   // let hora = '2018-11-19 16:00:00';
