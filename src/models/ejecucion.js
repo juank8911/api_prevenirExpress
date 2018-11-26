@@ -139,7 +139,9 @@ ejectModel.notificaCitaHumanos = (callback) =>{
 if(connection)
 {
     var disp = {};
-  let hora = moment().add(3,'hours').format('YYYY-MM-DD HH:mm:ss');
+  let hora = let hora = moment().tz('America/Bogota');format('YYYY-MM-DD HH:mm:ss');
+  hora.add(3,'hours');
+
   // let hora = '2018-11-19 16:00:00';
   console.log('Inicio de notificaciones a los usuarios ////////////********************');
   console.log(hora);
@@ -177,7 +179,10 @@ ejectModel.notiCitasPeluditos = (callback)=>{
 if(connection)
 {
   let disp = {};
-  let hora = moment().add(3,'hours').format('YYYY-MM-DD HH:mm:ss');
+
+  let hora = moment().tz('America/Bogota');format('YYYY-MM-DD HH:mm:ss');
+  hora.add(3,'hours');
+
   // let hora = '2018-11-19 16:00:00';
   console.log(hora);
   var sele ='SELECT events_masc.start, mascotas.nombre as peludito, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombres ,servicios.nombre , members.tokenpsh FROM events_masc, mascotas, usuarios, members, servicios WHERE mascotas.id_mascotas = events_masc.id_mascotas AND mascotas.id_usuarios = usuarios.id AND usuarios.members_id = members.id AND servicios.id_servicios = events_masc.id_servicios AND events_masc.start = ?;';
