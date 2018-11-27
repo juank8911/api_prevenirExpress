@@ -24,7 +24,8 @@ citasIModule.darUsuarios = (callback)=>{
       if(err){throw err}
       else
       {
-        callback(row);
+        // console.log(row);
+        callback(null,row);
       }
     });
   }
