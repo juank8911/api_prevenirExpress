@@ -139,8 +139,7 @@ ejectModel.notificaCitaHumanos = (callback) =>{
 if(connection)
 {
     var disp = {};
-  let hora = moment().format('YYYY-MM-DD HH:mm:ss');
-  hora = moment(hora).add(3,'hours');
+  let hora = moment().add(3,'hours').format('YYYY-MM-DD HH:mm:ss');
 
   // let hora = '2018-11-19 16:00:00';
   console.log('Inicio de notificaciones a los usuarios ////////////********************');
@@ -180,8 +179,7 @@ if(connection)
 {
   let disp = {};
 
-  let hora = moment().format('YYYY-MM-DD HH:mm:ss');
-  hora = moment(hora).add(3,'hours');
+  let hora = moment().add(3,'hours').format('YYYY-MM-DD HH:mm:ss');
 
   // let hora = '2018-11-19 16:00:00';
   console.log(hora);

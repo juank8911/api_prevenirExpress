@@ -53,6 +53,12 @@ cron.schedule('* */1 * * *', () => {
 //     });
 //
     // });
+    horas.citaHistorial((err,res)=>{
+      horas.citaHistorialM((err,resp)=>{
+        console.log(res+' ok '+resp);
+      });
+
+     });
    console.log('corre cada minuto * */1 * * *');
    eject.notificaCitaHumanos((err,row)=>{
      eject.notiCitasPeluditos((err,row)=>{
