@@ -46,42 +46,42 @@ cron.schedule('30 * * * *', () => {
    });
 });
 
-cron.schedule('* */1 * * *', () => {
-//   horas.citaHistorial((err,res)=>{
-//     horas.citaHistorialM((err,resp)=>{
-//       console.log(res+' ok '+resp);
-//     });
+// cron.schedule('* */1 * * *', () => {
+// //   horas.citaHistorial((err,res)=>{
+// //     horas.citaHistorialM((err,resp)=>{
+// //       console.log(res+' ok '+resp);
+// //     });
+// //
+//     // });
+//     horas.citaHistorial((err,res)=>{
+//       horas.citaHistorialM((err,resp)=>{
+//         console.log(res+' ok '+resp);
+//       });
 //
-    // });
-    horas.citaHistorial((err,res)=>{
-      horas.citaHistorialM((err,resp)=>{
-        console.log(res+' ok '+resp);
-      });
-
-     });
-   console.log('corre cada minuto * */1 * * *');
-   eject.notificaCitaHumanos((err,row)=>{
-     eject.notiCitasPeluditos((err,row)=>{
-       console.log('Citas notificadas');
-     });
-   });
-});
+//      });
+//    console.log('corre cada minuto * */1 * * *');
+//    eject.notificaCitaHumanos((err,row)=>{
+//      eject.notiCitasPeluditos((err,row)=>{
+//        console.log('Citas notificadas');
+//      });
+//    });
+// });
 //
 // cron.schedule('22 * * * *', () => {
 //   console.log('corre cada hora min 22 22 * * * *');
 //   console.log(moment().format('YYYY-MM-DD hh:mm:ss a'));
 // });
 
-// cron.schedule('0 * * * *', () => {
-//   console.log('corre cada hora min 0 0 * * * *');
-//   console.log(moment().format('YYYY-MM-DD hh:mm:ss a'));
-//   eject.notificaCitaHumanos((err,row)=>{
-//     eject.notiCitasPeluditos((err,rows)=>{
-//       console.log('Citas notificadas');
-//     });
-//   });
-//
-// });
+cron.schedule('0 * * * *', () => {
+  console.log('corre cada hora min 0 0 * * * *');
+  console.log(moment().format('YYYY-MM-DD hh:mm:ss a'));
+  eject.notificaCitaHumanos((err,row)=>{
+    eject.notiCitasPeluditos((err,rows)=>{
+      console.log('Citas notificadas');
+    });
+  });
+
+});
 
 // cron.schedule('* * 1 * *', () => {
 //   console.log('corre cada hora * * 1 * * ');
