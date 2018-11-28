@@ -47,7 +47,7 @@ citasIModule.darUsuariosID = (id,callback)=>{
   let ids = parseInt(id);
   if(connection)
   {
-    var sel = "SELECT cedula, nombre FROM usuarios WHERE cedula like '?%' ";
+    var sel = "SELECT * FROM usuarios WHERE cedula like '?%' ";
     connection.query(sel,ids,(err,row)=>{
       if(err){throw err}
       else
