@@ -47,13 +47,22 @@ citasIModule.darUsuariosID = (id,callback)=>{
   let ids = parseInt(id);
   if(connection)
   {
-    var sel = "SELECT * FROM usuarios WHERE cedula like '?%' ";
+    var sel = "SELECT * FROM usuarios WHERE cedula = ?; ";
     connection.query(sel,ids,(err,row)=>{
       if(err){throw err}
       else
       {
-        console.log(row[0]);
-        callback(null,row);
+        console.log(row);
+          if (JSON.stringify(row)=='[]')
+          {
+            callback(null,false);
+          }
+          else {
+            {
+                callback(null,row);
+            }
+          }
+
       }
     });
   }
