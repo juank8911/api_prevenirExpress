@@ -50,8 +50,46 @@ citasIModule.nuevaCita = (cita,callback)=>{
     }
     else
     {
+      // let ins = "INSERT INTO usuarios (id,cedula, nombre, apellidos,telefono,fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES (?,?, ?, ?, ?, ?, ?, ?);"
+      let ins = 'INSERT INTO usuarios (id, cedula, nombre, apellidos, telefono, fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES (?, ?, ?, ?, ?, ?, ?, ?);'
+      connection.query(ins,[cita.usuario,cita.usuario,cita.nombres,cita.apellidos,cita.contacto,cita.fecha_nacimiento,17,47],(err,insert)=>{
+        if(err){throw err;}
+        else
+        {
+          console.log(cita);
+          console.log(insert);
+          var Mend = parseInt(00);
+          var hinicio = moment(cita.start).format('HH:mm:ss');
+          var Finicio = moment(cita.start).format('YYYY-MM-DD');
+          var horas = hinicio.split(":");
+          var mins = horas[1];
+          var hora = horas[0];
+          hora = parseInt(hora);
+          mins = parseInt(mins);
+          minsEnd = mins+Mend;
+          hora = hora;
+          var Hstart = hora+":"+"00"+":00";
+          var Hend = hora+1+":"+"00"+":00";
+          var starts = Finicio+" "+Hstart;
+          var ends = Finicio+" "+Hend;
+          //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
+          var eventss = {
+          color: cita.color,
+          start: starts,
+          end: ends,
+          usuario: cita.usuario,
+          servicio: cita.servicio,
+          mascota:cita.mascota
+          };
+          console.log(eventss);
+          event.agregarEvento(eventss,(err,resp)=>{
+            callback(null,resp);
+          });
+
+        }
+      });
       console.log('no existe el usuario');
-      console.log(citas);
+      console.log(cita);
     }
 
   }
