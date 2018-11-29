@@ -1,4 +1,5 @@
 const internas = require('../models/citasinternas');
+let jwt = require('../models/jwt');
 
 module.exports = function (app)
 {
@@ -17,6 +18,15 @@ app.get('/cedula',(req,res)=>{
 internas.darUsuarios((err,data)=>{
 res.json(data);
 });
+});
+
+app.post('/citai',jwt.validaAdmin,(req,res)=>{
+  // console.log(req.body);
+  let cita = req.body;
+  // console.log(cita);
+  internas.nuevaCita(cita,(err,resp)=>{
+    res.json(resp);
+  });
 });
 
 

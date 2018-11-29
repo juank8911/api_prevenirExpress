@@ -1,5 +1,7 @@
 let mysql = require('mysql');
 let config = require('../config');
+let event = require('./eventos');
+let moment = require('moment');
 
 connection = mysql.createConnection({
 host: config.domain,
@@ -17,11 +19,39 @@ citasIModule.nuevaCita = (cita,callback)=>{
   {
     if(cita.existe == true)
     {
-
+      console.log(cita);
+      var Mend = parseInt(00);
+      var hinicio = moment(cita.start).format('HH:mm:ss');
+      var Finicio = moment(cita.start).format('YYYY-MM-DD');
+      var horas = hinicio.split(":");
+      var mins = horas[1];
+      var hora = horas[0];
+      hora = parseInt(hora);
+      mins = parseInt(mins);
+      minsEnd = mins+Mend;
+      hora = hora;
+      var Hstart = hora+":"+"00"+":00";
+      var Hend = hora+1+":"+"00"+":00";
+      var starts = Finicio+" "+Hstart;
+      var ends = Finicio+" "+Hend;
+      //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
+      var eventss = {
+      color: cita.color,
+      start: starts,
+      end: ends,
+      usuario: cita.usuario,
+      servicio: cita.servicio,
+      mascota:cita.mascota
+      };
+      console.log(eventss);
+      event.agregarEvento(eventss,(err,resp)=>{
+        callback(null,resp);
+      });
     }
     else
     {
-
+      console.log('no existe el usuario');
+      console.log(citas);
     }
 
   }
@@ -47,7 +77,7 @@ citasIModule.darUsuariosID = (id,callback)=>{
   let ids = parseInt(id);
   if(connection)
   {
-    var sel = "SELECT * FROM usuarios WHERE cedula = ?; ";
+    var sel = "SELECT * FROM usuarios WHERE cedula = ?;";
     connection.query(sel,ids,(err,row)=>{
       if(err){throw err}
       else

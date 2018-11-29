@@ -133,6 +133,7 @@ if(err){throw err}else{callback(null,row);}
 //agrega los eventos a la base de datos
 eventmodule.agregarEvento = (events,callback) =>{
 if(connection){
+  console.log('*/*/*/*/*/*/*/*/*/*');
 console.log(events);
 //console.lo.log(events.servicio+'///////////*************************');
 if(events.mascota==true)
@@ -190,7 +191,7 @@ connection.query(psh,[events.servicio],(err,rowph)=>{
     sleep(1000);
     console.log(respus);
     console.log('enviando respuesta');
-    callback(null,[{'agregado':respus}]);
+    callback(null,[{'agregado':true, 'push':respus}]);
   });
 
   });

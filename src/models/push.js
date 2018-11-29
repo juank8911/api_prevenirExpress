@@ -120,6 +120,14 @@ let p = true;
     fcm.send(message,(err,response)=>{
       if(err){
       console.log('no enviados'+ err);
+      console.log(response);
+      console.log(p);
+      if(p==2)
+      {
+        console.log('ENTRE AL IF');
+        callback(null,false);
+      }
+      p++
       }
       else
       {
