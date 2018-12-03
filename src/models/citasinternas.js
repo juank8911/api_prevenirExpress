@@ -169,6 +169,7 @@ citasIModule.citaMascotas = (cita,callback)=>{
                 var Hend = hora+1+":"+"00"+":00";
                 var starts = Finicio+" "+Hstart;
                 var ends = Finicio+" "+Hend;
+
                 //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
                 var eventss = {
                 color: cita.color,
