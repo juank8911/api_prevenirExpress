@@ -96,6 +96,155 @@ citasIModule.nuevaCita = (cita,callback)=>{
 
 };
 
+
+citasIModule.citaMascotas = (cita,callback)=>{
+  if(connection)
+  {
+      // console.log(cita)
+      if(cita.existe == true)
+      {
+          if(cita.existem == true )
+          {
+            console.log('existe  la mascota y el usuario');
+            console.log(cita);
+            // console.log(inse_masc);
+              //*****************************************************************************************************//
+              console.log(cita);
+              // console.log(insert);
+              var Mend = parseInt(00);
+              var hinicio = moment(cita.start).format('HH:mm:ss');
+              var Finicio = moment(cita.start).format('YYYY-MM-DD');
+              var horas = hinicio.split(":");
+              var mins = horas[1];
+              var hora = horas[0];
+              hora = parseInt(hora);
+              mins = parseInt(mins);
+              minsEnd = mins+Mend;
+              hora = hora;
+              var Hstart = hora+":"+"00"+":00";
+              var Hend = hora+1+":"+"00"+":00";
+              var starts = Finicio+" "+Hstart;
+              var ends = Finicio+" "+Hend;
+              //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
+              var eventss = {
+              color: cita.color,
+              start: starts,
+              end: ends,
+              usuario: cita.id_mascota,
+              servicio: cita.servicio,
+              mascota:cita.mascota
+              };
+              console.log(eventss);
+              event.agregarEvento(eventss,(err,resp)=>{
+                callback(null,resp);
+              });
+          }
+          else
+          {
+            console.log('***********//////////////////*************');
+            console.log('no existe  la mascota pero si e el usuario');
+            console.log(cita.fecha_nacimiento);
+            console.log(cita);
+            let ins_masc = 'INSERT INTO mascotas (especie, raza, color, nombre, sexo, fecha_nacimineto, esterilizado, id_usuarios) VALUES (?, ?, ?, ?, ?, ?, ?, ?);';
+
+            connection.query(ins_masc,[cita.especie,cita.raza,cita.colorMascota,cita.nombreMascota,cita.sexo,cita.fecha_nacimiento,cita.esterilizado,cita.usuario],(err,inse_masc)=>{
+            if(err){throw err}
+            else
+            {
+              console.log(inse_masc);
+                //*****************************************************************************************************//
+                // console.log(cita);
+                // console.log(insert);
+                var Mend = parseInt(00);
+                var hinicio = moment(cita.start).format('HH:mm:ss');
+                var Finicio = moment(cita.start).format('YYYY-MM-DD');
+                var horas = hinicio.split(":");
+                var mins = horas[1];
+                var hora = horas[0];
+                hora = parseInt(hora);
+                mins = parseInt(mins);
+                minsEnd = mins+Mend;
+                hora = hora;
+                var Hstart = hora+":"+"00"+":00";
+                var Hend = hora+1+":"+"00"+":00";
+                var starts = Finicio+" "+Hstart;
+                var ends = Finicio+" "+Hend;
+                //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
+                var eventss = {
+                color: cita.color,
+                start: starts,
+                end: ends,
+                usuario: inse_masc.insertId,
+                servicio: cita.servicio,
+                mascota:cita.mascota
+                };
+                console.log(eventss);
+                event.agregarEvento(eventss,(err,resp)=>{
+                  callback(null,resp);
+                });
+            }
+            });
+          }
+
+      }
+      else
+      {
+        let ins = 'INSERT INTO usuarios (id, cedula, nombre, apellidos, telefono, fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES (?, ?, ?, ?, ?, ?, ?, ?);'
+        connection.query(ins,[cita.usuario,cita.usuario,cita.nombres,cita.apellidos,cita.contacto,cita.fecha_nacimiento,17,47],(err,insert)=>{
+          if(err){throw err;}
+          else
+          {
+            let ins_masc = 'INSERT INTO mascotas (especie, nombre, sexo, esterilizado, id_usuarios) VALUES (?, ?, ?, ?, ?);';
+            connection.query(ins_masc,[cita.especie,cita.nombreMascota,cita.sexo,cita.esterilizado,cita.usuario],(err,inse_masc)=>{
+              if(err)
+              {
+                throw err
+              }
+              else
+              {
+                  console.log(inse_masc);
+                    //*****************************************************************************************************//
+                    console.log(cita);
+                    console.log(insert);
+                    var Mend = parseInt(00);
+                    var hinicio = moment(cita.start).format('HH:mm:ss');
+                    var Finicio = moment(cita.start).format('YYYY-MM-DD');
+                    var horas = hinicio.split(":");
+                    var mins = horas[1];
+                    var hora = horas[0];
+                    hora = parseInt(hora);
+                    mins = parseInt(mins);
+                    minsEnd = mins+Mend;
+                    hora = hora;
+                    var Hstart = hora+":"+"00"+":00";
+                    var Hend = hora+1+":"+"00"+":00";
+                    var starts = Finicio+" "+Hstart;
+                    var ends = Finicio+" "+Hend;
+                    //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
+                    var eventss = {
+                    color: cita.color,
+                    start: starts,
+                    end: ends,
+                    usuario: inse_masc.insertId,
+                    servicio: cita.servicio,
+                    mascota:cita.mascota
+                    };
+                    console.log(eventss);
+                    event.agregarEvento(eventss,(err,resp)=>{
+                      callback(null,resp);
+                    });
+              }
+
+          });
+        }
+      });
+    }
+  }
+};
+
+
+
+
 citasIModule.darUsuarios = (callback)=>{
   if(connection)
   {
@@ -112,10 +261,21 @@ citasIModule.darUsuarios = (callback)=>{
 };
 
 citasIModule.darUsuariosID = (id,callback)=>{
-  let ids = parseInt(id);
+  let ids = parseInt(id.ids);
+  console.log(id.masc);
   if(connection)
   {
-    var sel = "SELECT * FROM usuarios WHERE cedula = ?;";
+    if(id.masc == true || id.masc =='true')
+    {
+        // console.log('con mascotas');
+          var sel = "SELECT * FROM usuarios WHERE cedula = ?;";
+          var masc = 'SELECT * FROM mascotas WHERE id_usuarios = ?;'
+    }
+    else
+    {
+        // console.log('sin mascotas');
+          var sel = "SELECT * FROM usuarios WHERE cedula = ?;";
+    }
     connection.query(sel,ids,(err,row)=>{
       if(err){throw err}
       else
@@ -127,7 +287,25 @@ citasIModule.darUsuariosID = (id,callback)=>{
           }
           else {
             {
-                callback(null,row);
+              if(id.masc == true || id.masc =='true')
+              {
+                // console.log('buscando mascotas');
+                // console.log(row[0].id);
+                connection.query(masc,[row[0].id],(err,ms)=>{
+                  if(err){throw err}
+                  else
+                  {
+                    // console.log(ms);
+                    row[0].masc = ms;
+                    callback(null,row)
+                  }
+                });
+              }
+              else
+              {
+              callback(null,row);
+              }
+
             }
           }
 

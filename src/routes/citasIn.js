@@ -5,9 +5,12 @@ module.exports = function (app)
 {
 
 //devuelve listado de categorias
-app.get('/cedula/:id',(req,res)=>{
-  let id = req.params.id;
-  console.log('da cedulas id');
+app.get('/cedula/:id/:masc',(req,res)=>{
+  let id = {
+      ids: req.params.id,
+      masc: req.params.masc};
+
+  console.log(id.masc);
 internas.darUsuariosID(id,(err,data)=>{
 res.json(data);
 });
@@ -23,10 +26,22 @@ res.json(data);
 app.post('/citai',jwt.validaAdmin,(req,res)=>{
   // console.log(req.body);
   let cita = req.body;
-  // console.log(cita);
-  internas.nuevaCita(cita,(err,resp)=>{
-    res.json(resp);
-  });
+  let masc = req.body.mascota;
+  if(masc==true)
+  {
+    console.log('mascota = a true');
+      internas.citaMascotas(cita,(err,resp)=>{
+        res.json(resp);
+      });
+  }
+  else
+  {
+    console.log();
+    internas.nuevaCita(cita,(err,resp)=>{
+      res.json(resp);
+    });
+  }
+
 });
 
 

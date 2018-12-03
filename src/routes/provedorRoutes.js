@@ -18,6 +18,14 @@ provers.darProvedorid(idprov,(err,data)=>{
 res.json(data)});
 });
 
+
+app.get('/perprovedor/:id',(req,res)=>{
+  let id = req.params.id;
+  provers.darPerProveid(id,(err,prov)=>{
+    res.json(prov);
+  });
+});
+
 app.put('/provedores',jwts.validaAdmin,(req,res)=>{
 //prov.nit,prov.nombre,prov.direccion,prov.telefono,prov.whatsapp,prov.link,prov.video,,prov.id
 let prov = {

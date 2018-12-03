@@ -77,6 +77,27 @@ topic.topicsProvedor(id,(err,rsp)=>{
 });
 };
 
+//retorna a un provedor por su id
+
+provedorModule.darPerProveid = (id,callback)=>{
+  let vl = {};
+var sql = 'SELECT * FROM provedores WHERE id_provedor = ?';
+connection.query(sql,[id],(err,row)=>{
+if(err){throw err}
+else
+{
+//console.log(row);
+// vl = row[0];
+// topic.topicsProvedor(id,(err,rsp)=>{
+  // console.log(row[0]);
+  // vl.topics=rsp;
+  // console.log(vl);
+  callback(null,row)
+// });
+}
+});
+};
+
 //registra un provedor en la base de datos
 provedorModule.regProv = (prov, callback)=> {
 var id = prov.id;
