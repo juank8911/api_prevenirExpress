@@ -121,6 +121,7 @@ app.all('*', function(req, res,next) {
 //let rutas = express.Router();
 //rutas de el servidor
 //rutas.route('/login').post(ses.login);
+require('./routes/medicoRoutes')(app);
 require('./routes/citasIn')(app);
 require('./routes/topiscRoutes')(app);
 require('./routes/historialRoutes')(app);

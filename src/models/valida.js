@@ -68,6 +68,14 @@ res.json({'mensaje':'no ahy conexion a la base de datos'});
 }
 };
 
+validamodel.validaMedico = (val,callback) =>{
+  if(connection)
+  {
+    //cedula,email,
+  }
+};
+
+
 
 
 module.exports = validamodel;
