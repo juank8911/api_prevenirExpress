@@ -68,10 +68,43 @@ res.json({'mensaje':'no ahy conexion a la base de datos'});
 }
 };
 
-validamodel.validaMedico = (val,callback) =>{
+validamodel.validaMedico = (vali,callback) =>{
   if(connection)
   {
+    // console.log(vali);
+    // console.log('validando');
     //cedula,email,
+    let val = 'SELECT * FROM members WHERE email = ?'
+    connection.query(val,[vali.email],(err,res)=>{
+      if(err){throw err}
+      else
+      {
+        // console.log(res);
+        if (JSON.stringify(res)=='[]')
+        {
+          val = 'SELECT * FROM medicos WHERE tarj_profecional = ?';
+          connection.query(val,[vali.t_prof],(err,res1)=>{
+            // console.log(res1);
+            if(err){throw err}
+            else
+            {
+              if (JSON.stringify(res1)=='[]')
+              {
+                callback(null,{'existe':false});
+              }
+              else
+              {
+                callback(null,[{'existe':'true','campo':'profecional'}]);
+              }
+            }
+          });
+        }
+        else
+        {
+          callback(null,[{'existe':true,'campo':'email'}]);
+        }
+      }
+    });
   }
 };
 

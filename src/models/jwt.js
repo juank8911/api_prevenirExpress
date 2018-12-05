@@ -34,15 +34,16 @@ throw err;
 }
 else
 {
-  // console.log('////***LOGIN*****///');
-  // console.log(row);
+  console.log('////***LOGIN*****///');
+  console.log(row);
 var login = row[0];
 if(login!=null)
 {
-// console.log('/////***//////');
-// console.log(login);
+//
+console.log(login);
 var av = {avatar:logins.avatar,id:login.id};
-// console.log(av);
+console.log('/////*AV**//////');
+console.log(av);
 var member = {email:login.email,password:login.password,admin:login.admin};
 // console.log(member);
 var tokenres = jwts.sign(member,config.jwt_secreto);
@@ -51,17 +52,19 @@ if(admins=='true')
 {
 admins=true;
 }
-else
+else if (admins=='false')
 {
 admins=false;
-// user.putAvatar(av,(err,res)=>{
-// console.log(res);
-// });
+}
+else
+{
+  admins='medico';
 }
 var idU = login.id;
 let loges = {token:tokenres, login:true , esAdmin:admins, id_usuario:idU};
+console.log('/////*LOGES**//////');
 // console.log(admins);
-// console.log(loges);
+console.log(loges);
 callback(null,loges);}
 else {
 let error = {menaje:'usuario o contraseña incorrecto', login:false};

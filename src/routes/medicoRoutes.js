@@ -20,11 +20,22 @@ res.json(data);
 app.post('/medicos',(req,res)=>{
   let medico = req.body;
   // console.log(req.body);
-  console.log(medico);
-  // medico = medico[0];
-  med.agregarMedico(medico,(err,resps)=>{
-    res.json(resps);
-  });
+  let existe = req.body.existe;
+  // console.log(existe);
+  if(existe==false)
+  {
+    console.log(medico);
+    // medico = medico[0];
+    med.agregarMedico(medico,(err,resps)=>{
+      res.json(resps);
+    });
+  }
+  else
+  {
+    med.agregarProvedor(medico,(err,resp)=>{
+      res.json(resp);
+    });
+  }
 });
 
 
