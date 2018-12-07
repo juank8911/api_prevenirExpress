@@ -13,19 +13,21 @@ fotos:req.body.foto,
 id:req.body.id
 };
 var admin = req.body.admin;
-if(admin==false)
+var med = req.body.medico;
+console.log('admin '+admin+' medico '+med);
+if(admin==false && med==false)
 {
 fotos.setFotoUsu(foto,(err,data)=>{
 res.json(data);
 });
 }
-else if (admin=='medico')
+else if (admin==false && med==true)
 {
   fotos.setFotoMed(foto,(err,data)=>{
     res.json(data);
   });
 }
-else if (admin==true)
+else if (admin==true && med==false )
 {
   fotos.setFotoProv(foto,(err,data)=>{
   res.json(data);
