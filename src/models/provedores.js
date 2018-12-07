@@ -70,7 +70,7 @@ vl = row[0];
 topic.topicsProvedor(id,(err,rsp)=>{
   // console.log(row[0]);
   vl.topics=rsp;
-  console.log(vl);
+  // console.log(vl);
   callback(null,vl)
 });
 }

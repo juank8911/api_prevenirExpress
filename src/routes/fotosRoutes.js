@@ -19,7 +19,13 @@ fotos.setFotoUsu(foto,(err,data)=>{
 res.json(data);
 });
 }
-else
+else if (admin=='medico')
+{
+  fotos.setFotoMed(foto,(err,data)=>{
+    res.json(data);
+  });
+}
+else if (admin==true)
 {
   fotos.setFotoProv(foto,(err,data)=>{
   res.json(data);

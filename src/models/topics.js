@@ -25,7 +25,7 @@ topicmodule.topicsProvedor=(id,callback)=>{
           tp.push("'"+cls[i].nombre+"'");
           if(p==cls.length)
           {
-            console.log(tp);
+            // console.log(tp);
           callback(null,tp);
           }
           p++;
