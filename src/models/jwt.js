@@ -212,4 +212,29 @@ return res.status(305).send({'mensaje':'error al validar ususario'});
 }
 };
 
+jwtmodel.confirmaCuenta = (salt,callback)=>{
+  let con = 'SELECT salt FROM members Where id = ? AND salt = ?;'
+  connection.query(con,[salt.id,salt.salt],(err,res)=>{
+    if(err){throw err}
+    else
+    {
+      if(JSON.stringify(res)!='[]')
+      {
+        let upt = 'UPDATE members SET locked = 0 WHERE (id =?);'
+        connection.query(upt,[salt.id],(err,resp)=>{
+          if(err){throw err}
+          else
+          {
+            callback(null,true);
+          }
+        });
+      }
+      else
+      {
+        callback(null,false);
+      }
+    }
+  });
+};
+
 module.exports = jwtmodel;

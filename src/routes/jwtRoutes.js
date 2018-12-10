@@ -135,6 +135,11 @@ res.json([{'menaje':'no se pudo agregar el usuario ya existe','existe':true},dat
 
 });
 
-
+app.put('/cuenta',(req,res)=>{
+  let salt = req.body;
+  jwts.confirmaCuenta(salt,(err,row)=>{
+    res.json(row);
+  });
+});
 
 }

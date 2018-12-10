@@ -33,10 +33,11 @@ descuento: req.body.descuento,
 categoria: req.body.id_ctga,
 horario: req.body.horarios,
 categoria: req.body.id_ctga,
-direccion:req.body.direccion
+direccion:req.body.direccion,
+medico_id: req.body.medico_id
 //files: req.files.imagenes
 };
-console.log(servicio);
+// console.log(servicio);
 serv.save(servicio,(err,data)=>{
 console.log(data);
 res.json(data);

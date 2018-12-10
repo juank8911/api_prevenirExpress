@@ -81,12 +81,20 @@ if(connection)
 medicosModule.getMedicoMem = (id,callback)=>{
   if(connection)
   {
+    let resp = [];
       let get = 'SELECT medicos.*,members.email FROM medicos,members WHERE medicos.members_id = members.id AND medicos.members_id = ?;';
       connection.query(get,[id],(err,res)=>{
         if(err){throw err}
         else
         {
-          callback(null,res)
+          titulo.getTitulos(id,(err,row)=>{
+            res = res[0];
+            res.titulos = row;
+            resp.push(res);
+            console.log(resp);
+            callback(null,resp)
+          });
+
         }
       });
   }
