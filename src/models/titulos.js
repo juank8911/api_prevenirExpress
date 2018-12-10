@@ -1,6 +1,7 @@
 let mysql = require('mysql');
 let config = require('../config');
 
+
 connection = mysql.createConnection({
 host: config.domain,
 user: config.userbd,
@@ -21,6 +22,7 @@ tituloModule.agregarTitulos = (titulos,callback)=>{
         if(err){throw err}
         else
         {
+
           if(p==titulos.length)
           {
             callback(null,true)

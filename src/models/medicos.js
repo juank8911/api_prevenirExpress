@@ -2,6 +2,7 @@ let mysql =require('sync-mysql');
 let config = require('../config');
 let valida = require('./valida');
 let service = require('./services');
+let titulo = require('./titulos');
 
 connection = new mysql({
 host: config.host,
@@ -226,12 +227,26 @@ if(connection)
 medicosModule.setMedico = (medico,callback) =>{
   if(connection)
   {
+    console.log(medico);
+    let titulos = medico.estudios;
+    console.log(titulos);
     let upd = 'UPDATE medicos SET nombres = ?, apellidos = ?, titulo = ?, telefono = ?, whatsapp = ? WHERE (medico_id = ?);';
     connection.query(upd,[medico.nombres,medico.apellidos,medico.titulo,medico.telefono,medico.wp,medico.id],(err,rep)=>{
       if(err){throw err}
       else
       {
+
+        if (JSON.stringify(titulos)=='[]')
+        {
         callback(null,true);
+        }
+        else
+        {
+          titulo.agregarTitulos(titulos,(err,resp)=>{
+            callback(null,resp);
+          });
+        }
+
       }
     });
   }
