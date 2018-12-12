@@ -3,6 +3,8 @@ let config = require('../config');
 let valida = require('./valida');
 let service = require('./services');
 let titulo = require('./titulos');
+let ciclo = require('../controler/ciclos')
+let email = require('./email');
 
 connection = new mysql({
 host: config.host,
@@ -115,36 +117,48 @@ medicosModule.agregarMedico = (medico,callback)=>{
     {
       if(connection)
     {
-      // console.log(medico);
-      let salt = 123456;
-    var mem = 'INSERT INTO members (email, admin, password, salt) VALUES (?, ?, ?, ?);'
-    var sql = 'INSERT INTO medicos (medico_id, cedula, nombres, apellidos, tarj_profecional, titulo,members_id) VALUES ( ?,?, ?, ?, ?, ?,?)';
-    connection.query(mem,[medico.email,'medico',medico.pssw,salt],(err,mem)=>{
-      if(err){throw err}
-      else
-      {
-        console.log('member agregado con exito');
-        // console.log(mem.insertId);
-        connection.query(sql,[mem.insertId,medico.cedula,medico.nombre,medico.apellidos,medico.tarj_profecional,medico.titulo,mem.insertId],(err,row)=>{
-        if(err)
-        {
-        throw err
-        }
-        else
-        {
-          let ins = 'INSERT INTO provedores_has_medicos (id_provedor,medico_id) VALUES (?,?);';
-          connection.query(ins,[medico.provedores_id,mem.insertId],(err,ins)=>{
-            if(err){throw err}
-            else
-            {
-              callback(null,true);
-            }
-          });
+      ciclo.generaSalt((err,gen)=>{
+          salt = gen;
+          // console.log(medico);
 
-        }
+        var mem = 'INSERT INTO members (email, admin, password, salt) VALUES (?, ?, ?, ?);'
+        var sql = 'INSERT INTO medicos (medico_id, cedula, nombres, apellidos, tarj_profecional, titulo,members_id) VALUES ( ?,?, ?, ?, ?, ?,?)';
+        connection.query(mem,[medico.email,'medico',medico.pssw,salt],(err,mem)=>{
+          if(err){throw err}
+          else
+          {
+            var usu = {
+              to:medico.email,
+              pss: salt,
+              id:mem.insertId
+            };
+            email.cuentaBlock (usu,(err,ressp)=>{
+              console.log(ressp);
+              console.log('member agregado con exito');
+              // console.log(mem.insertId);
+              connection.query(sql,[mem.insertId,medico.cedula,medico.nombre,medico.apellidos,medico.tarj_profecional,medico.titulo,mem.insertId],(err,row)=>{
+              if(err)
+              {
+              throw err
+              }
+              else
+              {
+                let ins = 'INSERT INTO provedores_has_medicos (id_provedor,medico_id) VALUES (?,?);';
+                connection.query(ins,[medico.provedores_id,mem.insertId],(err,ins)=>{
+                  if(err){throw err}
+                  else
+                  {
+                    callback(null,true);
+                  }
+                });
+
+              }
+              });
+            });
+
+          }
         });
-      }
-    });
+      });
     }
     }
     else
@@ -255,6 +269,35 @@ medicosModule.setMedico = (medico,callback) =>{
           });
         }
 
+      }
+    });
+  }
+};
+
+
+medicosModule.deleteMedico = (ids,callback)=>{
+  if(connection)
+  {
+    var sel =  'SELECT * FROM servicios WHERE servicios.medico_id = ? AND servicios.id_provedores = ?;'
+    var del = 'DELETE FROM medicos WHERE (medico_id = ?);'
+    connection.query(sel,[ids.medico,ids.prov],(err,res)=>{
+      if(err){throw err}
+      else
+      {
+          if (JSON.stringify(res)!='[]')
+          {
+            callback(null,false);
+          }
+          else
+          {
+            connection.query(del,[ids.medico],(err,row)=>{
+              if(err){throw err}
+              else
+              {
+                callback(null,true)
+              }
+            });
+          }
       }
     });
   }

@@ -135,10 +135,18 @@ res.json([{'menaje':'no se pudo agregar el usuario ya existe','existe':true},dat
 
 });
 
-app.put('/cuenta',(req,res)=>{
+app.put('/cuenta',jwts.valida,(req,res)=>{
   let salt = req.body;
   jwts.confirmaCuenta(salt,(err,row)=>{
     res.json(row);
+  });
+});
+
+
+app.get('/locked/:id',(req,res)=>{
+  let id = req.params.id;
+  jwts.bloqueo(id,(err,resp)=>{
+    res.json(resp);
   });
 });
 

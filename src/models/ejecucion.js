@@ -3,6 +3,8 @@ let config = require('../config');
 let moment = require('moment');
 let pushs = require('./push')
 var sleep = require('system-sleep');
+let ciclo = require('../controler/ciclos')
+let email = require('./email');
 
 connection = mysql.createConnection({
 host: config.host,
@@ -241,6 +243,101 @@ ejectModel.histrialBenf = (row,callback)=>{
     }
   }
 
+};
+
+ejectModel.cambioSalt = (id,callback)=>{
+  if(connection)
+  {
+    var sel = 'SELECT * FROM members WHERE id = ? ;';
+    var upd = 'UPDATE members SET salt = ? WHERE (id = ?);';
+    connection.query(sel,[id],(err,res)=>{
+      if(err){throw err}
+      else
+      {
+      res = res[0];
+      ciclo.generaSalt((err,gen)=>{
+        cod = gen;
+      });
+      var usu = {
+        to:res.email,
+        pss: cod,
+        id:res.id
+      };
+      email.cuentaBlock (usu,(err,ressp)=>{
+        connection.query(upd,[cod,res.id],(err,resp)=>{
+          if(err){throw err}
+          else
+          {
+            callback(null,true)
+          }
+        });
+      });
+      }
+    });
+  }
+};
+
+ejectModel.cambioContra = (id,callback)=>{
+  if(connection)
+  {
+    var sel = 'SELECT * FROM members WHERE email = ? ;';
+    var upd = 'UPDATE members SET salt_contra = ? WHERE (id = ?);';
+    connection.query(sel,[id],(err,res)=>{
+      if(err){throw err}
+      else
+      {
+      if (JSON.stringify(res)=='[]')
+      {
+          callback(null,false)
+      }
+      else
+       {
+      res = res[0];
+      ciclo.generaSalt((err,gen)=>{
+        cod = gen;
+      });
+      var usu = {
+        to:res.email,
+        pss: cod,
+        id:res.id
+      };
+      email.cuentaBlock (usu,(err,ressp)=>{
+        connection.query(upd,[cod,res.id],(err,resp)=>{
+          if(err){throw err}
+          else
+          {
+            callback(null,true)
+          }
+        });
+      });
+      }
+      }
+    });
+  }
+};
+
+ejectModel.aceptaContra = (dts,callback)=>{
+  if(connection)
+  {
+    console.log('Cambio de contrseña');
+    var upt = 'UPDATE members SET password = ? WHERE salt_contra = ?;';
+    connection.query(upt,[dts.pssw,dts.salt],(err,row)=>{
+      if(err){throw err}
+      else
+      {
+        // console.log(row);
+        console.log(row.affectedRows);
+        if(row.affectedRows>=1)
+        {
+                  callback(null,true);
+        }
+        else {
+          callback(null,false);
+        }
+
+      }
+    });
+  }
 };
 
 

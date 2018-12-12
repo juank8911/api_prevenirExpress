@@ -220,7 +220,7 @@ jwtmodel.confirmaCuenta = (salt,callback)=>{
     {
       if(JSON.stringify(res)!='[]')
       {
-        let upt = 'UPDATE members SET locked = 0 WHERE (id =?);'
+        let upt = 'UPDATE members SET locked = 1 WHERE (id =?);'
         connection.query(upt,[salt.id],(err,resp)=>{
           if(err){throw err}
           else
@@ -235,6 +235,29 @@ jwtmodel.confirmaCuenta = (salt,callback)=>{
       }
     }
   });
+};
+
+jwtmodel.bloqueo = (id,callback) =>{
+  if(connection)
+  {
+    let sel = 'SELECT locked FROM members WHERE id = ?';
+    connection.query(sel,[id],(err,row)=>{
+      if(err){throw err}
+      else
+      {
+        console.log(row);
+        row = row[0];
+        if(row.locked==0)
+        {
+          callback(null,false);
+        }
+        else
+        {
+          callback(null,true);
+        }
+      }
+    });
+  }
 };
 
 module.exports = jwtmodel;

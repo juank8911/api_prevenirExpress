@@ -106,6 +106,10 @@ transporter.sendMail(mailOptions, function(error, info){
 
 };
 
+emailModel.contraseña = (usu,callback) =>{
+  console.log('dentro de envio de correos');
+};
+
 emailModel.confirm = (conf,callback) =>{
   if(connection)
 {

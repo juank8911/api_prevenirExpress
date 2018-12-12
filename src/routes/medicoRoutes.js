@@ -73,5 +73,13 @@ app.put('/medico',jwt.valida,(req,res)=>{
   });
 });
 
+app.delete('/medico/:med/:prov',jwt.validaAdmin,(req,res)=>{
+  let ids = {medico:req.params.med,
+             prov:req.params.prov};
+med.deleteMedico(ids,(err,row)=>{
+  res.json(row);
+});
+});
+
 
 }
