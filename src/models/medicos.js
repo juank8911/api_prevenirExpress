@@ -279,7 +279,7 @@ medicosModule.deleteMedico = (ids,callback)=>{
   if(connection)
   {
     var sel =  'SELECT * FROM servicios WHERE servicios.medico_id = ? AND servicios.id_provedores = ?;'
-    var del = 'DELETE FROM medicos WHERE (medico_id = ?);'
+    var del = 'DELETE FROM provedores_has_medicos WHERE (id_provedor = ?) and (medico_id = ?);'
     connection.query(sel,[ids.medico,ids.prov],(err,res)=>{
       if(err){throw err}
       else
@@ -290,7 +290,7 @@ medicosModule.deleteMedico = (ids,callback)=>{
           }
           else
           {
-            connection.query(del,[ids.medico],(err,row)=>{
+            connection.query(del,[ids.prov,ids.medico],(err,row)=>{
               if(err){throw err}
               else
               {

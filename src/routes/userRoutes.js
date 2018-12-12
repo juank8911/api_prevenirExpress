@@ -46,7 +46,8 @@ direccion:req.body.direccion,
 telefono:req.body.telefono,
 telefonowatshapp:req.body.telefonowatshapp,
 fecha_nacimiento: fecha,
-id:req.body.id
+id:req.body.id,
+id_municipio: req.body.id_municipio
 
 };
 User.setUsuario(usu,(err,resp)=>{if(err){throw err}

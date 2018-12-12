@@ -40,7 +40,7 @@ admin: req.body.esAdmin,
 face: req.body.face,
 parent: 17,
 avatar: req.body.avatar,
-nit:req.body.nit
+nit:req.body.nit,
 };
 console.log('//*/*/*Registro/*/*///');
 console.log(regist);

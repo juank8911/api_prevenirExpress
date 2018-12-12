@@ -144,8 +144,8 @@ userModel.setUsuario=(usu,callback)=>{
 if(connection)
 {
 // console.log(usu.fecha_nacimiento);
-var sql = 'UPDATE usuarios SET cedula=?, nombre= ?, apellidos=?, direccion=?, telefono=?,telefonowatshapp=?,fecha_nacimiento=? WHERE id= ? and parentescos_id_parentescos = 17;'
-connection.query(sql,[usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.fecha_nacimiento,usu.id],(err,row)=>{
+var sql = 'UPDATE usuarios SET cedula=?, nombre= ?, apellidos=?, direccion=?, telefono=?,telefonowatshapp=?,fecha_nacimiento=?,id_municipio=? WHERE id= ? and parentescos_id_parentescos = 17;'
+connection.query(sql,[usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.fecha_nacimiento,usu.id,usu.id_municipio],(err,row)=>{
 if(err){callback(null,{'update':false})}
 else
 {
