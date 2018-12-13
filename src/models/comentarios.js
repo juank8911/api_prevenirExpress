@@ -69,10 +69,67 @@ connection.query(ins,[coment.comentario,coment.califica,coment.id_servicio,comen
 }
 };
 
-comentmodule.dartrComent = (id,callback)=>{
+
+comentmodule.respuestasFaltaMed = (ids,callback) =>{
   if(connection)
   {
-    
+    console.log('pase 1');
+    if(ids.cate != 20)
+    {
+      console.log('pase 2');
+      var sel = 'SELECT comentarios.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as usu, usuarios.avatar FROM comentarios,servicios, usuarios WHERE usuarios.id = comentarios.usuarios_id AND comentarios.servicios_idservicios = servicios.id_servicios AND servicios.id_servicios = ? AND comentarios.coment_m = 0;';
+      connection.query(sel,[ids.id],(err,resp)=>{
+        if(err){throw err}
+        else
+        {
+          callback(null,resp);
+        }
+      });
+    }
+    else
+    {
+      var sel = 'SELECT comentarios_masc.*, mascotas.nombre as usu, mascotas.avatar FROM comentarios_masc,servicios, mascotas WHERE mascotas.id_mascotas = comentarios_masc.id_mascotas AND comentarios_masc.id_servicios = servicios.id_servicios AND servicios.id_servicios = ? AND comentarios_masc.coment_m = 0;';
+      connection.query(sel,[ids.id],(err,resp)=>{
+        if(err){throw err}
+        else
+        {
+          callback(null,resp);
+        }
+      });
+    }
+  }
+};
+
+comentmodule.UpdateComentMed = (coment,callback)=>{
+  if(connection)
+  {
+    console.log(coment);
+      if(coment.cate != 20)
+      {
+        console.log('dentro');
+        var upd = 'UPDATE comentarios SET comentario_med = ?, coment_m = 1 WHERE (id_comentarios = ?)';
+        connection.query(upd,[coment.coment,coment.id],(err,row)=>{
+          if(err){throw err}
+          else
+          {
+            console.log(row);
+            callback(null,true)
+          }
+        });
+      }
+      else
+      {
+        var upd = 'UPDATE comentarios_masc SET comentarios_masc.cometario_med = ?, comentarios_masc.coment_m = 1 WHERE (comentarios_masc.id_comentarios = ?);';
+        connection.query(upd,[coment.coment,coment.id],(err,row)=>{
+          if(err){throw err}
+          else
+          {
+            console.log(row);
+            callback(null,true)
+          }
+        });
+
+      }
   }
 };
 

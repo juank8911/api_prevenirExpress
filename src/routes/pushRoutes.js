@@ -9,7 +9,8 @@ app.put('/push',(req, res)=>{
 var token = {
   token:req.body.token,
   id:req.body.id,
-  admines: req.body.admin
+  admines: req.body.admin,
+  medico: req.body.medico
 };
 console.log(token);
 

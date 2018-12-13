@@ -16,6 +16,7 @@ app.get('/user',jwts.validaAdmin,(req, res)=>{User.getUsers((err, data) => {res.
 //retorna la informacion del usuario segun su id
 app.get('/user/:id',(req,res)=>{
 var id=req.params.id;
+console.log('ES USUARIO');
 User.darUserId(id,(err,resp)=>{
 res.json(resp);
 });

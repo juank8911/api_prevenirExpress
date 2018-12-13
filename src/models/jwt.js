@@ -48,17 +48,22 @@ var member = {email:login.email,password:login.password,admin:login.admin};
 // console.log(member);
 var tokenres = jwts.sign(member,config.jwt_secreto);
 var admins = login.admin;
+console.log('ANTES DEL IFFFFF');
+console.log(admins);
 if(admins=='true')
 {
-admins=true;
+  console.log('provedor');
+admins=1;
 }
 else if (admins=='false')
 {
-admins=false;
+  console.log('usuario');
+admins=2;
 }
 else
 {
-  admins='medico';
+  console.log('medico');
+  admins=3;
 }
 var idU = login.id;
 let loges = {token:tokenres, login:true , esAdmin:admins, id_usuario:idU};

@@ -105,8 +105,10 @@ callback(null,mensaje);
 userModel.darUserId=(id,callback)=>{
 if(connection)
 {
-var sql = "SELECT usuarios.*, CONCAT( usuarios.nombre,' ', usuarios.apellidos) as nombres FROM usuarios where id = ? ";
-connection.query(sql,id,(err,row)=>{if(err){throw err}else{
+var sql = "SELECT usuarios.*, CONCAT( usuarios.nombre,' ', usuarios.apellidos) as nombres, municipio.id_municipio,municipio.nombre as nomMuni,departamento.nombre as nomDepa, departamento.id_departamento FROM usuarios,municipio,departamento where usuarios.id_municipio = municipio.id_municipio AND departamento.id_departamento = municipio.id_departamento AND usuarios.id = ? ";
+connection.query(sql,id,(err,row)=>{if(err){throw err}
+else{
+  console.log(row);
 callback(null,row);
 }
 });
@@ -143,9 +145,9 @@ callback(null,{'datos':true});
 userModel.setUsuario=(usu,callback)=>{
 if(connection)
 {
-// console.log(usu.fecha_nacimiento);
+console.log(usu.id_municipio);
 var sql = 'UPDATE usuarios SET cedula=?, nombre= ?, apellidos=?, direccion=?, telefono=?,telefonowatshapp=?,fecha_nacimiento=?,id_municipio=? WHERE id= ? and parentescos_id_parentescos = 17;'
-connection.query(sql,[usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.fecha_nacimiento,usu.id,usu.id_municipio],(err,row)=>{
+connection.query(sql,[usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.fecha_nacimiento,usu.id_municipio,usu.id],(err,row)=>{
 if(err){callback(null,{'update':false})}
 else
 {

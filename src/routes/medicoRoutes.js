@@ -28,6 +28,7 @@ res.json(data);
 
 app.get('/medicosm/:id',(req,res)=>{
   let idm = req.params.id;
+  console.log('ES MEDICO');
 med.getMedicoMem(idm,(err,data)=>{
 res.json(data);
 });

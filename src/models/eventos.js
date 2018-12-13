@@ -188,10 +188,25 @@ connection.query(psh,[events.servicio],(err,rowph)=>{
     };
     // console.log(disp);
   pushs.sendPush(disp,(err,respus)=>{
-    sleep(1000);
-    console.log(respus);
-    console.log('enviando respuesta');
-    callback(null,[{'agregado':true, 'push':respus}]);
+      sleep(1000);
+    var med = 'SELECT members.tokenpsh, servicios.nombre FROM servicios,medicos,members WHERE servicios.medico_id = medicos.medico_id AND medicos.members_id = members.id AND servicios.id_servicios = ?;';
+    connection.query(med,[events.servicio],(err,rowm)=>{
+      if(err){throw err}
+      else {
+        rowm = rowm[0];
+        disp = {
+          to:rowm.tokenpsh,
+          body:'Tienes una nueva cita de '+rowm.nombre+', a traves de nuesta app de descuentos medicos para el: '+moment(events.start).format('DD-MM-YYYY')+' a las: '+moment(events.start).format('HH:mm a')+' por favor revisa tus citas en la aplicacion',
+          title:'NUEVA CITA'
+        };
+        pushs.sendPush(disp,(err,respus)=>{
+          sleep(1000);
+          console.log(respus);
+          console.log('enviando respuesta');
+          callback(null,[{'agregado':true, 'push':respus}]);
+        });
+      }
+    });
   });
 
   });

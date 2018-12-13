@@ -19,7 +19,7 @@ pushmodule.addtoken = (token,callback)=>{
   {
     console.log('Informacion desde la apk');
     console.log(token);
-    if(token.admines==true)
+    if(token.admines==true && token.medico == false)
     {
       var sel = 'SELECT id, tokenpsh FROM members,provedores WHERE members.id = provedores.members_id AND id_provedor = ?;';
       connection.query(sel,[token.id],(err,res)=>{
@@ -56,7 +56,7 @@ pushmodule.addtoken = (token,callback)=>{
       });
 
     }
-    else if(token.admines==false)
+    else if(token.admines==false && token.medico == false)
     {
       var sel = 'SELECT members.id, tokenpsh FROM members,usuarios WHERE members.id = usuarios.members_id AND usuarios.id = ?;';
       connection.query(sel,[token.id],(err,res)=>{
@@ -65,7 +65,7 @@ pushmodule.addtoken = (token,callback)=>{
          {
             // sleep(1000);
             res = res[0];
-          if(res.tokenpsh == token.token)
+          if(res.tokenpsh != token.token)
           {
             console.log('dentro del if del token');
 
@@ -73,7 +73,7 @@ pushmodule.addtoken = (token,callback)=>{
           console.log(res);
 
           var upd = 'UPDATE members SET tokenpsh = ? WHERE id = ?;';
-          connection.query(upd,[token.token,res.members_id],(err,resp)=>{
+          connection.query(upd,[token.token,res.id],(err,resp)=>{
             if(err){throw err}
             else
             {
@@ -90,6 +90,44 @@ pushmodule.addtoken = (token,callback)=>{
           }
         }
     });
+
+  }
+  else if(token.admines==false && token.medico == true)
+  {
+    console.log('es medico');
+    var sel = 'SELECT members.id, tokenpsh FROM members,medicos WHERE members.id = medicos.members_id AND medicos.medico_id = ?;';
+    connection.query(sel,[token.id],(err,res)=>{
+      if(err){throw err}
+      else
+       {
+          // sleep(1000);
+          res = res[0];
+          console.log(res);
+        if(res.tokenpsh != token.token)
+        {
+          console.log('dentro del if del token');
+
+        console.log('true 1');
+        console.log(res);
+
+        var upd = 'UPDATE members SET tokenpsh = ? WHERE id = ?;';
+        connection.query(upd,[token.token,res.id],(err,resp)=>{
+          if(err){throw err}
+          else
+          {
+            console.log('////////////************/////////////////');
+            console.log('true 2');
+            callback(null,true);
+          }
+        });
+        }
+        else {
+          {
+            callback(null,false)
+          }
+        }
+      }
+  });
 
   }
 }
