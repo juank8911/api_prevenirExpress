@@ -15,7 +15,7 @@ app.get('/provedores/:id',(req,res)=>{
 var idprov = req.params.id;
 console.log('ES PROVEDOR');
 provers.darProvedorid(idprov,(err,data)=>{
-//console.log(data);
+console.log(data);
 res.json(data)});
 });
 
