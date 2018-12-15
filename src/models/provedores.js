@@ -73,7 +73,7 @@ vl = row[0];
   // vl.topics=rsp;
   console.log('respuesta A LA APP');
   // console.log(vl);
-  callback(null,row)
+  callback(null,vl)
 // });
 }
 });
