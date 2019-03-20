@@ -78,7 +78,7 @@ res.json(resp);
 app.get('/usuario/:ced',(req,res)=>{
     var ced=req.params.ced;
     console.log('ES USUARIO');
-    User.darUserId(ced,(err,resp)=>{
+    User.darUsuario(ced,(err,resp)=>{
     res.json(resp);
     });
     });
