@@ -180,11 +180,27 @@ callback(null,{'ok':true});
 userModel.darUsuario=(ced,callback)=>{
   if(connection)
   {
+    var not = [];
   var sql = "SELECT usuarios.*, CONCAT( usuarios.nombre,' ', usuarios.apellidos) as nombres, municipio.id_municipio,municipio.nombre as nomMuni,departamento.nombre as nomDepa, departamento.id_departamento FROM usuarios,municipio,departamento where usuarios.id_municipio = municipio.id_municipio AND departamento.id_departamento = municipio.id_departamento AND usuarios.cedula = ? ";
-  connection.query(sql,id,(err,row)=>{if(err){throw err}
+  var citas = "SELECT events.* FROM events, usuarios WHERE events.usuarios_id = usuarios.id AND usuarios.id = ?";
+  connection.query(sql,ced,(err,row)=>{if(err){throw err}
   else{
-    console.log(row);
-  callback(null,row);
+
+      row = row[0];
+      not.push(row);
+      console.log(not);
+      
+      connection.query(citas,[row.id],(err,rep)=>{
+        if(err){throw err}
+        else
+        {
+          not.push(rep);
+          console.log(not);
+          callback(null,not);
+          
+        }
+      });
+    
   }
   });
   }
