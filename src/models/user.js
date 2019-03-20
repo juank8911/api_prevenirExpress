@@ -101,6 +101,8 @@ callback(null,mensaje);
 });
 }
 };
+
+
 // retorna los usuarios por su id
 userModel.darUserId=(id,callback)=>{
 if(connection)
@@ -172,5 +174,20 @@ callback(null,{'ok':true});
 });
 }
 };
+
+
+// retorna los usuarios por su id
+userModel.darUsuario=(ced,callback)=>{
+  if(connection)
+  {
+  var sql = "SELECT usuarios.*, CONCAT( usuarios.nombre,' ', usuarios.apellidos) as nombres, municipio.id_municipio,municipio.nombre as nomMuni,departamento.nombre as nomDepa, departamento.id_departamento FROM usuarios,municipio,departamento where usuarios.id_municipio = municipio.id_municipio AND departamento.id_departamento = municipio.id_departamento AND usuarios.cedula = ? ";
+  connection.query(sql,id,(err,row)=>{if(err){throw err}
+  else{
+    console.log(row);
+  callback(null,row);
+  }
+  });
+  }
+  };
 
 module.exports = userModel;

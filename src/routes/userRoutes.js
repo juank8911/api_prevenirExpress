@@ -72,3 +72,13 @@ res.json(resp);
 });
 });
 }
+
+
+//retorna la informacion del usuario segun su cedula con sus citas
+app.get('/usuario/:ced',(req,res)=>{
+    var ced=req.params.ced;
+    console.log('ES USUARIO');
+    User.darUserId(ced,(err,resp)=>{
+    res.json(resp);
+    });
+    });
