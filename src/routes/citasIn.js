@@ -1,4 +1,5 @@
 const internas = require('../models/citasinternas');
+const citas = require('../models/citas');
 let jwt = require('../models/jwt');
 
 module.exports = function (app)
@@ -8,7 +9,8 @@ module.exports = function (app)
 app.get('/cedula/:id/:masc',(req,res)=>{
   let id = {
       ids: req.params.id,
-      masc: req.params.masc};
+      masc: req.params.masc
+    }
 
   console.log(id.masc);
 internas.darUsuariosID(id,(err,data)=>{
@@ -43,6 +45,17 @@ app.post('/citai',jwt.validaAdmin,(req,res)=>{
   }
 
 });
+
+app.post('/ordencita/:id/:ser',(req,res)=>{
+  let usu = {
+    id: req.params.id,
+    usu: req.params.usu
+  }
+    citas.CitasUsuarioProv(usu,(err,resp)=>{
+      res.json(resp);
+    })
+
+})
 
 
 }
