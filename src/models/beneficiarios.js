@@ -14,7 +14,7 @@ let benefModule = {};
 benefModule.agregarBeneficiario = (benef,callback)=>{
 if(connection)
 {
-var add = 'INSERT INTO usuarios (cedula, nombre, apellidos, telefono,telefonowatshapp,fecha_nacimiento,usuariosBf_id, parentescos_id_parentescos,id_pais) VALUES (?,?,?,?,?,?,?,?,?,?);';
+var add = 'INSERT INTO usuarios (cedula, nombre, apellidos, telefono,telefonowatshapp,fecha_nacimiento,usuariosBf_id, parentescos_id_parentescos,id_pais) VALUES (?,?,?,?,?,?,?,?,?);';
 // //console.lo.log(benef);
 connection.query(add,[benef.ident,benef.nombre,benef.apellidos,benef.tel,benef.tel,benef.fecha_n,benef.id_usu,benef.parent,benef.pais],(err,res)=>{
 if(err){callback(null,err)}

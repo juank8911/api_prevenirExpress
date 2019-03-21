@@ -75,7 +75,7 @@ res.json(resp);
 //retorna la informacion del usuario segun su cedula con sus citas
 app.get('/usua/:ced',(req,res)=>{
     var ced=req.params.ced;
-    console.log('ES USUARIO');
+    // console.log('ES USUARIO');
     User.darUsuario(ced,(err,resp)=>{
     res.json(resp);
     });
