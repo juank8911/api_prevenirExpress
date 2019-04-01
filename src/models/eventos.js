@@ -302,6 +302,7 @@ if(connection)
     //console.lo.log('mascota');
     var sel = 'SELECT servicios.id_servicios FROM servicios,provedores, events_masc where servicios.id_provedores = provedores.id_provedor and servicios.id_servicios = events_masc.id_servicios and provedores.id_provedor = ? and events_masc.id_eventos = ? limit 1;';
     var sql = 'DELETE FROM events_masc where events_masc.id_eventos = ? AND events_masc.id_servicios = ? ;';
+    var psh = 'SELECT members.tokenpsh, servicios.nombre, events.start FROM events, usuarios, members, servicios WHERE events.usuarios_id = usuarios.id AND members.id = usuarios.id AND events.servicios_idservicios = servicios.id_servicios and events.id_eventos = ?;';
   }
   else
   {
@@ -316,7 +317,7 @@ if(err){throw err}
 else
 {
 row = row[0];
-//console.lo.log(row);
+console.log(row);
 let evs = {
   id:ev.ide,
   sql:psh
@@ -395,12 +396,12 @@ eventmodule.eventsCalendar = (ev,callback) =>{
     if(ev.id_mascotas==20 || ev.id_mascotas=='20')
     {
       //console.lo.log('dentro del if');
-      var sql = 'SELECT YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc WHERE MONTH(start) = ? AND YEAR(start) = ? and id_servicios = ?'
+      var sql = 'SELECT start,end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc WHERE MONTH(start) = ? AND YEAR(start) = ? and id_servicios = ?'
     }
     else
     {
       //console.lo.log('no entro al if');
-      var sql = 'SELECT YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events WHERE MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
+      var sql = 'SELECT start,end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events WHERE MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
     }
 
 
