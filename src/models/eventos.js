@@ -396,12 +396,12 @@ eventmodule.eventsCalendar = (ev,callback) =>{
     if(ev.id_mascotas==20 || ev.id_mascotas=='20')
     {
       //console.lo.log('dentro del if');
-      var sql = 'SELECT start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc WHERE MONTH(start) = ? AND YEAR(start) = ? and id_servicios = ?'
+      var sql = 'SELECT start, end, YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc WHERE MONTH(start) = ? AND YEAR(start) = ? and id_servicios = ?'
     }
     else
     {
       //console.lo.log('no entro al if');
-      var sql = 'SELECT start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events WHERE MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
+      var sql = 'SELECT start, end, YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events WHERE MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
     }
 
 
