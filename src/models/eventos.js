@@ -401,7 +401,7 @@ eventmodule.eventsCalendar = (ev,callback) =>{
     else
     {
       //console.lo.log('no entro al if');
-      var sql = 'SELECT events.usuarios_id, usuarios.nombre as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events, usuarios WHERE events.usuarios_id = usuarios.id AND MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
+      var sql = 'SELECT events.usuarios_id, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events, usuarios WHERE events.usuarios_id = usuarios.id AND MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
     }
 
 
