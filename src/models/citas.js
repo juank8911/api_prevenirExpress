@@ -107,10 +107,9 @@ callback(null,row);
 citasModel.CitasUsuarioProv = (usu,callback)=>{
 
   let id = usu.id;
-  let ser = usu.ser;
 
-  var sql = "SELECT events.*, concat(usuarios.nombre,' ',usuarios.apellidos) as usuario, usuarios.cedula, servicios.nombre as servicio FROM events, servicios, usuarios WHERE servicios.id_provedores = events.servicios_idservicios and events.usuarios_id = usuarios.id and usuarios.cedula = ? and servicios.id_provedores = ?";
-  connection.query(sql,[id,ser],(err,row)=>{
+  var sql = "SELECT events.*, concat(usuarios.nombre,' ',usuarios.apellidos) as usuario, usuarios.cedula, servicios.nombre as servicio FROM events, servicios, usuarios WHERE servicios.id_provedores = events.servicios_idservicios and events.usuarios_id = usuarios.id and usuarios.cedula = ?;";
+  connection.query(sql,[id],(err,row)=>{
     if(err){throw err}
     else
     {
