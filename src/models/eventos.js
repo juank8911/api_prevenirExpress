@@ -302,7 +302,7 @@ if(connection)
     //console.lo.log('mascota');
     var sel = 'SELECT servicios.id_servicios FROM servicios,provedores, events_masc where servicios.id_provedores = provedores.id_provedor and servicios.id_servicios = events_masc.id_servicios and provedores.id_provedor = ? and events_masc.id_eventos = ? limit 1;';
     var sql = 'DELETE FROM events_masc where events_masc.id_eventos = ? AND events_masc.id_servicios = ? ;';
-    var psh = 'SELECT members.tokenpsh, servicios.nombre, events.start FROM events, usuarios, members, servicios WHERE events.usuarios_id = usuarios.id AND members.id = usuarios.id AND events.servicios_idservicios = servicios.id_servicios and events.id_eventos = ?;';
+    var psh = 'SELECT members.tokenpsh, servicios.nombre, events_masc.start FROM events_masc, servicios, provedores, members WHERE  events_masc.id_servicios = servicios.id_servicios AND servicios.id_provedores = provedores.id_provedor AND provedores.members_id = members.id AND events_masc.id_eventos = ?;';
   }
   else
   {
@@ -395,12 +395,12 @@ eventmodule.eventsCalendar = (ev,callback) =>{
     //console.lo.log(ev.id_mascotas);
     if(ev.id_mascotas==20 || ev.id_mascotas=='20')
     {
-      //console.lo.log('dentro del if');
+      //console.log('dentro del if');
       var sql = 'SELECT events_masc.id_mascotas, mascotas.nombre as tittle,start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc, mascotas WHERE events_masc.id_mascotas = mascotas.id_mascotas AND MONTH(start) = ? AND YEAR(start) = ? and id_servicios = ?'
     }
     else
     {
-      //console.lo.log('no entro al if');
+      //console.log('no entro al if');
       var sql = 'SELECT events.usuarios_id, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events, usuarios WHERE events.usuarios_id = usuarios.id AND MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
     }
 
