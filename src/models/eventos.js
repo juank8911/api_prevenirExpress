@@ -396,7 +396,7 @@ eventmodule.eventsCalendar = (ev,callback) =>{
     if(ev.id_mascotas==20 || ev.id_mascotas=='20')
     {
       //console.log('dentro del if');
-      var sql = 'SELECT  mascotas.*,events_masc.id_mascotas, mascotas.nombre as tittle,start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc, mascotas WHERE events_masc.id_mascotas = mascotas.id_mascotas AND MONTH(start) = ? AND YEAR(start) = ? and id_servicios = ?'
+      var sql = 'SELECT  mascotas.*,events_masc.id_mascotas, mascotas.nombre as title,start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc, mascotas WHERE events_masc.id_mascotas = mascotas.id_mascotas AND MONTH(start) = ? AND YEAR(start) = ? and id_servicios = ?'
     }
     else
     {
