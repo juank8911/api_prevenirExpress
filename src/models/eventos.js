@@ -309,7 +309,7 @@ if(connection)
     //console.lo.log('humano');
     var sel = 'SELECT servicios.id_servicios FROM servicios,provedores, events where servicios.id_provedores = provedores.id_provedor and servicios.id_servicios = events.servicios_idservicios and provedores.id_provedor = ? and events.id_eventos = ? limit 1 ';
     var sql = 'DELETE FROM events where events.id_eventos = ? AND servicios_idservicios = ? ;';
-    var psh = 'SELECT members.tokenpsh, servicios.nombre, events.start FROM events, usuarios, members, servicios WHERE events.usuarios_id = usuarios.id AND members.id = usuarios.id AND events.servicios_idservicios = servicios.id_servicios and events.id_eventos = ?;';
+    var psh = 'SELECT events.start, servicios.nombre, provedores.nombre,members.tokenpsh FROM members, events,provedores, servicios, usuarios WHERE provedores.id_provedor = members.id AND provedores.id_provedor = servicios.id_provedores AND events.usuarios_id = usuarios.id AND events.servicios_idservicios = servicios.id_servicios and events.id_eventos = ?;';
   }
 
 connection.query(sel,[ev.idp,ev.ide],(err,row)=>{
