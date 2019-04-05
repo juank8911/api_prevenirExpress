@@ -396,12 +396,12 @@ eventmodule.eventsCalendar = (ev,callback) =>{
     if(ev.id_mascotas==20 || ev.id_mascotas=='20')
     {
       //console.log('dentro del if');
-      var sql = 'SELECT events_masc.id_mascotas, mascotas.nombre as tittle,start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc, mascotas WHERE events_masc.id_mascotas = mascotas.id_mascotas AND MONTH(start) = ? AND YEAR(start) = ? and id_servicios = ?'
+      var sql = 'SELECT  mascotas.*,events_masc.id_mascotas, mascotas.nombre as tittle,start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc, mascotas WHERE events_masc.id_mascotas = mascotas.id_mascotas AND MONTH(start) = ? AND YEAR(start) = ? and id_servicios = ?'
     }
     else
     {
       //console.log('no entro al if');
-      var sql = 'SELECT events.usuarios_id, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events, usuarios WHERE events.usuarios_id = usuarios.id AND MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
+      var sql = 'SELECT usuarios.*,events.usuarios_id, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events, usuarios WHERE events.usuarios_id = usuarios.id AND MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
     }
 
 
