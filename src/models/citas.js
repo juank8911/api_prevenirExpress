@@ -104,6 +104,7 @@ callback(null,row);
 }
 };
 
+// retorna los eventos por cedula del pasiente.
 citasModel.CitasUsuarioProv = (usu,callback)=>{
 
   let id = usu.id;
@@ -118,11 +119,5 @@ citasModel.CitasUsuarioProv = (usu,callback)=>{
   })
 
 };
-
-
-
-
-
-
 
 module.exports = citasModel;
