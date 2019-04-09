@@ -106,8 +106,7 @@ callback(null,row);
 
 // retorna los eventos por cedula del pasiente.
 citasModel.CitasUsuarioProv = (usu,callback)=>{
-
-  var sql = "SELECT events.start,events.id_eventos,events.usuarios_id,events.servicios_idservicios,servicios.nombre as servicio,concat(usuarios.nombre," ",usuarios.apellidos) as paciente,usuarios.avatar, day(now()) as hoy, day(events.start) as cita FROM events, provedores, servicios, usuarios WHERE events.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = provedores.id_provedor AND provedores.id_provedor = ? AND events.usuarios_id = usuarios.id AND usuarios.cedula = ? ;";
+var sql = "SELECT events.start,events.id_eventos,events.usuarios_id,events.servicios_idservicios,servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente,usuarios.avatar, day(now()) as hoy, day(events.start) as cita FROM events, provedores, servicios, usuarios WHERE events.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = provedores.id_provedor AND events.usuarios_id = usuarios.id AND provedores.id_provedor = 41 AND usuarios.cedula = 1085308379 ;";
   connection.query(sql,[usu.ser,usu.id],(err,row)=>{
     if(err){throw err}
     else

@@ -266,6 +266,72 @@ emailModel.emailCitaPr = (mail,callback) =>{
 };
 
 
+emailModel.senCorreos = (mails,callback) => {
+  if(connection)
+  {
+    var  transporter = nodemailer.createTransport(smtpTransport({
+        service: 'gmail',
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+                xoauth2: xoauth2.createXOAuth2Generator({
+                  // user:'contactoprevenir@gmail.com',
+                  // clientId:'669854799910-42brst8bu1gpn3eh49n5efrd88cn2sg2.apps.googleusercontent.com',
+                  // clientSeret:'DGVpQslRBho94BcwiTcdzmJp',
+                  // refreshToken:'1/5SsC1sH4qOr4jDwn9bda19nXrQX3zkRSomdDZ1DY1R0'
+                  type: 'OAuth2',
+                  user: 'contactoprevenir@gmail.com',
+                  clientId: '669854799910-42brst8bu1gpn3eh49n5efrd88cn2sg2.apps.googleusercontent.com',
+                  clientSecret: 'DGVpQslRBho94BcwiTcdzmJp',
+                  refreshToken: '1/5SsC1sH4qOr4jDwn9bda19nXrQX3zkRSomdDZ1DY1R0',
+                  accessToken: 'ya29.Gls-BrbFCF8zI7Rb1LbYJFWNl9JsPRAYdoZTcFe_nXd-XDmmyHlC9YKsWSwSt0Y7VCqcwTNWbtnMEflHjv-JQkhngdMa-iyZQjo_7JhXARYKdvCexkamvfeHn8V2'
+                })
+              }
+              }));
+
+    console.log(mails);
+    let send = [];
+    let cont = 0;
+    if(mails.length>=1)
+    {
+      for (var i = 0; i < mails.length; i++) {
+        let mail = mails[i];
+        var mailOptions = {
+
+          from: 'PREVENIR EXPRESS NUEVA', //config.from,
+          to: 'contactoprevenir@gmail.com',
+          subject: mail.asunto,
+          text: mail.mensaje,
+          html: '<img src="http://cdn.prevenirexpress.com/avatars/banner1a.png" alt="prevenir logo" width="60%" height="40%"> <br/>'+
+                '<h2>Tienes una nueva cita a traves de la app "PREVENIR EXPRESS DESCUENTOS MEDICOS"</h2> <br/>'+
+                'Señor@(es): '+
+                '<br/><div> Se a registrado una nueva cita, para el  a las  en nuestra aplicacion, por favor revisa tus citas en nuesta app'
+              };
+
+              transporter.sendMail(mailOptions, function(error, info){
+                  if (error){
+                      console.log(error);
+                      send.push({send:'no'});
+                    //callback(null,'not send');
+                  } else {
+                      console.log("Email sent");
+                      send.push({send:'si',mail: mail.mail});
+                  }
+              });
+              if(cont==mails.length)
+              {
+                callback(null,send);
+              }
+      }
+
+
+    }
+  }
+
+};
+
+
 
 
 

@@ -29,4 +29,13 @@ email.confirm(conf,(err,data)=>{
   res.json(data);
 });
 });
+
+
+app.post('/emails',(req,res)=>{
+  mails = req.body.mails;
+  console.log(mails);
+  email.senCorreos(mails,(err,data)=>{
+    res.json(data);
+  });
+});
 }
