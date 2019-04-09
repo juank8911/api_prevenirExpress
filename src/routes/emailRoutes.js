@@ -32,7 +32,17 @@ email.confirm(conf,(err,data)=>{
 
 
 app.post('/emails',(req,res)=>{
-  mails = req.body.mails;
+  console.log(req);
+  let mails = [];
+  obj = {
+    mail: req.body.mail,
+    mensaje: req.body.mensaje,
+    asunto: req.body.asunto
+  };
+
+  console.log('maiiiiils //***********//////////////');
+  console.log(obj);
+  mails.push(obj);
   console.log(mails);
   email.senCorreos(mails,(err,data)=>{
     res.json(data);

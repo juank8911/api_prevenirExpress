@@ -269,6 +269,8 @@ emailModel.emailCitaPr = (mail,callback) =>{
 emailModel.senCorreos = (mails,callback) => {
   if(connection)
   {
+    console.log('/*/*/*/*/*/*/*/*/*/*');
+    console.log(mails);
     var  transporter = nodemailer.createTransport(smtpTransport({
         service: 'gmail',
         host: "smtp.gmail.com",
@@ -290,10 +292,11 @@ emailModel.senCorreos = (mails,callback) => {
               }
               }));
 
-    console.log(mails);
+    // console.log(mail);
     let send = [];
-    let cont = 0;
-    if(mails.length>=1)
+    let cont = 1;
+    console.log(mails.length);
+    if(mails.length>=0)
     {
       for (var i = 0; i < mails.length; i++) {
         let mail = mails[i];
@@ -302,11 +305,11 @@ emailModel.senCorreos = (mails,callback) => {
           from: 'PREVENIR EXPRESS NUEVA', //config.from,
           to: 'contactoprevenir@gmail.com',
           subject: mail.asunto,
-          text: mail.mensaje,
-          html: '<img src="http://cdn.prevenirexpress.com/avatars/banner1a.png" alt="prevenir logo" width="60%" height="40%"> <br/>'+
-                '<h2>Tienes una nueva cita a traves de la app "PREVENIR EXPRESS DESCUENTOS MEDICOS"</h2> <br/>'+
-                'Señor@(es): '+
-                '<br/><div> Se a registrado una nueva cita, para el  a las  en nuestra aplicacion, por favor revisa tus citas en nuesta app'
+          text: mail.mensaje +" "+mail.mail,
+          //html: '<img src="http://cdn.prevenirexpress.com:3000/avatars/banner1a.png" alt="prevenir logo" width="60%" height="40%"> <br/>'+
+      //        '<h2>Tienes una nueva cita a traves de la app "PREVENIR EXPRESS DESCUENTOS MEDICOS"</h2> <br/>'+
+          //      'Señor@(es): '+
+          //      '<br/><div> Se a registrado una nueva cita, para el  a las  en nuestra aplicacion, por favor revisa tus citas en nuesta app'
               };
 
               transporter.sendMail(mailOptions, function(error, info){
@@ -317,12 +320,16 @@ emailModel.senCorreos = (mails,callback) => {
                   } else {
                       console.log("Email sent");
                       send.push({send:'si',mail: mail.mail});
+                      console.log(cont);
+                      if(cont==mails.length)
+                      {
+                        callback(null,send);
+                      }
+                        cont++;
                   }
               });
-              if(cont==mails.length)
-              {
-                callback(null,send);
-              }
+
+
       }
 
 
