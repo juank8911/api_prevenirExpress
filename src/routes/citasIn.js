@@ -46,10 +46,10 @@ app.post('/citai',jwt.validaAdmin,(req,res)=>{
 
 });
 
-app.post('/ordencita/:id',(req,res)=>{
+app.post('/ordencita/:ced/:prov',(req,res)=>{
   let usu = {
-    id: req.params.id,
-    ser: req.params.usu
+    id: req.params.ced,
+    ser: req.params.prov
   }
     citas.CitasUsuarioProv(usu,(err,resp)=>{
       res.json(resp);
