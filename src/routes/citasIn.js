@@ -46,7 +46,7 @@ app.post('/citai',jwt.validaAdmin,(req,res)=>{
 
 });
 
-app.post('/ordencita/:ced/:prov',(req,res)=>{
+app.get('/ordencita/:ced/:prov',(req,res)=>{
   let usu = {
     id: req.params.ced,
     ser: req.params.prov
