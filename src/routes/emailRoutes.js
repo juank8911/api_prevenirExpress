@@ -32,7 +32,7 @@ email.confirm(conf,(err,data)=>{
 
 
 app.post('/emails',(req,res)=>{
-  console.log(req);
+  console.log(req.body);
   let mails = [];
   obj = {
     mail: req.body.mail,
