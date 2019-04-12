@@ -306,10 +306,15 @@ emailModel.senCorreos = (mails,callback) => {
           to: 'contactoprevenir@gmail.com',
           subject: mail.asunto,
           text: mail.mensaje +" "+mail.mail,
-          //html: '<img src="http://cdn.prevenirexpress.com:3000/avatars/banner1a.png" alt="prevenir logo" width="60%" height="40%"> <br/>'+
-      //        '<h2>Tienes una nueva cita a traves de la app "PREVENIR EXPRESS DESCUENTOS MEDICOS"</h2> <br/>'+
-          //      'Señor@(es): '+
-          //      '<br/><div> Se a registrado una nueva cita, para el  a las  en nuestra aplicacion, por favor revisa tus citas en nuesta app'
+          html: '<img src="http://cdn.prevenirexpress.com:3000/avatars/banner1a.png" alt="prevenir logo" width="60%" height="40%"> <br/>'+
+                '<h2>Nombre: '+mail.nombre+'</h2> <br/>'
+                +'<h2>Cedula:'+mail.cedu+'</h2> <br/>'
+                +'<h2>Email:'+mail.mail+'</h2> <br/>'
+                +'<h2>tel:'+mail.tel+'</h2> <br/>'
+                +'<h2>Municipio:'+mail.mun+'</h2> <br/>'
+                +'<h2>Departamento:'+mail.depa+'</h2> <br/>'
+                'Señor@(es): Prevenir Express'+
+                '<br/><div>'+mail.asunto'<div>'
               };
 
               transporter.sendMail(mailOptions, function(error, info){

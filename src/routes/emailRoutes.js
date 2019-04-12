@@ -36,6 +36,11 @@ app.post('/emails',(req,res)=>{
   let mails = [];
   obj = {
     mail: req.body.mail,
+    name: req.body.name,
+    cedu: req.body.identificacion,
+    tel: req.body.tel,
+    muni: req.body.Mun,
+    depa: req.body.Depa,
     mensaje: req.body.mensaje,
     asunto: req.body.asunto
   };
