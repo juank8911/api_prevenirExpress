@@ -106,12 +106,23 @@ callback(null,row);
 
 // retorna los eventos por cedula del pasiente.
 citasModel.CitasUsuarioProv = (usu,callback)=>{
-var sql = "SELECT events.start,events.id_eventos,events.usuarios_id,events.servicios_idservicios,servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente,usuarios.avatar, day(now()) as hoy,month(events.start) as mes, day(events.start) as cita, month(events.start) as mescita FROM events, provedores, servicios, usuarios WHERE events.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = provedores.id_provedor AND events.usuarios_id = usuarios.id AND provedores.id_provedor = ? AND usuarios.cedula = ? ;";
+  console.log(usu);
+var sql = "SELECT events.start,events.id_eventos,events.usuarios_id,events.servicios_idservicios,servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente,usuarios.avatar, day(now()) as hoy,month(events.start) as mes, day(events.start) as cita, month(events.start) as mescita, servicios_categoria.categoria_idcategoria as categoria FROM events, provedores, servicios, usuarios,servicios_categoria WHERE events.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = provedores.id_provedor AND events.usuarios_id = usuarios.id AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND provedores.id_provedor = ? AND usuarios.cedula = ? ;";
   connection.query(sql,[usu.ser,usu.id],(err,row)=>{
     if(err){throw err}
     else
     {
-      callback(null,row);
+      console.log(row);
+      var masc = 'SELECT events_masc.*,mascotas.nombre as mascotas,servicios.nombre, servicios_categoria.categoria_idcategoria FROM events_masc, mascotas, servicios, servicios_categoria, usuarios, provedores WHERE events_masc.id_mascotas = mascotas.id_mascotas AND events_masc.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND mascotas.id_usuarios = usuarios.id AND servicios.id_provedores = provedores.id_provedor AND provedores.id_provedor = ? AND usuarios.cedula = ?;'
+                  connection.query(masc,[usu.ser,usu.id],(err,res)=>{
+                    if(err){throw err}
+                    else
+                    {
+                        row.push(res);
+                        callback(null,row);
+                    }
+                  });
+
     }
   })
 
