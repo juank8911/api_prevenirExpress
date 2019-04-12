@@ -63,7 +63,7 @@ servmodule.save = (data , callback ) => {
                 }
           }
           sqlss = 'INSERT INTO servicios_categoria (servicios_idservicios, categoria_idcategoria) VALUES (?, ?)';
-          // console.log('id_Servicio'+idInd+'/*/*/*'+'Id Cate'+data.categoria);
+          console.log('id_Servicio'+idInd+'/*/*/*'+'Id Cate'+data.categoria);
           connection.query(sqlss,[idInd,data.categoria],(err,row)=>{
           if(err)
           {
@@ -132,6 +132,7 @@ else
 {
   if (JSON.stringify(row)!='[]')
   {
+
   var p =1;
   var sql1 = 'SELECT * FROM fotos where servicios_idservicios = ? limit 1';
   var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
@@ -141,13 +142,13 @@ else
   row.forEach((serv)=>{
   // console.log(serv.idservicios)
   var id = serv.id_servicios;
-  //console.log(id);
+  console.log(id);
   connection.query(sql1,[id],(err,ft)=>{
     if(err){throw err}
     else
     {
-      ft = ft[0];
       console.log(ft);
+      ft = ft[0];
       serv.foto = ft.ruta;
     }
     });
@@ -155,7 +156,7 @@ else
   // console.log('dentro de la consulta '+id)
   if(err)
   {
-
+    throw err
   }
   else
   {
@@ -579,17 +580,17 @@ if(connection)
         var sql3 = 'DELETE FROM medicos WHERE servicios_idservicios = ?';
 
 
+        console.log('borrando fotos');
         connection.query(sql1,[id],(err,res)=>{
         if(err){throw err;}
         else {
         {
+          console.log('borrando categoria');
         connection.query(sql2,[id],(err,res2)=>{
         if(err){throw err;}
         else
-        {    connection.query(sql3,[id],(err,res)=>{
-        if(err){throw err}
-        else
         {
+          console.log('borrando servicio');
         connection.query(sql,[id],(err,row)=>{
         if(err)
         {
@@ -598,8 +599,6 @@ if(connection)
         else
         {
         callback(null,true);
-        }
-        });
         }
         });
         }

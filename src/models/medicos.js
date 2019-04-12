@@ -278,17 +278,14 @@ medicosModule.setMedico = (medico,callback) =>{
 medicosModule.deleteMedico = (ids,callback)=>{
   if(connection)
   {
-    var sel =  'SELECT * FROM servicios WHERE servicios.medico_id = ? AND servicios.id_provedores = ?;'
+    var sel =  'SELECT count(*) FROM servicios WHERE servicios.medico_id = ? AND servicios.id_provedores = ?;'
     var del = 'DELETE FROM provedores_has_medicos WHERE (id_provedor = ?) and (medico_id = ?);'
     connection.query(sel,[ids.medico,ids.prov],(err,res)=>{
       if(err){throw err}
       else
       {
+        console.log(res);
           if (JSON.stringify(res)!='[]')
-          {
-            callback(null,false);
-          }
-          else
           {
             connection.query(del,[ids.prov,ids.medico],(err,row)=>{
               if(err){throw err}
@@ -297,6 +294,11 @@ medicosModule.deleteMedico = (ids,callback)=>{
                 callback(null,true)
               }
             });
+
+          }
+          else
+          {
+            callback(null,false);
           }
       }
     });
