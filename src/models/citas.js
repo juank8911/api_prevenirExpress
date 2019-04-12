@@ -118,7 +118,8 @@ var sql = "SELECT events.start,events.id_eventos,events.usuarios_id,events.servi
                     if(err){throw err}
                     else
                     {
-                        row.push(res);
+                        // row.push({"mascotas":"hola"})
+                        row.mnnn = {};
                         callback(null,row);
                     }
                   });

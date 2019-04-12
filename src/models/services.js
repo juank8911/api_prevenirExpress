@@ -147,6 +147,7 @@ else
     else
     {
       ft = ft[0];
+      console.log(ft);
       serv.foto = ft.ruta;
     }
     });
