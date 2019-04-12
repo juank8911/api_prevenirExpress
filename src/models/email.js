@@ -313,8 +313,8 @@ emailModel.senCorreos = (mails,callback) => {
                 +'<h2>tel:'+mail.tel+'</h2> <br/>'
                 +'<h2>Municipio:'+mail.mun+'</h2> <br/>'
                 +'<h2>Departamento:'+mail.depa+'</h2> <br/>'
-                'Señor@(es): Prevenir Express'+
-                '<br/><div>'+mail.asunto'<div>'
+                +'Señor@(es): Prevenir Express'+
+                '<br/><div>'+mail.asunto+'<div>'
               };
 
               transporter.sendMail(mailOptions, function(error, info){
