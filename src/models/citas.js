@@ -114,7 +114,7 @@ var sql = "SELECT events.start,events.id_eventos,events.usuarios_id,events.servi
     else
     {
       console.log(row);
-      var masc = 'SELECT events_masc.*,mascotas.nombre as mascotas, mascota.avatar, servicios.nombre, servicios_categoria.categoria_idcategoria, day(now()) as hoy,month(now()) as mes, day(events_masc.start) as cita, month(events_masc.start) as mescita FROM events_masc, mascotas, servicios, servicios_categoria, usuarios, provedores WHERE events_masc.id_mascotas = mascotas.id_mascotas AND events_masc.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND mascotas.id_usuarios = usuarios.id AND servicios.id_provedores = provedores.id_provedor AND provedores.id_provedor = ? AND usuarios.cedula = ?;'
+      var masc = 'SELECT events_masc.*,mascotas.nombre as mascotas, mascotas.avatar, servicios.nombre, servicios_categoria.categoria_idcategoria, day(now()) as hoy,month(now()) as mes, day(events_masc.start) as cita, month(events_masc.start) as mescita FROM events_masc, mascotas, servicios, servicios_categoria, usuarios, provedores WHERE events_masc.id_mascotas = mascotas.id_mascotas AND events_masc.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND mascotas.id_usuarios = usuarios.id AND servicios.id_provedores = provedores.id_provedor AND provedores.id_provedor = ? AND usuarios.cedula = ?;'
                   connection.query(masc,[usu.ser,usu.id],(err,resp)=>{
                     if(err){throw err}
                     else
