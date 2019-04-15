@@ -17,16 +17,16 @@ citasModel.countCitas = (row,callback)=>{
 var hora =0;
 let p=1;
 let jsonHd = [];
- //console.lo.log('***************////CONTEO DE CITAS//');
-//console.lo.log(row);
+ console.log('***************////CONTEO DE CITAS//');
+console.log(row);
 var cate = row.cate;
-//console.lo.log(cate);
+//console.log(cate);
 var serv = {};
 
 for (var i = 0; i < row.length; i++)
 {
 hora=row[i];
-////console.lo.log(hora.hora);
+console.log(hora.hora);
 serv = {
 hora:hora.hora,
 id:row.id,
@@ -40,7 +40,7 @@ jsonHd.push(resp);
 if(row.length==p)
 {
 ////console.lo.log('jsonHd');
-////console.lo.log(jsonHd);
+console.log(jsonHd);
 callback(null,jsonHd);
 }
 });

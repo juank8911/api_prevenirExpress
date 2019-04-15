@@ -38,6 +38,8 @@ usuario: req.body.usuario,
 servicio: req.body.servicio,
 mascota:req.body.mascota
 };
+console.log('/*/*/*/*/*/*MIRADAA DEL EVENTO COMO LLEGA');
+console.log(eventss);
 //console.log(starts + " "+ends);
 events.agregarEvento(eventss,(err,data)=>{
 res.json(data);

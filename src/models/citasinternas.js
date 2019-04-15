@@ -17,7 +17,8 @@ let citasIModule = {};
 citasIModule.nuevaCita = (cita,callback)=>{
   if(connection)
   {
-    if(cita.existe == true)
+    console.log(cita.existe);
+    if(cita.existe == true || cita.existe == 'true')
     {
       console.log(cita);
       var Mend = parseInt(00);
@@ -53,11 +54,12 @@ citasIModule.nuevaCita = (cita,callback)=>{
       // let ins = "INSERT INTO usuarios (id,cedula, nombre, apellidos,telefono,fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES (?,?, ?, ?, ?, ?, ?, ?);"
       let ins = 'INSERT INTO usuarios ( cedula, nombre, apellidos, telefono, fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES ( ?, ?, ?, ?, ?, ?, ?);'
       connection.query(ins,[cita.usuario,cita.nombres,cita.apellidos,cita.contacto,cita.fecha_nacimiento,17,47],(err,insert)=>{
-        console.log(insert);
+        // console.log(insert);
         if(err){throw err;}
         else
         {
-          console.log(cita);
+          // console.log(cita);
+          console.log('/*/*/*/*/*/*AQUI YA AGREGO AL USUSARIO');
           console.log(insert);
           var Mend = parseInt(00);
           var hinicio = moment(cita.start).format('HH:mm:ss');
@@ -78,7 +80,7 @@ citasIModule.nuevaCita = (cita,callback)=>{
           color: cita.color,
           start: starts,
           end: ends,
-          usuario: cita.usuario,
+          usuario: insert.insertId,
           servicio: cita.servicio,
           mascota:cita.mascota
           };

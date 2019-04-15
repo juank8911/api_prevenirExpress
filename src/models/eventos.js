@@ -152,7 +152,8 @@ if(err){throw err}
 else {
 
 // res = res[0];
-//console.lo.log(res);
+console.log('/*/*/*/*/RESPUESTA DE AGREGAR CITASC /*/*/*/*/*/');
+console.log(res);
 if(JSON.stringify(res)=='[]')
 {
 connection.query(sql,[events.color,events.start,events.end,events.usuario,events.servicio],(err,row)=>{
@@ -390,6 +391,7 @@ callback(null,'eliminado');
 
 
 eventmodule.eventsCalendar = (ev,callback) =>{
+  let res =[];
   if(connection)
   {
     //console.lo.log(ev.id_mascotas);
@@ -412,7 +414,22 @@ eventmodule.eventsCalendar = (ev,callback) =>{
     }
     else
     {
-      callback(null,row);
+      if(JSON.stringify(row)=='[]')
+      {
+
+      }
+      else
+      {
+        for (var i = 0; i < row.length; i++) {
+          console.log(row[i]);
+          let vari = row[i];
+          vari.start = moment(vari.start).utc(-5).format();
+          vari.end =  moment(vari.end).utc(-5).format();
+          res.push(vari);
+        }
+        callback(null,res);
+      }
+
     }
   });
   }

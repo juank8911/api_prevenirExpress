@@ -26,13 +26,13 @@ var sql = 'SELECT servicios.max_citas_ves-count(events.id_eventos) as libres  FR
 connection.query(sql,[serv.hora,serv.id],(err,res)=>{
 res = res[0];
 res=res.libres;
-////console.lo.log('///////////****//////////');
-////console.lo.log(res);
+console.log('///////////****//////////');
+console.log(res);
 serv.libres = res;
 serv.disponible = true;
 serv.hora = moment(serv.hora).format('hh:mm a');
 
-////console.lo.log(serv);
+console.log(serv);
 callback(null,serv);
 });
 
@@ -65,19 +65,19 @@ connection.query(sql,[serv.hora,serv.id],(err,res)=>{
 if(serv.cate==20)
 {
   console.log('Contando mascotas');
-  var sql1 = 'SELECT count(events_masc.id_eventos) as echas  FROM servicios, events_masc WHERE servicios.id_servicios = events_masc.id_servicios and start = ? AND events_masc.id_servicios = ?;';
+  var sql1 = 'SELECT servicios.max_citas_ves-count(events_masc.id_eventos) as echas  FROM servicios, events_masc WHERE servicios.id_servicios = events_masc.id_servicios and start = ? AND events_masc.id_servicios = ?;';
 }
 else
 {
-var sql1 = 'SELECT count(events.id_eventos) as echas  FROM servicios, events WHERE servicios.id_servicios = events.servicios_idservicios and start = ? AND servicios_idservicios = ? ';
+var sql1 = 'SELECT servicios.max_citas_ves-count(events.id_eventos) as echas  FROM servicios, events WHERE servicios.id_servicios = events.servicios_idservicios and start = ? AND servicios_idservicios = ? ';
 }
 connection.query(sql1,[serv.hora,serv.id],(err,resp)=>{
 resp = resp[0];
 resp = resp.echas
-// //console.lo.log();
-serv.echas = resp;
-serv.citas = res;
-if(JSON.stringify(res)!='[]')
+console.log(resp);
+// serv.echas = resp;
+// serv.citas = res;
+if(resp<=0)
 {
 serv.disponible = false;
 
