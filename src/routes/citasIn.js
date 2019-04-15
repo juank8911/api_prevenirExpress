@@ -59,6 +59,12 @@ app.get('/ordencita/:ced/:prov',(req,res)=>{
 
 })
 
+app.post('/activacita',(req,res)=>{
+  let cita = req.body;
+  console.log(cita);
+  
+});
+
 
 
 }

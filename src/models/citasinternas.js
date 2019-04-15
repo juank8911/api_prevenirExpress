@@ -318,4 +318,38 @@ citasIModule.darUsuariosID = (id,callback)=>{
   }
 };
 
+citasIModule.actiCita = (cita,callback) =>{
+  if(connection){
+  if (cita.id_cgta != 20)
+  {
+    console.log('cita de usuario')
+    var insrt = 'INSERT INTO citas_activas (usuarios_id, id_eventos, id_servicios) VALUES (?, ?, ?);';
+    var hist = 'INSERT INTO historial (color,start, end, usuarios_id, servicios_idservicios, calificada, fue)  SELECT events.color ,events.start, events.end, events.usuarios_id, events.servicios_idservicios, events.calificada, ? as fue FROM events WHERE events.id_eventos = ? ;';
+    var dele = 'DELETE FROM events WHERE events.id_eventos = ?;';
+  }
+  else
+  {
+  console.log('cita de mascota');
+  }
+    connection.query(insrt,[cita.id_usu,cita.id_eve,cita.id_serv],(err,row)=>{
+      if(err)
+      {
+        throw err;
+      }
+      else
+      {
+        connection.query(hist,[cita.fue,cita.id_eve],(err,res1)=>{
+          if(err){throw err}
+          else
+          {
+            connection.query(dele,[cita.id_eve],(err,res2)).then(
+              res2 =>{
+                console.log(res2)
+                callback(null,true)
+              },
+              err => {throw err}
+            )}});}});}};
+
+
+
 module.exports = citasIModule;
