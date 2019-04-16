@@ -61,8 +61,17 @@ app.get('/ordencita/:ced/:prov',(req,res)=>{
 
 app.post('/activacita',(req,res)=>{
   let cita = req.body;
-  console.log(cita);
-  
+  internas.activaCitaP(cita,(err,resp)=>{
+    res.json(resp);
+  });
+
+});
+
+app.get('/citasprovac/:pr',(req,res)=>{
+  let prov = req.params.pr;
+  internas.citasProvAc(prov,(err,resp)=>{
+    res.json(resp);
+  });
 });
 
 

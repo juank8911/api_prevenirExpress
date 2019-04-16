@@ -318,37 +318,50 @@ citasIModule.darUsuariosID = (id,callback)=>{
   }
 };
 
-citasIModule.actiCita = (cita,callback) =>{
+citasIModule.activaCitaP = (cita,callback) =>{
   if(connection){
-  if (cita.id_cgta != 20)
+    console.log('********///////////////////');
+    console.log(cita);
+  if (cita.id_ctga != 20)
   {
     console.log('cita de usuario')
-    var insrt = 'INSERT INTO citas_activas (usuarios_id, id_eventos, id_servicios) VALUES (?, ?, ?);';
-    var hist = 'INSERT INTO historial (color,start, end, usuarios_id, servicios_idservicios, calificada, fue)  SELECT events.color ,events.start, events.end, events.usuarios_id, events.servicios_idservicios, events.calificada, ? as fue FROM events WHERE events.id_eventos = ? ;';
+    var insrt = 'INSERT INTO citas_activas (color, start, end , usuarios_id, servicios_idservicios ) select events.color, events.start, events.end, events.usuarios_id, events.servicios_idservicios FROM events WHERE events.id_eventos = ?;';
+    // var hist = 'INSERT INTO historial (color,start, end, usuarios_id, servicios_idservicios, calificada, fue)  SELECT events.color ,events.start, events.end, events.usuarios_id, events.servicios_idservicios, events.calificada, ? as fue FROM events WHERE events.id_eventos = ? ;';
     var dele = 'DELETE FROM events WHERE events.id_eventos = ?;';
   }
   else
   {
   console.log('cita de mascota');
   }
-    connection.query(insrt,[cita.id_usu,cita.id_eve,cita.id_serv],(err,row)=>{
+    connection.query(insrt,[cita.id_eve],(err,row)=>{
       if(err)
       {
         throw err;
       }
       else
       {
-        connection.query(hist,[cita.fue,cita.id_eve],(err,res1)=>{
+        connection.query(dele,[cita.id_eve],(err,res1)=>{
           if(err){throw err}
           else
           {
-            connection.query(dele,[cita.id_eve],(err,res2)).then(
-              res2 =>{
-                console.log(res2)
+                console.log(res1)
                 callback(null,true)
-              },
-              err => {throw err}
-            )}});}});}};
+
+            }});}});}};
+
+citasIModule.citasProvAc = (prov,callback) =>{
+  if(connection)
+  {
+    let sql = 'SELECT citas_activas.* from citas_activas,servicios WHERE citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = ?;';
+    connection.query(sql,[prov],(err,row)=>{
+      if(err){throw err}
+      else
+      {
+        callback(null,row);
+      }
+    });
+  }
+};
 
 
 
