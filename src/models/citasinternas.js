@@ -318,6 +318,8 @@ citasIModule.darUsuariosID = (id,callback)=>{
   }
 };
 
+
+//cambia las citas de eventos a la tabla de citas activas y las elimina 
 citasIModule.activaCitaP = (cita,callback) =>{
   if(connection){
     console.log('********///////////////////');
@@ -331,6 +333,8 @@ citasIModule.activaCitaP = (cita,callback) =>{
   }
   else
   {
+    var insrt = 'INSERT INTO citas_activas_masc ( color, start, end, id_mascotas, id_servicios ) SELECT color, start, end, id_mascotas, id_servicios FROM events_masc WHERE id_eventos = ?;';
+    var dele = 'DELETE FROM events_masc WHERE id_eventos = ?;'
   console.log('cita de mascota');
   }
     connection.query(insrt,[cita.id_eve],(err,row)=>{
@@ -349,10 +353,12 @@ citasIModule.activaCitaP = (cita,callback) =>{
 
             }});}});}};
 
+
+//devuelve las citas del povedor activas en usuarios y mascotas
 citasIModule.citasProvAc = (prov,callback) =>{
   if(connection)
   {
-    let sql = 'SELECT citas_activas.* from citas_activas,servicios WHERE citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = ?;';
+    let sql = 'SELECT citas_activas.*,usuarios.* from citas_activas,servicios,usuarios WHERE citas_activas.usuarios_id = usuarios.id AND citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = ? ;';
     connection.query(sql,[prov],(err,row)=>{
       if(err){throw err}
       else

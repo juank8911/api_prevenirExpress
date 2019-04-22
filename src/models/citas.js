@@ -108,24 +108,63 @@ callback(null,row);
 citasModel.CitasUsuarioProv = (usu,callback)=>{
   console.log(usu);
   let res = [];
+  let rest = [];
 var sql = "SELECT events.start,events.id_eventos,events.usuarios_id,events.servicios_idservicios,servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente,usuarios.avatar, day(now()) as hoy,month(now()) as mes, day(events.start) as cita, month(events.start) as mescita, servicios_categoria.categoria_idcategoria as categoria FROM events, provedores, servicios, usuarios,servicios_categoria WHERE events.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = provedores.id_provedor AND events.usuarios_id = usuarios.id AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND provedores.id_provedor = ? AND usuarios.cedula = ? ;";
   connection.query(sql,[usu.ser,usu.id],(err,row)=>{
     if(err){throw err}
     else
     {
       console.log(row);
+
+
+                    let act = 'SELECT citas_activas.*, servicios.nombre as servicio,concat(usuarios.nombre," ",usuarios.apellidos) as paciente,usuarios.avatar FROM citas_activas, usuarios, servicios WHERE citas_activas.usuarios_id = usuarios.id AND citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = ? AND usuarios.cedula = ?;';
+                    connection.query(act,[usu.ser, usu.id],(err,ress)=>{
+                      if(err){throw err}
+                      else
+                      {
+                        console.log('/*/*/*/*/*/*/*/*/*/');
+                        console.log(row);
+                        if(JSON.stringify(ress)!='[]')
+                        {
+                          // row = {activas:true};
+                          ress[0].activas = true;
+                          res.push(ress[0]);
+                          for (var i = 0; i < row.length; i++) {
+                            res.push(row[i]);
+                          }
+                          console.log('/*/*/*/*/Despues del if*/*/*/*/*/');
+                          console.log(res);
+
+                        }
+                        else
+                        {
+                          if(JSON.stringify(row)=='[]')
+                          {
+                              res.push( {activas:false});
+                          }
+                          else
+                          {
+                              res.push(row);
+                          }
+                        
+                        }
+                      }
+                    });
+
+
       var masc = 'SELECT events_masc.*,mascotas.nombre as mascotas, mascotas.avatar, servicios.nombre, servicios_categoria.categoria_idcategoria, day(now()) as hoy,month(now()) as mes, day(events_masc.start) as cita, month(events_masc.start) as mescita FROM events_masc, mascotas, servicios, servicios_categoria, usuarios, provedores WHERE events_masc.id_mascotas = mascotas.id_mascotas AND events_masc.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND mascotas.id_usuarios = usuarios.id AND servicios.id_provedores = provedores.id_provedor AND provedores.id_provedor = ? AND usuarios.cedula = ?;'
                   connection.query(masc,[usu.ser,usu.id],(err,resp)=>{
                     if(err){throw err}
                     else
                     {
+
                       // cont.masc = 'hola';
-                      res.push(row);
-                      res.push(resp);
-                      res.titulos = row;
+                      rest.push(res);
+                      rest.push(resp);
+
                         // row.push({mascotas:res})
                         // row.file = [res];
-                        callback(null,res);
+                        callback(null,rest);
                     }
                   });
 

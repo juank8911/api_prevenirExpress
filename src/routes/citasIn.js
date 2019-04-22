@@ -48,6 +48,8 @@ app.post('/citai',jwt.validaAdmin,(req,res)=>{
 
 });
 
+
+//devuelve las citas de un paciente por cedula segun el provedor
 app.get('/ordencita/:ced/:prov',(req,res)=>{
   let usu = {
     id: req.params.ced,
