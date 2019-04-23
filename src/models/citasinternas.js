@@ -358,7 +358,7 @@ citasIModule.activaCitaP = (cita,callback) =>{
 citasIModule.citasProvAc = (prov,callback) =>{
   if(connection)
   {
-    let sql = 'SELECT citas_activas.*,usuarios.* from citas_activas,servicios,usuarios WHERE citas_activas.usuarios_id = usuarios.id AND citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = ? ;';
+    let sql = 'SELECT citas_activas.*,usuarios.*, servicios_categoria.categoria_idcategoria as categoria  from citas_activas,servicios,usuarios, servicios_categoria WHERE citas_activas.usuarios_id = usuarios.id AND citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND servicios.id_provedores = ? ;';
     connection.query(sql,[prov],(err,row)=>{
       if(err){throw err}
       else

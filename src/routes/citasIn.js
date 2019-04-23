@@ -79,10 +79,11 @@ app.get('/citasprovac/:pr',(req,res)=>{
 });
 
 //cabia el estado de espera a activa de las de la citas de la tabla activa
-app.put('cestado/:idca',(req,res)=>{
+app.put('/cambestado/:idca/:idser/:cat',(req,res)=>{
   let activa = {
     idca: req.params.idca,
-    idser: req.params.idser
+    idser: req.params.idser,
+    cat:req.params.cat
   };
 
 });
