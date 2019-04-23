@@ -61,6 +61,7 @@ app.get('/ordencita/:ced/:prov',(req,res)=>{
 
 })
 
+//activa la cita de un paciente y la elimina de la tabla eventos
 app.post('/activacita',(req,res)=>{
   let cita = req.body;
   internas.activaCitaP(cita,(err,resp)=>{
@@ -69,11 +70,21 @@ app.post('/activacita',(req,res)=>{
 
 });
 
+//devuelve las citas del provedor que esten en la tabla de citas activas
 app.get('/citasprovac/:pr',(req,res)=>{
   let prov = req.params.pr;
   internas.citasProvAc(prov,(err,resp)=>{
     res.json(resp);
   });
+});
+
+//cabia el estado de espera a activa de las de la citas de la tabla activa
+app.put('cestado/:idca',(req,res)=>{
+  let activa = {
+    idca: req.params.idca,
+    idser: req.params.idser
+  };
+
 });
 
 

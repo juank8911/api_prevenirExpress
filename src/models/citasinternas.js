@@ -319,7 +319,7 @@ citasIModule.darUsuariosID = (id,callback)=>{
 };
 
 
-//cambia las citas de eventos a la tabla de citas activas y las elimina 
+//cambia las citas de eventos a la tabla de citas activas y las elimina
 citasIModule.activaCitaP = (cita,callback) =>{
   if(connection){
     console.log('********///////////////////');
@@ -368,6 +368,43 @@ citasIModule.citasProvAc = (prov,callback) =>{
     });
   }
 };
+
+citasIModule.cambioestadocitas = (activa,callback) =>{
+if(connection){
+  let sel = 'SELECT citas_activas.* FROM citas_activas, servicios WHERE citas_activas.estado = 1 AND citas_activas.servicios_idservicios = ? group by citas_activas.id_citas_activas;';
+  let updt = 'UPDATE citas_activas SET estado = 1 WHERE id_citas_activas = ?;';
+
+  connection.query(sel,[activa.idca],(err,resp)=>{
+
+    if(err){throw err}
+    else
+    {
+      if (JSON.stringify(res)=='[]')
+      {
+        connection.query(updt,[activa.idca],(err,resp)=>{
+          if(err)
+          {
+            throw err;
+          }
+          else
+          {
+            callback(null,resp);
+          }
+        });
+      }
+      else
+      {
+      callback(null,res)
+      }
+
+    }
+
+  });
+
+  }
+};
+
+
 
 
 
