@@ -371,16 +371,26 @@ citasIModule.citasProvAc = (prov,callback) =>{
 
 citasIModule.cambioestadocitas = (activa,callback) =>{
 if(connection){
-  let sel = 'SELECT citas_activas.* FROM citas_activas, servicios WHERE citas_activas.estado = 1 AND citas_activas.servicios_idservicios = ? group by citas_activas.id_citas_activas;';
-  let updt = 'UPDATE citas_activas SET estado = 1 WHERE id_citas_activas = ?;';
-
-  connection.query(sel,[activa.idca],(err,resp)=>{
+  if(activa.cat != 20)
+  {
+  var sel = 'SELECT citas_activas.* FROM citas_activas, servicios WHERE citas_activas.estado = 1 AND citas_activas.servicios_idservicios = ? group by citas_activas.id_citas_activas;';
+  var updt = 'UPDATE citas_activas SET estado = 1 WHERE id_citas_activas = ?;';
+  }
+  else
+  {
+    var sql = 'SELECT citas_activas_masc.* FROM citas_activas_masc, servicios WHERE citas_activas_masc.estado = 1 AND citas_activas_masc.servicios_idservicios = ? group by citas_activas_masc.id_citas_activas;';
+    var updt = 'UPDATE citas_activas_masc SET estado = 1 WHERE id_citas_activas = ?;';
+  }
+console.log(activa);
+  connection.query(sel,[activa.idser],(err,resp)=>{
 
     if(err){throw err}
     else
     {
-      if (JSON.stringify(res)=='[]')
+      console.log(resp);
+      if (JSON.stringify(resp)=='[]')
       {
+        console.log('no ahy citas');
         connection.query(updt,[activa.idca],(err,resp)=>{
           if(err)
           {
@@ -388,13 +398,14 @@ if(connection){
           }
           else
           {
-            callback(null,resp);
+            callback(null,{activa:false, activada:true});
           }
         });
       }
       else
       {
-      callback(null,res)
+        console.log('si ahy citas');
+      callback(null,{activa:true, activada:false})
       }
 
     }
@@ -402,6 +413,38 @@ if(connection){
   });
 
   }
+};
+
+
+citasIModule.finCita = (cita,resp)=>{
+if(connection)
+{
+  if(cita.ctg!=20)
+  {
+    var ins = 'INSERT INTO historial (color,start,end,usuarios_id,servicios_idservicios,fue) SELECT color, start, end, usuarios_id, servicios_idservicios, ? FROM citas_activas WHERE citas_activas.id_citas_activas = ?;';
+    var del = 'DELETE FROM citas_activas WHERE citas_activas.id_citas_activas = ?;';
+  }
+  else
+  {
+      var ins = 'INSERT INTO historial_masc (color,start,end,id_mascotas,id_servicios,fue) SELECT color, start, end,id_mascotas,id_servicios , ? FROM citas_activas_masc WHERE citas_activas_masc.id_citas_activas = ?;';
+      var del = 'DELETE FROM citas_activas_masc WHERE citas_activas_masc.id_citas_activas = ?;';
+  }
+      connection.query(ins,[cita.fue,cita.idcta],(err,res)=>{
+        if(err){throw err}
+        else
+        {
+            connection.query(del,[cita.idcta],(err,res)=>{
+              if(err){throw err}
+              else
+              {
+                callback(null,{actualizado:true})
+              }
+            });
+        }
+      });
+
+}
+
 };
 
 

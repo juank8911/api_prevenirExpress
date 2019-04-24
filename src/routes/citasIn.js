@@ -85,9 +85,45 @@ app.put('/cambestado/:idca/:idser/:cat',(req,res)=>{
     idser: req.params.idser,
     cat:req.params.cat
   };
+  internas.cambioestadocitas(activa,(req,row)=>{
+    res.json(row);
+  });
 
 });
 
+app.put('/fincita/:ctg/:idcta/:fue',(req,res)=>{
+  let cita = {
+    ctg:req.params.ctg,
+    idcta:req.params.idcta,
+    fue:req.params.fue
+  };
+  internas.finCita(cita,(req,resp)=>{
+      res.json(resp);
+  });
+});
+
+
+app.put('/siguiente/:idcn/:idser:/:cat/idcv',(req,row)=>{
+    let citaV = {
+      ctg:req.params.cat,
+      idcta: req.params.idcv,
+      fue: 1
+    };
+    let citaN = {
+      idca: req.params.idcn,
+      idser: req.params.idser,
+      cat:req.params.cat
+    };
+    internas.finCita(citaV,(req,resp)=>{
+        console.log(resp);
+         if(cita.fue==1)
+         {
+           internas.cambioestadocitas(activa,(req,row)=>{
+             res.json(row);
+           });
+         }
+    });
+});
 
 
 }
