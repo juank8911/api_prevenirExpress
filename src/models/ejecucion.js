@@ -66,7 +66,7 @@ connection.query(sql,[serv.hora,serv.id],(err,res)=>{
 if(serv.cate==20)
 {
   console.log('Contando mascotas');
-  var sql1 = 'SELECT servicios.max_citas_ves-count(events_masc.id_eventos) as echas  FROM servicios, events_masc WHERE servicios.id_servicios = events_masc.id_servicios and start = ? AND events_masc.id_servicios = ?;';
+  var sql1 = 'SELECT count(events_masc.id_eventos) as echas, servicios.max_citas_ves-count(events_masc.id_eventos) as libres  FROM servicios, events_masc WHERE servicios.id_servicios = events_masc.id_servicios and start = ? AND events_masc.id_servicios = ?;';
 }
 else
 {
