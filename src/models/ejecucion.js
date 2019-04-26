@@ -53,6 +53,7 @@ if(connection)
   }
   else
   {
+    console.log('usuario');
     var sql = "SELECT events.* ,concat(usuarios.nombre,' ',usuarios.apellidos) as nombres FROM servicios, events, usuarios WHERE servicios.id_servicios = events.servicios_idservicios and usuarios.id = events.usuarios_id and start = ? AND servicios_idservicios = ? ;"
   }
 
@@ -69,22 +70,26 @@ if(serv.cate==20)
 }
 else
 {
-var sql1 = 'SELECT servicios.max_citas_ves-count(events.id_eventos) as echas  FROM servicios, events WHERE servicios.id_servicios = events.servicios_idservicios and start = ? AND servicios_idservicios = ? ';
+var sql1 = 'SELECT count(events.id_eventos) as echas, servicios.max_citas_ves-count(events.id_eventos) as libres  FROM servicios, events WHERE servicios.id_servicios = events.servicios_idservicios and start = ? AND servicios_idservicios = ? ';
 }
 connection.query(sql1,[serv.hora,serv.id],(err,resp)=>{
+  console.log(resp);
 resp = resp[0];
-resp = resp.echas
+respu = resp.libres
+console.log('*-4+4**/*/*/*/*/*/*/*/*/* respuesta de conteo');
 console.log(resp);
 // serv.echas = resp;
 // serv.citas = res;
-if(resp<=0)
+if(respu<=0)
 {
 serv.disponible = false;
+serv.echas =  resp.echas;
 
 }
 else
 {
 serv.disponible = true;
+serv.echas =  resp.echas;
 }
 serv.hora = moment(serv.hora).format('hh:mm a');
 ////console.lo.log(serv);

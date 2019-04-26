@@ -54,27 +54,27 @@ citasModel.countCitasOc = (row,callback)=>{
 var hora =0;
 let p=0;
 let jsonHd = [];
-////console.lo.log(row.id);
+console.log(row.id);
 var serv = {};
 
 for (var i = 0; i < row.length; i++)
 {
 hora=row[i];
-//console.lo.log('/**************CONTeO DE CITAS');
-//console.lo.log(hora.hora);
+console.log('/**************CONTeO DE CITAS');
+console.log(hora.hora);
 serv = {
 hora:hora.hora,
 id:row.id,
 cate:row.cate
 };
-////console.lo.log(serv);
+console.log(serv);
 eject.darCitasOc(serv,(err,resp)=> {
-////console.lo.log(resp);
+console.log(resp);
 p++;
 jsonHd.push(resp);
 if(p>=row.length)
 {
-////console.lo.log('jsonHd');
+console.log('jsonHd');
 ////console.lo.log(jsonHd);
 callback(null,jsonHd);
 }
@@ -146,7 +146,7 @@ var sql = "SELECT events.start,events.id_eventos,events.usuarios_id,events.servi
                           {
                               res.push(row);
                           }
-                        
+
                         }
                       }
                     });

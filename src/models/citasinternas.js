@@ -416,7 +416,7 @@ console.log(activa);
 };
 
 
-citasIModule.finCita = (cita,resp)=>{
+citasIModule.finCita = (cita,callback)=>{
 if(connection)
 {
   if(cita.ctg!=20)
@@ -433,10 +433,14 @@ if(connection)
         if(err){throw err}
         else
         {
-            connection.query(del,[cita.idcta],(err,res)=>{
+          console.log('Insertado');
+          console.log(res);
+            connection.query(del,[cita.idcta],(err,resp)=>{
               if(err){throw err}
               else
               {
+                console.log('eliminado');
+                console.log(resp);
                 callback(null,{actualizado:true})
               }
             });
@@ -445,6 +449,23 @@ if(connection)
 
 }
 
+};
+
+
+citasIModule.citaActiva = (idser,callback)=>{
+    if(connection)
+    {
+      let sel= 'SELECT citas_activas.id_citas_activas as idctv FROM citas_activas where citas_activas.estado= 1 AND citas_activas.servicios_idservicios = ?;'
+      connection.query(sel,[idser],(err,row)=>{
+        if(err){throw err}
+        else
+        {
+          row = row[0];
+          row = row.idctv;
+          callback(null,row);
+        }
+      });
+    }
 };
 
 

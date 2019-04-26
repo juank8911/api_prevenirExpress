@@ -469,17 +469,17 @@ var cat = fecha.cat;
 moment.locale('es');
 
 var dia = moment(fecha.fecha).format('dddd');
-// console.log(fecha.id);
-// console.log('//*/*/*/*/*/*/ DAR DIAS OC');
+console.log(dia);
+console.log('//*/*/*/*/*/*/ DAR DIAS OC');
 if(connection)
 {
   var sql1 = 'select * from horario where id_horario = (select dias.id_horario from dias where dias.dia = ? and servicios_id_servicios = ?);';
   connection.query(sql1,[dia,fecha.id],(err,rows)=>{
-  // console.log('/////////////////primera consulta*******************');
+  console.log('/////////////////primera consulta*******************');
   var row = rows;
   rows = rows[0];
-  // console.log(row);
-  // console.log('/////////////////primera consulta*******************');
+  console.log(row);
+  console.log('/////////////////primera consulta*******************');
   //if cuando solo ahy citas para la mañana y la tarde esta vacia
   if (JSON.stringify(row)=='[]')
   {
@@ -601,15 +601,15 @@ callback(null,derro);
 }
 else if (rows.de_maniana !=null && rows.de_tarde!=null)
 {
-  // console.log('/////***** dos horarios');
+  console.log('/////***** dos horarios');
 var sql = 'SELECT dias.*, horario.* from dias,horario WHERE dias.id_horario = horario.id_horario and dias.dia = ? and  id_servicios = ? ';
 connection.query(sql,[dia,fecha.id],(err,row)=>{
 if(err){throw err}
 else
 {
-//   console.log('///////////////////************Horario ');
-// console.log(dia);
-// console.log(row);
+  console.log('///////////////////************Horario ');
+console.log(dia);
+console.log(row);
 if (JSON.stringify(row)=='[]') {
 //execute
 //  console.log('vacio');
@@ -617,9 +617,9 @@ callback(null,[{'maniana':[{"hora": "No ahy citas",'disponible':false,"echas":0}
 }
 else
 {
-// console.log('///////////////////************row dentro del else ');
+console.log('///////////////////************row dentro del else ');
 var hd = row[0];
-// console.log(hd);
+console.log(hd);
 var m_de = fecha.fecha+" "+hd.de_maniana;
 var m_hasta = fecha.fecha+" "+hd.a_maniana;
 var t_de = fecha.fecha+" "+hd.de_tarde;
@@ -641,13 +641,13 @@ hora = moment(m_hasta).format('YYYY-MM-DD HH:mm:ss');
 manana.push({hora,'disponible':true});
 manana.id = parseInt(fecha.id);
 manana.cate=cat;
-// console.log('*/*/*/*/*/*/*/* vista de manana');
-// console.log(manana);
+console.log('*/*/*/*/*/*/*/* vista de manana');
+console.log(manana);
 citas.countCitasOc(manana,(err,maniana)=>{
 derro.push({maniana});
-//console.log(derro[0]);
+console.log(derro[0]);
 do {
-// console.log('////////////TARDE///////////')
+console.log('////////////TARDE///////////')
 hora = moment(horaT).format('YYYY-MM-DD HH:mm:ss');
 tarde.push({hora});
 horaT = moment(horaT).add(1,'hour');
@@ -657,7 +657,7 @@ hora = moment(t_hasta).format('YYYY-MM-DD HH:mm:ss');
 tarde.push({hora});
 tarde.id = parseInt(fecha.id);
 tarde.cate = cat;
-// console.log('*/*/*/*/*/*/*/* vista de tarde');
+console.log('*/*/*/*/*/*/*/* vista de tarde');
 console.log(tarde);
 citas.countCitasOc(tarde,(err,tardes)=>{
 
