@@ -79,7 +79,7 @@ respu = resp.libres
 console.log('*-4+4**/*/*/*/*/*/*/*/*/* respuesta de conteo');
 console.log(resp);
 // serv.echas = resp;
-// serv.citas = res;
+serv.citas = res;
 if(respu<=0)
 {
 serv.disponible = false;
