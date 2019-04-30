@@ -209,7 +209,7 @@ if(connection)
   // let servi;
   let res = [];
   // console.log(id);
-  let prov = 'SELECT provedores.nombre as provedor, provedores.id_provedor as idp from provedores, provedores_has_medicos WHERE provedores.id_provedor = provedores_has_medicos.id_provedor and provedores_has_medicos.medico_id = ?;';
+  let prov = 'SELECT provedores.nombre as provedor, provedores.id_provedor as idp  from provedores, provedores_has_medicos WHERE provedores.id_provedor = provedores_has_medicos.id_provedor and provedores_has_medicos.medico_id = ?;';
   connection.query(prov,[id],(err,pr)=>{
     if(err){throw err}
     else
