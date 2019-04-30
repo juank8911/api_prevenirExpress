@@ -138,7 +138,10 @@ if(JSON.stringify(res)!='[]')
          });
        }
        else
-       // {console.log('o no un error');}
+       {
+        // {console.log('o no un error');} 
+       }
+
   });
 
 }
