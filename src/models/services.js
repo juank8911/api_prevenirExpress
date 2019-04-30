@@ -664,7 +664,7 @@ servmodule.serviciosMedicoProv = (ids,callback) =>{
   {
     // console.log('id uno a uno');
     // console.log(ids);
-    let serv = 'SELECT servicios.nombre,servicios.id_servicios, servicios_categoria.categoria_idcategoria FROM servicios, provedores, medicos, servicios_categoria  WHERE servicios.medico_id = medicos.medico_id AND servicios.id_provedores = provedores.id_provedor AND servicios_categoria.servicios_idservicios = servicios.id_servicios AND medicos.medico_id = ? AND provedores.id_provedor = ?;';
+    let serv = 'SELECT servicios.nombre,servicios.id_servicios,servicios.* , servicios_categoria.categoria_idcategoria FROM servicios, provedores, medicos, servicios_categoria  WHERE servicios.medico_id = medicos.medico_id AND servicios.id_provedores = provedores.id_provedor AND servicios_categoria.servicios_idservicios = servicios.id_servicios AND medicos.medico_id = ? AND provedores.id_provedor = ?;';
     connection.query(serv,[ids.id,ids.idp],(err,ser)=>{
       // console.log(ser);
       if(err){throw err}
