@@ -103,14 +103,10 @@ app.put('/fincita/:ctg/:idcta/:fue',(req,res)=>{
 });
 
 
-app.put('/siguiente/:idcn/:idser:/:cat',(req,row)=>{
-
-internas.citaActiva(req.params.idser,(req,res)=>{
-  console.log(res);
-
+app.put('/siguiente/:idcn/:idser/:cat',(req,row)=>{
   let citaV = {
-    ctg:req.params.cat,
-    idcta: res,
+    ctg: req.params.cat,
+    // idcta: res,
     fue: 1
   };
   let citaN = {
@@ -119,6 +115,37 @@ internas.citaActiva(req.params.idser,(req,res)=>{
     cat:req.params.cat
   };
 
+internas.citaActiva(req.params.idser,(req,res)=>{
+  // console.log(res);
+
+  // console.log(citaV);
+  // console.log(citaN);
+
+if(JSON.stringify(res)!='[]')
+{
+  // console.log('adentro del if falla');
+  citaV.idcta = res;
+  // console.log('sakdklsajkld');
+  // console.log(res);
+  internas.finCita(citaV,(req,resp)=>{
+    // console.log('/*/*/*/*/*/*/');
+      // console.log(resp.actualizado);
+       if(resp.actualizado == true || resp.actualizado == 'true')
+       {
+         internas.cambioestadocitas( citaN,(req,resp)=>{
+           // console.log('cabiando estado de cita');
+           row.json(resp);
+         });
+       }
+       else
+       // {console.log('o no un error');}
+  });
+
+}
+else
+{
+  row.json({actualizado:false})
+}
 
 });
 

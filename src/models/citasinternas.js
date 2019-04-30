@@ -460,9 +460,16 @@ citasIModule.citaActiva = (idser,callback)=>{
         if(err){throw err}
         else
         {
+          if(JSON.stringify(row)=='[]')
+          {
+            callback(null,row)
+          }
+          else
+          {
           row = row[0];
           row = row.idctv;
           callback(null,row);
+          }
         }
       });
     }
