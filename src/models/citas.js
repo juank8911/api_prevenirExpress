@@ -173,4 +173,7 @@ var sql = "SELECT events.start,events.id_eventos,events.usuarios_id,events.servi
 
 };
 
+
+
+
 module.exports = citasModel;

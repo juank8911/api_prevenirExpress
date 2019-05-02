@@ -78,6 +78,13 @@ app.get('/citasprovac/:pr',(req,res)=>{
   });
 });
 
+app.get('/citasmedac/:idm',(req,res)=>{
+  let idm = req.params.idm;
+  internas.activasMedico(idm,(req,row)=>{
+    res.json(row);
+  });
+});
+
 //cabia el estado de espera a activa de las de la citas de la tabla activa
 app.put('/cambestado/:idca/:idser/:cat',(req,res)=>{
   let activa = {
@@ -139,7 +146,7 @@ if(JSON.stringify(res)!='[]')
        }
        else
        {
-        // {console.log('o no un error');} 
+        // {console.log('o no un error');}
        }
 
   });

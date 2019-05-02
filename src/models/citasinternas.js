@@ -451,6 +451,34 @@ if(connection)
 
 };
 
+citasIModule.activasMedico = (id,callback) => {
+if(connection)
+{
+  let jsonCitas = [];
+  var sql = 'SELECT citas_activas.*, servicios.nombre as servicio FROM citas_activas, servicios, medicos WHERE citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.medico_id = ?;';
+  var sql2 = 'SELECT citas_activas_masc.* FROM citas_activas_masc, servicios, medicos WHERE citas_activas_masc.id_servicios = servicios.id_servicios AND servicios.medico_id = ?;';
+  connection.query(sql,[id],(err,row)=>{
+    if(err){throw err}
+    else
+    {
+      // callback(null,row);
+      jsonCitas.push(row);
+      connection.query(sql2,[id],(err,row2)=>{
+        if(err){throw err}
+        else
+        {
+          jsonCitas.push(row2);
+          callback(null,jsonCitas)
+        }
+      });
+
+    }
+  });
+}
+
+
+};
+
 
 citasIModule.citaActiva = (idser,callback)=>{
     if(connection)
