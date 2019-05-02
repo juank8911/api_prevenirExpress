@@ -455,7 +455,7 @@ citasIModule.activasMedico = (id,callback) => {
 if(connection)
 {
   let jsonCitas = [];
-  var sql = 'SELECT citas_activas.*, servicios.nombre as servicio FROM citas_activas, servicios, medicos WHERE citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.medico_id = ?;';
+  var sql = 'SELECT citas_activas.*, usuarios.*, servicios.nombre as servicio FROM citas_activas, servicios, usuarios WHERE citas_activas.servicios_idservicios = servicios.id_servicios AND citas_activas.usuarios_id = usuarios.id AND servicios.medico_id = ?;';
   var sql2 = 'SELECT citas_activas_masc.* FROM citas_activas_masc, servicios, medicos WHERE citas_activas_masc.id_servicios = servicios.id_servicios AND servicios.medico_id = ?;';
   connection.query(sql,[id],(err,row)=>{
     if(err){throw err}
@@ -475,8 +475,6 @@ if(connection)
     }
   });
 }
-
-
 };
 
 
