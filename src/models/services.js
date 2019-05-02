@@ -9,6 +9,8 @@ var regH = require("./horario");
 var diasH = require("./dias");
 var hora = require('./horario');
 var fotoss = require('./fotos');
+var eject = require('./ejecucion');
+var async = require("async");
 
 connection = mysql.createConnection({
 host: config.domain,
@@ -662,18 +664,154 @@ connection.query(sql1,[serv.categoria,serv.id],(err,row)=>{
 servmodule.serviciosMedicoProv = (ids,callback) =>{
   if(connection)
   {
-    // console.log('id uno a uno');
+    console.log('id uno a uno');
     // console.log(ids);
-    let serv = 'SELECT servicios.nombre,servicios.id_servicios,servicios.* , servicios_categoria.categoria_idcategoria FROM servicios, provedores, medicos, servicios_categoria  WHERE servicios.medico_id = medicos.medico_id AND servicios.id_provedores = provedores.id_provedor AND servicios_categoria.servicios_idservicios = servicios.id_servicios AND medicos.medico_id = ? AND provedores.id_provedor = ?;';
+    let idser = 0;
+    var servi
+    var p =1;
+    let respu = [];
+    let serv = 'SELECT servicios.nombre,servicios.id_servicios,servicios.*, servicios_categoria.categoria_idcategoria FROM servicios, provedores, medicos, servicios_categoria  WHERE servicios.medico_id = medicos.medico_id AND servicios.id_provedores = provedores.id_provedor AND servicios_categoria.servicios_idservicios = servicios.id_servicios AND medicos.medico_id = ? AND provedores.id_provedor = ?;';
+    var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
     connection.query(serv,[ids.id,ids.idp],(err,ser)=>{
       // console.log(ser);
       if(err){throw err}
       else
       {
-        ids.serv = ser;
-        callback(null,ids);
+        // ids.serv = ser;
+        console.log(ser);
+        // for (var i = 0; i < ser.length; i++) {
+        //   idser = ser[i].id_servicios;
+        //   servi = ser[i];
+        //   // console.log(idser);
+        //   connection.query(sql,[idser],(err,reft)=>{
+        //     if(err){throw err}
+        //     else
+        //     {
+        //       console.log(reft);
+        //       // servi.foto = (retf);
+        //       console.log(servi);
+        //       console.log(p);
+        //       console.log(ser.length);
+        //       servi.foto = reft;
+        //       respu.push(servi);
+        //       if(p>=ser.length)
+        //       {
+        //         console.log('RESPUESTA');
+        //         console.log(respu);
+        //         callback(null,respu);
+        //       }
+        //         p++
+        //     }
+        //   });
+        // }
+
+
+
+        ser.forEach((data)=>{
+
+          // console.log(data.id_servicios);
+          connection.query(sql,[data.id_servicios],(err,row1)=>{
+              // console.log('PRUEBOTA');
+            data.fotos = row1;
+            respu.push(data);
+            console.log(respu.length);
+          });
+        });
+        console.log('respuesta');
+          callback(null,respu);
+
       }
     });
+  }
+};
+
+
+servmodule.serviciosMedicoProvedor = (pr,callback) =>{
+  if(connection)
+  {
+    let p = 1;
+    // console.log('id uno a uno');
+    // console.log(prs);
+    let servi = [];
+    let serv = 'SELECT servicios.nombre,servicios.id_servicios,servicios.*, servicios_categoria.categoria_idcategoria FROM servicios, provedores, medicos, servicios_categoria  WHERE servicios.medico_id = medicos.medico_id AND servicios.id_provedores = provedores.id_provedor AND servicios_categoria.servicios_idservicios = servicios.id_servicios AND medicos.medico_id = ? AND provedores.id_provedor = ?;';
+          // console.log(pr);
+          connection.query(serv,[pr.id,pr.idp],(err,row)=>{
+            if(err){throw err}
+            else
+            {
+
+              if (JSON.stringify(row)=='[]')
+              {
+                pr.serv = [];
+                callback(null,pr)
+              }
+              else
+                {
+
+                for (var i = 0; i < row.length; i++)
+                {
+
+                  eject.fotosSer(row[i],(err,resp)=>{
+                            // console.log(resp);
+                              servi.push(resp);
+                              // p++;
+                              // console.log(p);
+                              if(p>=row.length)
+                              {
+                                // console.log(servi);
+                                pr.serv = servi;
+                                callback(null,pr);
+                              }
+                              else
+                              {
+                                p++
+                                // console.log(servi);
+                                // console.log(p);
+                              }
+                          });
+
+                }
+                      //fin else
+                }
+            }
+
+
+          });
+
+
+
+          // async.mapLimit(urls, 5, async function(url) {
+          //     const response = await fetch(url)
+          //     return response.body
+          // }, (err, results) => {
+          //     if (err) throw err
+          //     // results is now an array of the response bodies
+          //     console.log(results)
+          // })
+//           // for use with Node-style callbacks...
+//
+//
+// var obj = {dev: "/dev.json", test: "/test.json", prod: "/prod.json"};
+// var configs = {};
+//
+// async.forEachOf(obj, (value, key, callback) => {
+// fs.readFile(__dirname + value, "utf8", (err, data) => {
+//   if (err) return callback(err);
+//   try {
+//       configs[key] = JSON.parse(data);
+//   } catch (e) {
+//       return callback(e);
+//   }
+//   callback();
+// });
+// }, err => {
+// if (err) console.error(err.message);
+// // configs is now a map of JSON data
+// doSomethingWith(configs);
+// });
+
+
+
   }
 };
 

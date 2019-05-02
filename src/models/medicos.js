@@ -5,6 +5,7 @@ let service = require('./services');
 let titulo = require('./titulos');
 let ciclo = require('../controler/ciclos')
 let email = require('./email');
+var async = require("async");
 
 connection = new mysql({
 host: config.host,
@@ -202,14 +203,15 @@ medicosModule.agregarProvedor = (medico,callback) =>{
   }
 };
 
-medicosModule.provedorServicios = (id,callback)=>{
+medicosModule.provedorServicios = async (id,callback)=>{
 if(connection)
 {
   let p = 1;
   // let servi;
   let res = [];
+  let prs = {};
   // console.log(id);
-  let prov = 'SELECT provedores.nombre as provedor, provedores.id_provedor as idp  from provedores, provedores_has_medicos WHERE provedores.id_provedor = provedores_has_medicos.id_provedor and provedores_has_medicos.medico_id = ?;';
+  let prov = 'SELECT provedores.nombre as provedor, provedores.id_provedor as idp from provedores, provedores_has_medicos WHERE provedores.id_provedor = provedores_has_medicos.id_provedor and provedores_has_medicos.medico_id = ?;';
   connection.query(prov,[id],(err,pr)=>{
     if(err){throw err}
     else
@@ -221,23 +223,63 @@ if(connection)
       }
       else
       {
-        // console.log('ENTRANDO AL FOR');
-        // console.log(pr.length);
-        for (var i = 0; i < pr.length; i++)
-        {
-            pr[i].id = id;
-           // console.log('IDS LIB //*********');
-            // console.log(pr);
-            service.serviciosMedicoProv(pr[i],(err,serv)=>{
-              // console.log(serv);
-              res.push(serv);
-              if(p==pr.length)
+        console.log(pr.length);
+        console.log(pr);
+          for (var i = 0; i < pr.length; i++)
+          {
+            prs = pr[i];
+            prs.id = id;
+            service.serviciosMedicoProvedor(prs,(err,row)=>{
+              console.log(row);
+              // prs.serv = row;
+              res.push(row);
+              // console.log('/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/');
+              // console.log(res);
+              // console.log('/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/');
+              if(p>=pr.length)
               {
-                callback(null,res)
+                callback(null,res);
               }
-              p++
+                p++;
+              console.log(p+'/*/*/*/*/*'+pr.length);
             });
-        }
+
+          }
+          //
+          // async.forEachOf(pr,(p,callback)=>{
+          //
+          //   p.id = id;
+          //   // console.log(p);
+          //   service.serviciosMedicoProvedor(p,(err,row)=>{
+          //     // console.log(row);
+          //     res.push(row);
+          //     console.log(row);
+          //     if(p>=pr.length)
+          //     {
+          //         // console.log(servi);
+          //       console.log('fin forEachOf');
+          //         callback(null,res);
+          //     }
+          //     else
+          //     {
+          //       p++;
+          //       console.log(p);
+          //     }
+          //   });
+          //
+          // });
+
+
+          // pr.forEach((p)=>{
+          //   p.id = id;
+          //   console.log(p);
+          //   service.serviciosMedicoProvedor(p,(err,row)=>{
+          //     // console.log(row);
+          //     // res.push(row);
+          //   });
+          //
+          // });
+            // callback(null,row);
 
       }
     }

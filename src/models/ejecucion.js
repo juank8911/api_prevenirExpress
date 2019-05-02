@@ -345,6 +345,20 @@ ejectModel.aceptaContra = (dts,callback)=>{
   }
 };
 
+ejectModel.fotosSer = async (ser,callback) =>{
+if(connection)
+{
+  var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
+  // console.log(ser);
+  connection.query(sql,[ser.id_servicios],(err,res)=>{
+    ser.fotos = res;
+    // console.log(ser);
+    callback(null,ser)
+  });
+}
+
+};
+
 
 
 
