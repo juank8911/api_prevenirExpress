@@ -245,41 +245,7 @@ if(connection)
             });
 
           }
-          //
-          // async.forEachOf(pr,(p,callback)=>{
-          //
-          //   p.id = id;
-          //   // console.log(p);
-          //   service.serviciosMedicoProvedor(p,(err,row)=>{
-          //     // console.log(row);
-          //     res.push(row);
-          //     console.log(row);
-          //     if(p>=pr.length)
-          //     {
-          //         // console.log(servi);
-          //       console.log('fin forEachOf');
-          //         callback(null,res);
-          //     }
-          //     else
-          //     {
-          //       p++;
-          //       console.log(p);
-          //     }
-          //   });
-          //
-          // });
 
-
-          // pr.forEach((p)=>{
-          //   p.id = id;
-          //   console.log(p);
-          //   service.serviciosMedicoProvedor(p,(err,row)=>{
-          //     // console.log(row);
-          //     // res.push(row);
-          //   });
-          //
-          // });
-            // callback(null,row);
 
       }
     }
