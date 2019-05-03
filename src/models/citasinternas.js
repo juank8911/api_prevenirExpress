@@ -358,12 +358,23 @@ citasIModule.activaCitaP = (cita,callback) =>{
 citasIModule.citasProvAc = (prov,callback) =>{
   if(connection)
   {
+    let jsonCitas = [];
     let sql = 'SELECT citas_activas.*,usuarios.*, servicios.nombre as servicio, servicios_categoria.categoria_idcategoria as categoria  from citas_activas,servicios,usuarios, servicios_categoria WHERE citas_activas.usuarios_id = usuarios.id AND citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND servicios.id_provedores = ? ;';
+    let masc = 'SELECT citas_activas_masc.*, mascotas.*,servicios.nombre as servicio, servicios_categoria.categoria_idcategoria as categoria FROM citas_activas_masc, mascotas,servicios, servicios_categoria WHERE citas_activas_masc.id_mascotas = mascotas.id_mascotas AND citas_activas_masc.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND servicios.id_provedores = ?;';
     connection.query(sql,[prov],(err,row)=>{
       if(err){throw err}
       else
       {
-        callback(null,row);
+        jsonCitas.push(row);
+        connection.query(masc,[prov],(err,row1)=>{
+          if(err){throw err}
+          else
+          {
+            jsonCitas.push(row1);
+            callback(null,jsonCitas);
+          }
+        });
+        // callback(null,row);
       }
     });
   }
