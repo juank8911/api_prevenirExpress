@@ -64,6 +64,7 @@ app.get('/ordencita/:ced/:prov',(req,res)=>{
 //activa la cita de un paciente y la elimina de la tabla eventos
 app.post('/activacita',(req,res)=>{
   let cita = req.body;
+  console.log(cita);
   internas.activaCitaP(cita,(err,resp)=>{
     res.json(resp);
   });
