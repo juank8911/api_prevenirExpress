@@ -103,7 +103,7 @@ citasIModule.nuevaCita = (cita,callback)=>{
 citasIModule.citaMascotas = (cita,callback)=>{
   if(connection)
   {
-      // console.log(cita)
+      console.log(cita)
       if(cita.existe == true)
       {
           if(cita.existem == true )
@@ -198,8 +198,9 @@ citasIModule.citaMascotas = (cita,callback)=>{
           if(err){throw err;}
           else
           {
+            console.log(insert.insertId);
             let ins_masc = 'INSERT INTO mascotas (especie, nombre, sexo, esterilizado, id_usuarios) VALUES (?, ?, ?, ?, ?);';
-            connection.query(ins_masc,[cita.especie,cita.nombreMascota,cita.sexo,cita.esterilizado,cita.usuario],(err,inse_masc)=>{
+            connection.query(ins_masc,[cita.especie,cita.nombreMascota,cita.sexo,cita.esterilizado,insert.insertId],(err,inse_masc)=>{
               if(err)
               {
                 throw err
@@ -389,7 +390,7 @@ if(connection){
   }
   else
   {
-    var sql = 'SELECT citas_activas_masc.* FROM citas_activas_masc, servicios WHERE citas_activas_masc.estado = 1 AND citas_activas_masc.servicios_idservicios = ? group by citas_activas_masc.id_citas_activas;';
+    var sel = 'SELECT citas_activas_masc.* FROM citas_activas_masc, servicios WHERE citas_activas_masc.estado = 1 AND citas_activas_masc.id_servicios = ? group by citas_activas_masc.id_citas_activas;';
     var updt = 'UPDATE citas_activas_masc SET estado = 1 WHERE id_citas_activas = ?;';
   }
 console.log(activa);

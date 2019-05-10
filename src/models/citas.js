@@ -164,8 +164,8 @@ var sql = "SELECT events.start,events.id_eventos,events.usuarios_id,events.servi
                             if(err){throw err}
                             else
                             {
-                              // console.log('/*/*/*/*MASCOTAS/*/*/*/*/*/');
-                              // console.log(row1)
+                              console.log('/*/*/*/*MASCOTAS/*/*/*/*/*/');
+                              console.log(row1)
                               // console.log(resm);
                               if(JSON.stringify(resm)!='[]')
                               {
@@ -188,7 +188,9 @@ var sql = "SELECT events.start,events.id_eventos,events.usuarios_id,events.servi
                                 }
                                 else
                                 {
-                                    res1.push(row1);
+                                  for (var i = 0; i < row1.length; i++) {
+                                    res1.push(row1[i]);
+                                  }
                                 }
 
                               }
