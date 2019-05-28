@@ -25,8 +25,9 @@ if(connection)
 var id = prov.cedula;
 var nombre = prov.nombre;
 var correo = prov.email;
-var sql = 'INSERT INTO provedores(id_provedor,nombre,correo,members_id) values (?,?,?,?)';
-connection.query(sql,[id,nombre,correo,id],(err, row)=>{
+var cod = prov.cod;
+var sql = 'INSERT INTO provedores(id_provedor,cod_ver,nombre,correo,members_id) values (?,?,?,?)';
+connection.query(sql,[id,cod,nombre,correo,id],(err, row)=>{
 if(err)
 {
 // console.log('no agregado ususario');

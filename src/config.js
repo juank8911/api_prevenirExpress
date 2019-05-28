@@ -1,6 +1,6 @@
 module.exports= {
   domain:'157.230.49.162',
-  puerto:process.env.PORT||3300,
+  puerto:process.env.PORT||3000,
   nombredb:'prevenirexpres',
   // host: 'localhost',
   host: '157.230.49.162',

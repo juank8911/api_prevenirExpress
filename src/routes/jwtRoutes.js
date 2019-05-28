@@ -32,6 +32,7 @@ var regist = {
 nombre: req.body.nombre,
 apellido: req.body.apellido,
 cedula: req.body.id,
+cod: req.body.cod,
 email: req.body.email,
 password: req.body.pssw,
 direccion: req.body.direccion,
