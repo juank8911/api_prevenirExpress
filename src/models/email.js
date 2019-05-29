@@ -106,6 +106,56 @@ transporter.sendMail(mailOptions, function(error, info){
 
 };
 
+emailModel.BienvenidoBlock = (usu,callback) =>{
+  var  transporter = nodemailer.createTransport(smtpTransport({
+      service: 'gmail',
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+              xoauth2: xoauth2.createXOAuth2Generator({
+                type: 'OAuth2',
+                user: 'contactoprevenir@gmail.com',
+                clientId: '669854799910-42brst8bu1gpn3eh49n5efrd88cn2sg2.apps.googleusercontent.com',
+                clientSecret: 'DGVpQslRBho94BcwiTcdzmJp',
+                refreshToken: '1/5SsC1sH4qOr4jDwn9bda19nXrQX3zkRSomdDZ1DY1R0',
+                accessToken: 'ya29.Gls-BrbFCF8zI7Rb1LbYJFWNl9JsPRAYdoZTcFe_nXd-XDmmyHlC9YKsWSwSt0Y7VCqcwTNWbtnMEflHjv-JQkhngdMa-iyZQjo_7JhXARYKdvCexkamvfeHn8V2'
+              })
+            }
+            }));
+
+var mailOptions = {
+
+  from: 'PREVENIR EXPRESS', //config.from,
+  to: usu.to,
+  subject: 'BIENVENIDO A PREVENIR EXPRESS - ACTIVACION CUENTA',
+  text: usu.texto,
+  html: '<img src="http://cdn.prevenirexpress.com/avatars/banner1a.png" alt="prevenir logo" width="70%" height="50%">'+
+
+  '</br></br><h3>BIENVENIDO A PREVENIR EXPRESS</h3></br><div>Gracias por ser parte de nuesta familia '+
+          'en donde encontraras los mejores decuentos medicos de tu ciudad, por DESCARGA nuestra aplicacion desde la play store de android o ios e ingresa por recuperar contraseña, despues de seguir los pasos favor ingresa este codigo en la aplicacion: <h2>'+ usu.pss + '</h2></div>'};
+
+transporter.sendMail(mailOptions, function(error, info){
+    if (error){
+        //console.lo.log(error);
+        callback(null,false);
+      //callback(null,'not send');
+    } else {
+        //console.lo.log("Email sent");
+        callback(null,true);
+    }
+});
+
+
+};
+
+
+
+
+
+
+
+
 emailModel.contraseña = (usu,callback) =>{
   console.log('dentro de envio de correos');
 };

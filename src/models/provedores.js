@@ -22,10 +22,12 @@ let provedorModule = {};
 provedorModule.regProvedorFace = (prov, callback)=> {
 if(connection)
 {
+  console.log(provs);
 var id = prov.cedula;
 var nombre = prov.nombre;
 var correo = prov.email;
 var cod = prov.cod;
+console.log(cod);
 var sql = 'INSERT INTO provedores(id_provedor,cod_ver,nombre,correo,members_id) values (?,?,?,?,?)';
 connection.query(sql,[id,cod,nombre,correo,id],(err, row)=>{
 if(err)
@@ -109,9 +111,10 @@ var correo = prov.email;
 var direccion = prov.direccion;
 var tel = prov.tel;
 var nit = prov.nit;
+var cod = prov.cod;
 
-var sql = 'INSERT INTO provedores(id_provedor,nit,nombre,correo,direccion,telefono,members_id) values (?,?,?,?,?,?,?)';
-connection.query(sql,[id,nit,nombre,correo,direccion,tel,id],(err, row)=>{
+var sql = 'INSERT INTO provedores(id_provedor,nit,nombre,cod_ver,correo,direccion,telefono,members_id) values (?,?,?,?,?,?,?,?)';
+connection.query(sql,[id,nit,nombre,cod,correo,direccion,tel,id],(err, row)=>{
 if(err)
 {
 //console.log('no agregado ususario');

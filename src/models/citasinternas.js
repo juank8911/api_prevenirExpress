@@ -2,6 +2,9 @@ let mysql = require('mysql');
 let config = require('../config');
 let event = require('./eventos');
 let moment = require('moment');
+let ciclo = require('../controler/ciclos');
+let email = require('./email');
+
 
 connection = mysql.createConnection({
 host: config.domain,
@@ -17,10 +20,10 @@ let citasIModule = {};
 citasIModule.nuevaCita = (cita,callback)=>{
   if(connection)
   {
-    console.log(cita.existe);
+    // console.log(cita.existe);
     if(cita.existe == true || cita.existe == 'true')
     {
-      console.log(cita);
+      // console.log(cita);
       var Mend = parseInt(00);
       var hinicio = moment(cita.start).format('HH:mm:ss');
       var Finicio = moment(cita.start).format('YYYY-MM-DD');
@@ -44,23 +47,59 @@ citasIModule.nuevaCita = (cita,callback)=>{
       servicio: cita.servicio,
       mascota:cita.mascota
       };
-      console.log(eventss);
+      // console.log(eventss);
       event.agregarEvento(eventss,(err,resp)=>{
         callback(null,resp);
       });
     }
     else
     {
+      console.log('///(/(/(/( CREANDO NUEVO PACIENTE))))');
       // let ins = "INSERT INTO usuarios (id,cedula, nombre, apellidos,telefono,fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES (?,?, ?, ?, ?, ?, ?, ?);"
-      let ins = 'INSERT INTO usuarios ( cedula, correo,nombre, apellidos, telefono, fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES ( ?, ?,?, ?, ?, ?, ?, ?);'
-      connection.query(ins,[cita.usuario,cita.correo,cita.nombres,cita.apellidos,cita.contacto,cita.fecha_nacimiento,17,47],(err,insert)=>{
+      //agreagr member para que pueda tener usuario y contraseña
+      ciclo.generaSalt((err,gen)=>{
+        cod = gen;
+      });
+      // console.log(cod);
+      var sql = 'INSERT INTO members (email, admin, password, salt) VALUES ( ?, ?, ?,?)';
+      connection.query(sql,[cita.correo,'false','donPass',cod],(err,row)=>{
+        if(err)
+        {
+        throw err;
+        }
+        else {
+          console.log('usuario creado');
+          var usu = {
+                    to:cita.correo,
+                    pss:cod,
+                    id:row.insertId
+                    }
+                    cita.id = usu.id;
+                    console.log('guhgbhjbjhg guiy guygo uyg uyg ouyg yiug uig uig iugiu gui giuyg ');
+                    console.log(cita.id);
+                    console.log(usu.id);
+                    email.BienvenidoBlock(usu,(err,ressp)=>{
+                      if(ressp==true)
+                          {
+                            // console.log(row.insertId);
+                          let valido = {mensaje:'Usuario registrado con exito',existe:'false',ids:row.insertId};
+                          // console.log('agregado');
+                        }
+                    });
+             }
+      });
+
+
+      let ins = 'INSERT INTO usuarios ( id,cedula, correo,nombre, apellidos, telefono, fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES ( ?,?, ?,?, ?, ?, ?, ?, ?);'
+      connection.query(ins,[cita.id,cita.usuario,cita.correo,cita.nombres,cita.apellidos,cita.contacto,cita.fecha_nacimiento,17,47],(err,insert)=>{
         // console.log(insert);
         if(err){throw err;}
         else
         {
           // console.log(cita);
           console.log('/*/*/*/*/*/*AQUI YA AGREGO AL USUSARIO');
-          console.log(insert);
+
+          // console.log(insert);
           var Mend = parseInt(00);
           var hinicio = moment(cita.start).format('HH:mm:ss');
           var Finicio = moment(cita.start).format('YYYY-MM-DD');
@@ -84,15 +123,15 @@ citasIModule.nuevaCita = (cita,callback)=>{
           servicio: cita.servicio,
           mascota:cita.mascota
           };
-          console.log(eventss);
+          // console.log(eventss);
           event.agregarEvento(eventss,(err,resp)=>{
             callback(null,resp);
           });
 
         }
       });
-      console.log('no existe el usuario');
-      console.log(cita);
+      // console.log('no existe el usuario');
+      // console.log(cita);
     }
 
   }

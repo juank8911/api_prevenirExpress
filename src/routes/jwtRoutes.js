@@ -32,7 +32,7 @@ var regist = {
 nombre: req.body.nombre,
 apellido: req.body.apellido,
 cedula: req.body.id,
-cod: req.body.cod,
+cod: req.body.codigo,
 email: req.body.email,
 password: req.body.pssw,
 direccion: req.body.direccion,
@@ -71,6 +71,7 @@ console.log('validacion de admin'+regist.admin);
 //console.log(regist.face);
 if(regist.face==='true'||regist.face==true)
 {
+  console.log(regist);
 provers.regProvedorFace(regist,(err,datapf)=>{
 jwts.login(regist, (err,datas)=>{
 //console.log('///////*****////***///*****')
