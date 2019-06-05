@@ -10,9 +10,9 @@ database: config.nombredb
 
 let optModule = {};
 
-optModule.darDatosHistUsu = (callback) => {
+optModule.darDatosHistUsu = (id,callback) => {
 var sql = 'SELECT * FROM historia_opt WHERE id_usuario = ?;';
-connection.query(sql,(err,row)=>{
+connection.query(sql,[id],(err,row)=>{
   if(err){throw err}
   else
   {
@@ -22,8 +22,15 @@ connection.query(sql,(err,row)=>{
 
 };
 
-optModule.createHistUsu = (callback) => {
-
+optModule.createHistUsu = (opt,callback) => {
+var sql = 'INSERT INTO historia_opt (motivoCons, antecedentes, lensometriaOd, lensometriaOi, agudeazaVisualOd, agudeazaVisualOi, visionLejanaOd, visionLejanaOi, visionCercanaOd, visionCercanaOi, adicion, tipoLente, examenExternoOd, examenExternoOi, oftalmologiaOd, oftalmologiaOi, examenMotorOd, examenMotorOi, queratometriaOd, queratometriaOi, refraccionOd, refraccionOi, formulaFinalOd, formulaFinalOi, avvlOd, avvlOi, avvpOd, avvpOi, adicionOd, adicionOi, dnpOd, dnpOi, testIshihara, testEstereopsis, diagnosticoInical, conducta, medicamentos, remision, observaciones,id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
+connection.query(sql,[opt],(err,row)=>{
+  if(err){throw err}
+  else
+  {
+    callback(null,row)
+  }
+});
 };
 
 optModule.darDatosUsu = (callback) =>{

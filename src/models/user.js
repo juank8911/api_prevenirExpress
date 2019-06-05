@@ -148,8 +148,8 @@ userModel.setUsuario=(usu,callback)=>{
 if(connection)
 {
 console.log(usu.id_municipio);
-var sql = 'UPDATE usuarios SET cedula=?, nombre= ?, apellidos=?, direccion=?, telefono=?,telefonowatshapp=?,fecha_nacimiento=?,id_municipio=? WHERE id= ? and parentescos_id_parentescos = 17;'
-connection.query(sql,[usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.fecha_nacimiento,usu.id_municipio,usu.id],(err,row)=>{
+var sql = 'UPDATE usuarios SET cedula = ?, nombre = ?, apellidos = ?, direccion = ?, telefono = ?,telefonowatshapp = ?,fecha_nacimiento = ?, estadoCivil = ?, ocupacion = ?, barrio = ?, eps = ?, acompaniante = ?, tel_acompaniante = ?, id_municipio = ? WHERE id= ? and parentescos_id_parentescos = 17;'
+connection.query(sql,[usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.fecha_nacimiento,usu.estadoCivil,usu.ocupacion,usu.barrio,usu.eps,usu.acompanante,usu.tel_acompanante,usu.id_municipio,usu.id],(err,row)=>{
 if(err){callback(null,{'update':false})}
 else
 {
@@ -189,7 +189,7 @@ userModel.darUsuario=(ced,callback)=>{
       row = row[0];
       not.push(row);
       console.log(not);
-      
+
       connection.query(citas,[row.id],(err,rep)=>{
         if(err){throw err}
         else
@@ -197,10 +197,10 @@ userModel.darUsuario=(ced,callback)=>{
           not.push(rep);
           console.log(not);
           callback(null,not);
-          
+
         }
       });
-    
+
   }
   });
   }
