@@ -21,3 +21,11 @@ connection.query(sql,(err,row)=>{
 })
 
 };
+
+optModule.createHistUsu = (callback) => {
+
+};
+
+optModule.darDatosUsu = (callback) =>{
+  
+};
