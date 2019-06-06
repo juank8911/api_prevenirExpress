@@ -10,6 +10,8 @@ database: config.nombredb
 
 let optModule = {};
 
+
+
 optModule.darDatosUsu = (id,callback) => {
 var sql = 'SELECT * FROM historia_opt WHERE id_usuario = ?;';
 connection.query(sql,[id],(err,row)=>{
@@ -32,3 +34,5 @@ connection.query(sql,[opt],(err,row)=>{
   }
 });
 };
+
+module.exports = optModule;

@@ -17,6 +17,7 @@ app.put('/opticausu',(req,res)=>{
   optica.createHisto(opt,(err,resp)=>{
     res.json(resp);
   });
+
 });
 
 //retona la lista de los municipios segun el id del departamento
