@@ -346,8 +346,8 @@ eventmodule.citaHistorial = (callback)=>{
 if(connection)
 {
 var h = moment().format('YYYY-MM-DD HH:mm:ss');
-var citas = 'insert into historial SELECT * FROM events WHERE end < ?;'
-var del = 'DELETE FROM events WHERE end < ?;'
+var citas = 'INSERT INTO historial (color,start,end,usuarios_id,servicios_idservicios,fue) SELECT color, start, end, usuarios_id, servicios_idservicios, 0 FROM events WHERE events.start < curdate();'
+var del = 'DELETE FROM events WHERE events.start < curdate() AND events.id_eventos > 0;'
 connection.query(citas,[h],(err,res)=>{
 if(err){throw err}
 else
@@ -369,8 +369,8 @@ eventmodule.citaHistorialM = (callback)=>{
 if(connection)
 {
 var h = moment().format('YYYY-MM-DD HH:mm:ss');
-var citas = 'insert into historial_masc SELECT * FROM events_masc WHERE end < ?;'
-var del = 'DELETE FROM events_masc WHERE end < ?;'
+var citas = 'INSERT INTO historial_masc (color,start,end,id_mascotas,id_servicios,fue) SELECT color, start, end, id_mascotas, id_servicios, 0 FROM events_masc WHERE events_masc.start < curdate();'
+var del = 'DELETE FROM events_masc WHERE events_masc.start < curdate() AND events_masc.id_eventos > 0;'
 connection.query(citas,[h],(err,res)=>{
 if(err){throw err}
 else

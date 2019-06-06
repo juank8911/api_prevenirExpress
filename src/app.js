@@ -36,15 +36,15 @@ app.set('port',config.puerto);
 // } ) ;
 
 //ARREGLAR LOS CAMPOS QUE SOLICITA EN EL CAMBIO EL QUERY Y DEMAS OPCIONES
- // cron.schedule(' 0 10 * * * *', () => {
- //   console.log('running a task every 30 minutes');
- //   horas.citaHistorial((err,res)=>{
- //     horas.citaHistorialM((err,resp)=>{
- //       console.log(res+' ok '+resp);
- //     });
- //
- //    });
- // });
+ cron.schedule(' 0 * 22 * * *', () => {
+   console.log('running a task every 30 minutes');
+   horas.citaHistorial((err,res)=>{
+     horas.citaHistorialM((err,resp)=>{
+       console.log(res+' ok '+resp);
+     });
+
+    });
+ });
 
 // cron.schedule('* */1 * * *', () => {
 // //   horas.citaHistorial((err,res)=>{
@@ -144,7 +144,7 @@ require('./routes/benefRoutes')(app);
 require('./routes/parenntRoutes')(app);
 require('./routes/eMascRoutes')(app);
 require('./routes/mascRoutes')(app);
-// require('./routes/pushRoutes')(app);
+require('./routes/opticaRoutes')(app);
 // require('./routes/eventsMascRoutes')(apps);
 //app.use(rutas);
 

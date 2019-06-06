@@ -13,7 +13,7 @@ res.json(resp);
 app.put('/opticacr',(req,res)=>{
   var opt = req.body;
   console.log(opt);
-  optica.createHistUsu(opt,(err,resp)=>{
+  optica.createHisto(opt,(err,resp)=>{
     res.json(resp);
   });
 });
