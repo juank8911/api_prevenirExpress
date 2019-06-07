@@ -35,13 +35,18 @@ res.json(resp);
 //modifica la informacion de los usuarios en la base de datos
 app.put('/user',jwts.valida,(req,res)=>{
 //usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.feha_nacimiento,usu.id
-console.log(req.body);
+// console.log(req.body);
 var fecha = moment(req.body.fecha_nacimiento).format('YYYY-MM-DD');
 fecha = fecha.toString();
-//console.log(fecha);
+// console.log();
 let usu = {
+tipoDocumento: req.body.tipoDocumento,
 cedula:req.body.cedula,
 nombre:req.body.nombre,
+estadoCivil: req.body.estadoCivil,
+ocupacion:req.body.ocupacion,
+barrio: req.body.barrio,
+eps: req.body.eps,
 apellidos:req.body.apellidos,
 direccion:req.body.direccion,
 telefono:req.body.telefono,
@@ -82,6 +87,3 @@ app.get('/usua/:ced',(req,res)=>{
     });
 
 }
-
-
-
