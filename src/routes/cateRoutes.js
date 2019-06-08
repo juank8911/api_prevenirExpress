@@ -13,8 +13,12 @@ res.json(data);
 
 app.put('/opticausu',(req,res)=>{
   var opt = req.body;
+<<<<<<< HEAD
   console.log(opt);
 
+=======
+  // console.log(opt);
+>>>>>>> 2af98a4c3c3c7339009fc7e709b3e131573554be
   optica.createHisto(opt,(err,resp)=>{
 
     res.json(resp);

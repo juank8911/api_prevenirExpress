@@ -107,7 +107,7 @@ callback(null,mensaje);
 userModel.darUserId=(id,callback)=>{
 if(connection)
 {
-var sql = "SELECT usuarios.*, CONCAT( usuarios.nombre,' ', usuarios.apellidos) as nombres,TIMESTAMPDIFF(YEAR,fecha_nacimiento,CURDATE()) as edad, municipio.id_municipio,municipio.nombre as nomMuni,departamento.nombre as nomDepa, departamento.id_departamento, acompañante.nombre as acompanante, acompañante.telefono as telefonoAcompanante, acompañante.id_parentescos as idp, (select parentescos.nombre from parentescos where parentescos.id_parentescos = idp) as pareentesco FROM usuarios,municipio,departamento, acompañante where usuarios.id = acompañante.usuarios_id AND usuarios.id_municipio = municipio.id_municipio AND departamento.id_departamento = municipio.id_departamento AND usuarios.id = ?";
+var sql = "SELECT usuarios.*, CONCAT( usuarios.nombre,' ', usuarios.apellidos) as nombres,TIMESTAMPDIFF(YEAR,fecha_nacimiento,CURDATE()) as edad, municipio.id_municipio,municipio.nombre as nomMuni,departamento.nombre as nomDepa, departamento.id_departamento FROM usuarios,municipio,departamento where usuarios.id_municipio = municipio.id_municipio AND departamento.id_departamento = municipio.id_departamento AND usuarios.id = ?;";
 connection.query(sql,id,(err,row)=>{if(err){throw err}
 else{
   console.log(row);
@@ -147,13 +147,15 @@ callback(null,{'datos':true});
 userModel.setUsuario=(usu,callback)=>{
 if(connection)
 {
-console.log(usu.id_municipio);
-var sql = 'UPDATE usuarios SET tipoDocumento = ?, cedula = ?, nombre = ?, apellidos = ?, direccion = ?, telefono = ?,telefonowatshapp = ?,fecha_nacimiento = ?, estadoCivil = ?, ocupacion = ?, barrio = ?, eps = ?, acompaniante = ?, tel_acompaniante = ?, id_municipio = ? WHERE id= ? and parentescos_id_parentescos = 17;'
-connection.query(sql,[usu.tipoDocumento, usu.cedula,usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.fecha_nacimiento,usu.estadoCivil,usu.ocupacion,usu.barrio,usu.eps,usu.acompanante,usu.tel_acompanante,usu.id_municipio,usu.id],(err,row)=>{
-if(err){callback(null,{'update':false})}
+// console.log('Y/(() CAMBIANDO EL USUARIO)');
+// console.log(usu);
+var sql = 'UPDATE usuarios SET tipoDocumento = ?, nombre = ?, apellidos = ?, direccion = ?, telefono = ?, telefonowatshapp = ?, fecha_nacimiento = ?, estadoCivil = ?, ocupacion = ?, barrio = ?, eps = ? WHERE (id = ?) and (parentescos_id_parentescos = 17);'
+connection.query(sql,[usu.tipoDocumento, usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.fecha_nacimiento,usu.estadoCivil,usu.ocupacion,usu.barrio,usu.eps,usu.id],(err,row)=>{
+if(err){throw err}
 else
 {
 // console.log({'update':true});
+// console.log('?=)(/&%/()=)(/&/TRUE');
 callback(null,{'update':true});
 }
 });
