@@ -1,8 +1,8 @@
 let mysql = require('mysql');
 let config = require('../config');
 let event = require('./eventos');
-let Moment = require('moment');
-var moment = require('moment-timezone'); moment().tz('America/Bogota').format(); 
+let moment = require('moment'); moment().utc(-5).format();
+var Moment = require('moment-timezone'); Moment().tz('America/Bogota').format();
 let ciclo = require('../controler/ciclos');
 let email = require('./email');
 
@@ -400,7 +400,7 @@ citasIModule.citasProvAc = (prov,callback) =>{
   if(connection)
   {
     let jsonCitas = [];
-    let sql = 'SELECT citas_activas.*,usuarios.*, servicios.nombre as servicio, servicios_categoria.categoria_idcategoria as categoria  from citas_activas,servicios,usuarios, servicios_categoria WHERE citas_activas.usuarios_id = usuarios.id AND citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND servicios.id_provedores = ? ;';
+    let sql = "SELECT citas_activas.*,CONVERT_TZ(citas_activas.start,'+00:00','+05:00') as start,CONVERT_TZ(citas_activas.end,'+00:00','+05:00') as end, usuarios.*, servicios.nombre as servicio, servicios_categoria.categoria_idcategoria as categoria  from citas_activas,servicios,usuarios, servicios_categoria WHERE citas_activas.usuarios_id = usuarios.id AND citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND servicios.id_provedores = ? ;";
     let masc = 'SELECT citas_activas_masc.*, mascotas.*,servicios.nombre as servicio, servicios_categoria.categoria_idcategoria as categoria FROM citas_activas_masc, mascotas,servicios, servicios_categoria WHERE citas_activas_masc.id_mascotas = mascotas.id_mascotas AND citas_activas_masc.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND servicios.id_provedores = ?;';
     connection.query(sql,[prov],(err,row)=>{
       if(err){throw err}
@@ -552,6 +552,7 @@ citasIModule.citaActiva = (idser,callback)=>{
       });
     }
 };
+
 
 
 

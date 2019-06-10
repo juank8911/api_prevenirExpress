@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 let config = require('../config');
-let moment = require('moment');
+let moment = require('moment'); moment().utc(-5).format();
+var Moment = require('moment-timezone'); Moment().tz('America/Bogota').format();
 let eject = require('./ejecucion');
 
 connection = mysql.createConnection({
@@ -110,7 +111,7 @@ citasModel.CitasUsuarioProv = (usu,callback)=>{
   let res = [];
   let res1 = [];
   let rest = [];
-var sql = "SELECT events.start,events.id_eventos,events.usuarios_id,events.servicios_idservicios,servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente,usuarios.avatar, day(now()) as hoy,month(now()) as mes, day(events.start) as cita, month(events.start) as mescita, servicios_categoria.categoria_idcategoria as categoria FROM events, provedores, servicios, usuarios,servicios_categoria WHERE events.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = provedores.id_provedor AND events.usuarios_id = usuarios.id AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND provedores.id_provedor = ? AND usuarios.cedula = ? ;";
+var sql = "SELECT CONVERT_TZ(events.start,'+00:00','-05:00') as start,events.id_eventos,events.usuarios_id,events.servicios_idservicios,servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente,usuarios.avatar, day(now()) as hoy,month(now()) as mes, day(events.start) as cita, month(events.start) as mescita, servicios_categoria.categoria_idcategoria as categoria FROM events, provedores, servicios, usuarios,servicios_categoria WHERE events.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = provedores.id_provedor AND events.usuarios_id = usuarios.id AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND provedores.id_provedor = ? AND usuarios.cedula = ? ;";
   connection.query(sql,[usu.ser,usu.id],(err,row)=>{
     if(err){throw err}
     else
@@ -118,7 +119,7 @@ var sql = "SELECT events.start,events.id_eventos,events.usuarios_id,events.servi
       // console.log(row);
 
 
-                    let act = 'SELECT citas_activas.*, servicios.nombre as servicio,concat(usuarios.nombre," ",usuarios.apellidos) as paciente,usuarios.avatar FROM citas_activas, usuarios, servicios WHERE citas_activas.usuarios_id = usuarios.id AND citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = ? AND usuarios.cedula = ?;';
+                    let act = "SELECT citas_activas.*,CONVERT_TZ(citas_activas.start,'+00:00','-05:00') as start,CONVERT_TZ(citas_activas.end,'+00:00','-05:00') as end, servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente,usuarios.avatar FROM citas_activas, usuarios, servicios WHERE citas_activas.usuarios_id = usuarios.id AND citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = ? AND usuarios.cedula = ?;";
                     connection.query(act,[usu.ser, usu.id],(err,ress)=>{
                       if(err){throw err}
                       else
