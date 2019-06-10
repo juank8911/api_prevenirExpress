@@ -1,7 +1,8 @@
 let mysql = require('mysql');
 let config = require('../config');
 let event = require('./eventos');
-let moment = require('moment');
+let Moment = require('moment');
+var moment = require('moment-timezone'); moment().tz('America/Bogota').format(); 
 let ciclo = require('../controler/ciclos');
 let email = require('./email');
 

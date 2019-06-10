@@ -20,7 +20,7 @@
     "fcm-node": "^1.4.0",
     "jsonwebtoken": "^8.4.0",
     "moment": "^2.22.2",
-    "moment-timezone": "^0.5.23",
+    "moment-timezone": "^0.5.25",
     "morgan": "^1.9.0",
     "mysql": "^2.16.0",
     "node-cron": "^2.0.3",
