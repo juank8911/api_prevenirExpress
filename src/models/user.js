@@ -208,4 +208,24 @@ userModel.darUsuario=(ced,callback)=>{
   }
   };
 
+  userModel.validaCorreo(correo, callback)=>{
+        if(connection)
+        {
+          var sql = "SELECT members.email FROM members WHERE email = ?;";
+          connection.query(sql,[correo],(err,row)=>{
+            if(err){throw err}
+            else{
+              if(JSON.stringify(row)!='[]')
+              {
+                callback(null,true);
+              }
+              else
+              {
+                callback(null,false);
+              }
+            }
+          });
+        };
+  };
+
 module.exports = userModel;

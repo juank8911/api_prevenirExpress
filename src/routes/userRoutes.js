@@ -86,4 +86,11 @@ app.get('/usua/:ced',(req,res)=>{
     });
     });
 
+app.get('/vemail/:email',(req,res)=>{
+    var correo = req.params.ced;
+    User.validaCorreo(correo,(err,resp)=>{
+       res.json(resp);
+    });
+});
+
 }

@@ -111,6 +111,16 @@ if(connection)
 
 };
 
+histModule.historiaUsuSer = (ids,callback)=>{
+  let sql = 'SELECT historia_opt.* FROM historia_opt, usuarios WHERE usuarios.id = historia_opt.id_usuario AND historia_opt.id_servicios = ? and usuarios.id = ?;';
+  connection.query(sql,[ids.ser,ids.usu],(err,row)=>{
+    if(err){throw err}
+    else {
+      callback(null,row);
+    }
+  });
+};
+
 
 
 
