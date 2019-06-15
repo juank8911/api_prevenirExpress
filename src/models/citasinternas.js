@@ -62,75 +62,91 @@ citasIModule.nuevaCita = (cita,callback)=>{
         cod = gen;
       });
       // console.log(cod);
-      var sql = 'INSERT INTO members (email, admin, password, salt) VALUES ( ?, ?, ?,?)';
-      connection.query(sql,[cita.correo,'false','donPass',cod],(err,row)=>{
-        if(err)
-        {
-        throw err;
+      var sql = "SELECT members.email FROM members WHERE email = ?;";
+      connection.query(sql,[cita.correo],(err,rows)=>{
+        if(err){throw err}
+        else{
+          console.log(rows);
+          if(JSON.stringify(rows)=='[]')
+          {
+
+            var sql1 = 'INSERT INTO members (email, admin, password, salt) VALUES ( ?, ?, ?,?)';
+            connection.query(sql1,[cita.correo,'false','donPass',cod],(err,row)=>{
+              if(err)
+              {
+              throw err;
+              }
+              else {
+                console.log('usuario creado');
+                var usu = {
+                          to:cita.correo,
+                          pss:cod,
+                          id:row.insertId
+                          }
+                          cita.id = usu.id;
+                          console.log('guhgbhjbjhg guiy guygo uyg uyg ouyg yiug uig uig iugiu gui giuyg ');
+                          console.log(cita.id);
+                          console.log(usu.id);
+                          email.BienvenidoBlock(usu,(err,ressp)=>{
+                            if(ressp==true)
+                                {
+                                  // console.log(row.insertId);
+                                let valido = {mensaje:'Usuario registrado con exito',existe:'false',ids:row.insertId};
+                                // console.log('agregado');
+                              }
+                          });
+                   }
+            });
+
+
+            let ins = 'INSERT INTO usuarios ( id,cedula, correo,nombre, apellidos, telefono, fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES ( ?,?, ?,?, ?, ?, ?, ?, ?);'
+            connection.query(ins,[cita.id,cita.usuario,cita.correo,cita.nombres,cita.apellidos,cita.contacto,cita.fecha_nacimiento,17,47],(err,insert)=>{
+              // console.log(insert);
+              if(err){throw err;}
+              else
+              {
+                // console.log(cita);
+                console.log('/*/*/*/*/*/*AQUI YA AGREGO AL USUSARIO');
+
+                // console.log(insert);
+                var Mend = parseInt(00);
+                var hinicio = moment(cita.start).format('HH:mm:ss');
+                var Finicio = moment(cita.start).format('YYYY-MM-DD');
+                var horas = hinicio.split(":");
+                var mins = horas[1];
+                var hora = horas[0];
+                hora = parseInt(hora);
+                mins = parseInt(mins);
+                minsEnd = mins+Mend;
+                hora = hora;
+                var Hstart = hora+":"+"00"+":00";
+                var Hend = hora+1+":"+"00"+":00";
+                var starts = Finicio+" "+Hstart;
+                var ends = Finicio+" "+Hend;
+                //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
+                var eventss = {
+                color: cita.color,
+                start: starts,
+                end: ends,
+                usuario: insert.insertId,
+                servicio: cita.servicio,
+                mascota:cita.mascota
+                };
+                // console.log(eventss);
+                event.agregarEvento(eventss,(err,resp)=>{
+                  callback(null,resp);
+                });
+
+              }
+            });
+          }
+          else
+          {
+            callback(null,[{correo:false}]);
+          }
         }
-        else {
-          console.log('usuario creado');
-          var usu = {
-                    to:cita.correo,
-                    pss:cod,
-                    id:row.insertId
-                    }
-                    cita.id = usu.id;
-                    console.log('guhgbhjbjhg guiy guygo uyg uyg ouyg yiug uig uig iugiu gui giuyg ');
-                    console.log(cita.id);
-                    console.log(usu.id);
-                    email.BienvenidoBlock(usu,(err,ressp)=>{
-                      if(ressp==true)
-                          {
-                            // console.log(row.insertId);
-                          let valido = {mensaje:'Usuario registrado con exito',existe:'false',ids:row.insertId};
-                          // console.log('agregado');
-                        }
-                    });
-             }
       });
 
-
-      let ins = 'INSERT INTO usuarios ( id,cedula, correo,nombre, apellidos, telefono, fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES ( ?,?, ?,?, ?, ?, ?, ?, ?);'
-      connection.query(ins,[cita.id,cita.usuario,cita.correo,cita.nombres,cita.apellidos,cita.contacto,cita.fecha_nacimiento,17,47],(err,insert)=>{
-        // console.log(insert);
-        if(err){throw err;}
-        else
-        {
-          // console.log(cita);
-          console.log('/*/*/*/*/*/*AQUI YA AGREGO AL USUSARIO');
-
-          // console.log(insert);
-          var Mend = parseInt(00);
-          var hinicio = moment(cita.start).format('HH:mm:ss');
-          var Finicio = moment(cita.start).format('YYYY-MM-DD');
-          var horas = hinicio.split(":");
-          var mins = horas[1];
-          var hora = horas[0];
-          hora = parseInt(hora);
-          mins = parseInt(mins);
-          minsEnd = mins+Mend;
-          hora = hora;
-          var Hstart = hora+":"+"00"+":00";
-          var Hend = hora+1+":"+"00"+":00";
-          var starts = Finicio+" "+Hstart;
-          var ends = Finicio+" "+Hend;
-          //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
-          var eventss = {
-          color: cita.color,
-          start: starts,
-          end: ends,
-          usuario: insert.insertId,
-          servicio: cita.servicio,
-          mascota:cita.mascota
-          };
-          // console.log(eventss);
-          event.agregarEvento(eventss,(err,resp)=>{
-            callback(null,resp);
-          });
-
-        }
-      });
       // console.log('no existe el usuario');
       // console.log(cita);
     }

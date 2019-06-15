@@ -208,7 +208,7 @@ userModel.darUsuario=(ced,callback)=>{
   }
   };
 
-  userModel.validaCorreo(correo, callback)=>{
+  userModel.validaCorreo=(correo, callback)=>{
         if(connection)
         {
           var sql = "SELECT members.email FROM members WHERE email = ?;";
