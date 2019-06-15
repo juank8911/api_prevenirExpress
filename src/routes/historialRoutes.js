@@ -53,7 +53,7 @@ app.post('/coment',(req,res)=>{
 
 });
 
-app.get('/histserusu/:idser/:idusu',(req,res)=>{
+app.get('/histserusu/:idusu/:idser',(req,res)=>{
   ids = {
     ser: req.params.idser,
     usu: req.params.idusu
