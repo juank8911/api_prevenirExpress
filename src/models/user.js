@@ -151,7 +151,7 @@ if(connection)
 console.log(usu);
 var sql = 'UPDATE usuarios SET tipoDocumento = ?,cedula=?, nombre = ?, apellidos = ?, direccion = ?, telefono = ?, telefonowatshapp = ?, fecha_nacimiento = ?, estadoCivil = ?, ocupacion = ?, barrio = ?, eps = ? WHERE (id = ?) and (parentescos_id_parentescos = 17);'
 connection.query(sql,[usu.tipoDocumento,usu.cedula, usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.fecha_nacimiento,usu.estadoCivil,usu.ocupacion,usu.barrio,usu.eps,usu.id],(err,row)=>{
-if(err){throw err}
+if(err){callback(null,{'update':false});}
 else
 {
 // console.log({'update':true});
