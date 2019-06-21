@@ -53,5 +53,15 @@ app.post('/coment',(req,res)=>{
 
 });
 
+app.get('/histserusu/:idusu/:idser',(req,res)=>{
+  ids = {
+    ser: req.params.idser,
+    usu: req.params.idusu
+  }
+  hist.historiaUsuSer(ids,(err,resp)=>{
+    res.json(resp);
+  });
+});
+
 
 }

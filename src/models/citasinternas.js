@@ -1,8 +1,8 @@
 let mysql = require('mysql');
 let config = require('../config');
 let event = require('./eventos');
-let Moment = require('moment');
-var moment = require('moment-timezone'); moment().tz('America/Bogota').format(); 
+let moment = require('moment'); moment().utc(-5).format();
+var Moment = require('moment-timezone'); Moment().tz('America/Bogota').format();
 let ciclo = require('../controler/ciclos');
 let email = require('./email');
 
@@ -62,75 +62,91 @@ citasIModule.nuevaCita = (cita,callback)=>{
         cod = gen;
       });
       // console.log(cod);
-      var sql = 'INSERT INTO members (email, admin, password, salt) VALUES ( ?, ?, ?,?)';
-      connection.query(sql,[cita.correo,'false','donPass',cod],(err,row)=>{
-        if(err)
-        {
-        throw err;
+      var sql = "SELECT members.email FROM members WHERE email = ?;";
+      connection.query(sql,[cita.correo],(err,rows)=>{
+        if(err){throw err}
+        else{
+          console.log(rows);
+          if(JSON.stringify(rows)=='[]')
+          {
+
+            var sql1 = 'INSERT INTO members (email, admin, password, salt) VALUES ( ?, ?, ?,?)';
+            connection.query(sql1,[cita.correo,'false','donPass',cod],(err,row)=>{
+              if(err)
+              {
+              throw err;
+              }
+              else {
+                console.log('usuario creado');
+                var usu = {
+                          to:cita.correo,
+                          pss:cod,
+                          id:row.insertId
+                          }
+                          cita.id = usu.id;
+                          console.log('guhgbhjbjhg guiy guygo uyg uyg ouyg yiug uig uig iugiu gui giuyg ');
+                          console.log(cita.id);
+                          console.log(usu.id);
+                          email.BienvenidoBlock(usu,(err,ressp)=>{
+                            if(ressp==true)
+                                {
+                                  // console.log(row.insertId);
+                                let valido = {mensaje:'Usuario registrado con exito',existe:'false',ids:row.insertId};
+                                // console.log('agregado');
+                              }
+                          });
+                   }
+            });
+
+
+            let ins = 'INSERT INTO usuarios ( id,cedula, correo,nombre, apellidos, telefono, fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES ( ?,?, ?,?, ?, ?, ?, ?, ?);'
+            connection.query(ins,[cita.id,cita.usuario,cita.correo,cita.nombres,cita.apellidos,cita.contacto,cita.fecha_nacimiento,17,47],(err,insert)=>{
+              // console.log(insert);
+              if(err){throw err;}
+              else
+              {
+                // console.log(cita);
+                console.log('/*/*/*/*/*/*AQUI YA AGREGO AL USUSARIO');
+
+                // console.log(insert);
+                var Mend = parseInt(00);
+                var hinicio = moment(cita.start).format('HH:mm:ss');
+                var Finicio = moment(cita.start).format('YYYY-MM-DD');
+                var horas = hinicio.split(":");
+                var mins = horas[1];
+                var hora = horas[0];
+                hora = parseInt(hora);
+                mins = parseInt(mins);
+                minsEnd = mins+Mend;
+                hora = hora;
+                var Hstart = hora+":"+"00"+":00";
+                var Hend = hora+1+":"+"00"+":00";
+                var starts = Finicio+" "+Hstart;
+                var ends = Finicio+" "+Hend;
+                //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
+                var eventss = {
+                color: cita.color,
+                start: starts,
+                end: ends,
+                usuario: insert.insertId,
+                servicio: cita.servicio,
+                mascota:cita.mascota
+                };
+                // console.log(eventss);
+                event.agregarEvento(eventss,(err,resp)=>{
+                  callback(null,resp);
+                });
+
+              }
+            });
+          }
+          else
+          {
+            callback(null,[{correo:false}]);
+          }
         }
-        else {
-          console.log('usuario creado');
-          var usu = {
-                    to:cita.correo,
-                    pss:cod,
-                    id:row.insertId
-                    }
-                    cita.id = usu.id;
-                    console.log('guhgbhjbjhg guiy guygo uyg uyg ouyg yiug uig uig iugiu gui giuyg ');
-                    console.log(cita.id);
-                    console.log(usu.id);
-                    email.BienvenidoBlock(usu,(err,ressp)=>{
-                      if(ressp==true)
-                          {
-                            // console.log(row.insertId);
-                          let valido = {mensaje:'Usuario registrado con exito',existe:'false',ids:row.insertId};
-                          // console.log('agregado');
-                        }
-                    });
-             }
       });
 
-
-      let ins = 'INSERT INTO usuarios ( id,cedula, correo,nombre, apellidos, telefono, fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES ( ?,?, ?,?, ?, ?, ?, ?, ?);'
-      connection.query(ins,[cita.id,cita.usuario,cita.correo,cita.nombres,cita.apellidos,cita.contacto,cita.fecha_nacimiento,17,47],(err,insert)=>{
-        // console.log(insert);
-        if(err){throw err;}
-        else
-        {
-          // console.log(cita);
-          console.log('/*/*/*/*/*/*AQUI YA AGREGO AL USUSARIO');
-
-          // console.log(insert);
-          var Mend = parseInt(00);
-          var hinicio = moment(cita.start).format('HH:mm:ss');
-          var Finicio = moment(cita.start).format('YYYY-MM-DD');
-          var horas = hinicio.split(":");
-          var mins = horas[1];
-          var hora = horas[0];
-          hora = parseInt(hora);
-          mins = parseInt(mins);
-          minsEnd = mins+Mend;
-          hora = hora;
-          var Hstart = hora+":"+"00"+":00";
-          var Hend = hora+1+":"+"00"+":00";
-          var starts = Finicio+" "+Hstart;
-          var ends = Finicio+" "+Hend;
-          //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
-          var eventss = {
-          color: cita.color,
-          start: starts,
-          end: ends,
-          usuario: insert.insertId,
-          servicio: cita.servicio,
-          mascota:cita.mascota
-          };
-          // console.log(eventss);
-          event.agregarEvento(eventss,(err,resp)=>{
-            callback(null,resp);
-          });
-
-        }
-      });
       // console.log('no existe el usuario');
       // console.log(cita);
     }
@@ -400,7 +416,7 @@ citasIModule.citasProvAc = (prov,callback) =>{
   if(connection)
   {
     let jsonCitas = [];
-    let sql = 'SELECT citas_activas.*,usuarios.*, servicios.nombre as servicio, servicios_categoria.categoria_idcategoria as categoria  from citas_activas,servicios,usuarios, servicios_categoria WHERE citas_activas.usuarios_id = usuarios.id AND citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND servicios.id_provedores = ? ;';
+    let sql = "SELECT citas_activas.*,CONVERT_TZ(citas_activas.start,'+00:00','+05:00') as start,CONVERT_TZ(citas_activas.end,'+00:00','+05:00') as end, usuarios.*, servicios.nombre as servicio, servicios_categoria.categoria_idcategoria as categoria  from citas_activas,servicios,usuarios, servicios_categoria WHERE citas_activas.usuarios_id = usuarios.id AND citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND servicios.id_provedores = ? ;";
     let masc = 'SELECT citas_activas_masc.*, mascotas.*,servicios.nombre as servicio, servicios_categoria.categoria_idcategoria as categoria FROM citas_activas_masc, mascotas,servicios, servicios_categoria WHERE citas_activas_masc.id_mascotas = mascotas.id_mascotas AND citas_activas_masc.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND servicios.id_provedores = ?;';
     connection.query(sql,[prov],(err,row)=>{
       if(err){throw err}
@@ -552,6 +568,7 @@ citasIModule.citaActiva = (idser,callback)=>{
       });
     }
 };
+
 
 
 
