@@ -16,7 +16,7 @@ comentmodule.agregarComentario = (coment,callback) =>
 {
 if(connection)
 {
-var ins = 'INSERT INTO comentarios (comentario, calificacion, servicios_idservicios, usuarios_id, historial_id_historial) VALUES (?, ?, ?, ?, ?);'
+var ins = 'INSERT INTO comentarios (comentario, calificacion, servicios_idservicios, usuarios_id, historial_id) VALUES (?, ?, ?, ?, ?);'
 var prom = 'SELECT COUNT(calificacion) as cant,SUM(calificacion) as sum, ROUND(SUM(calificacion)/COUNT(calificacion)) as prom FROM comentarios WHERE servicios_idservicios=?;';
 var upd1 = 'UPDATE servicios SET promedio=? WHERE id_servicios=?;';
 var upd2 = 'UPDATE historial SET calificada=1 WHERE id_historial=?;';
