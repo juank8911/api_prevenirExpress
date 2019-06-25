@@ -123,7 +123,7 @@ histModule.historiaUsuSer = (ids,callback)=>{
 
 histModule.historiaUsuCed = (ids,callback)=>
 {
-  let sql = 'SELECT historia_opt.* FROM historia_opt, usuarios WHERE historia_opt.id_usuario = usuarios.id AND historia_opt.id_servicios = ? AND usuarios.cedula = ?;'
+  let sql = 'SELECT historia_opt.* FROM historia_opt, usuarios, servicios, medicos WHERE historia_opt.id_usuario = usuarios.id AND historia_opt.id_servicios = servicios.id_servicios AND servicios.medico_id = medicos.medico_id AND medicos.medico_id = ? AND usuarios.cedula = ?;'
   connection.query(sql,[ids.ser,ids.ced],(err,row)=>{
     if(err){throw err}
     else
