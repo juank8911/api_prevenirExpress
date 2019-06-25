@@ -38,7 +38,7 @@ app.put('/user',jwts.valida,(req,res)=>{
 // console.log(req.body);
 var fecha = moment(req.body.fecha_nacimiento).format('YYYY-MM-DD');
 fecha = fecha.toString();
-// console.log();
+console.log(req.body);
 let usu = {
 tipoDocumento: req.body.tipoDocumento,
 cedula:req.body.cedula,
