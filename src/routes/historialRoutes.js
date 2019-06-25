@@ -63,5 +63,15 @@ app.get('/histserusu/:idusu/:idser',(req,res)=>{
   });
 });
 
+app.get('/histusuced/:idser/:ced',(req,res)=>{
+    ids={
+      ser: req.params.idser,
+      ced: req.params.ced
+    }
+  hist.historiaUsuCed(ids,(err,resp)=>{
+    res.json(resp)
+  });
+});
+
 
 }

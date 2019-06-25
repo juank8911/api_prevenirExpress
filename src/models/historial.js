@@ -121,6 +121,18 @@ histModule.historiaUsuSer = (ids,callback)=>{
   });
 };
 
+histModule.historiaUsuCed = (ids,callback)=>
+{
+  let sql = 'SELECT historia_opt.* FROM historia_opt, usuarios WHERE historia_opt.id_usuario = usuarios.id AND historia_opt.id_servicios = ? AND usuarios.cedula = ?;'
+  connection.query(sql,[ids.ser,ids.ced],(err,row)=>{
+    if(err){throw err}
+    else
+    {
+      callback(null,row);
+    }
+  });
+}
+
 
 
 
