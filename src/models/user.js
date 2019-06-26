@@ -107,11 +107,21 @@ callback(null,mensaje);
 userModel.darUserId=(id,callback)=>{
 if(connection)
 {
-var sql = "SELECT usuarios.*, CONCAT( usuarios.nombre,' ', usuarios.apellidos) as nombres,TIMESTAMPDIFF(YEAR,fecha_nacimiento,CURDATE()) as edad, municipio.id_municipio,municipio.nombre as nomMuni,departamento.nombre as nomDepa, departamento.id_departamento, acompañante.nombre as acompañante, acompañante.telefono telac,acompañante.id_parentescos as parac,(select parentescos.nombre from parentescos where parentescos.id_parentescos = parac) as parentesco FROM usuarios,municipio,departamento, acompañante where usuarios.id_municipio = municipio.id_municipio AND departamento.id_departamento = municipio.id_departamento AND acompañante.usuarios_id =usuarios.id AND usuarios.id = ?;";
+var sql = "SELECT usuarios.*, CONCAT( usuarios.nombre,' ', usuarios.apellidos) as nombres,TIMESTAMPDIFF(YEAR,fecha_nacimiento,CURDATE()) as edad, municipio.id_municipio,municipio.nombre as nomMuni,departamento.nombre as nomDepa, departamento.id_departamento FROM usuarios,municipio,departamento where usuarios.id_municipio = municipio.id_municipio AND departamento.id_departamento = municipio.id_departamento AND usuarios.id = ?;";
 connection.query(sql,id,(err,row)=>{if(err){throw err}
 else{
-  console.log(row);
-callback(null,row);
+var par = "SELECT acompañante.*, parentescos.nombre as parentesco FROM acompañante,parentescos WHERE acompañante.id_parentescos = parentescos.id_parentescos AND acompañante.usuarios_id = ?;"
+connection.query(par,id,(err,resp)=>{
+  if(err){throw err}
+  else
+  {
+    row = row[0];
+    row.parentesco = resp;
+    console.log(row);
+    callback(null,row);
+  }
+});
+
 }
 });
 }
