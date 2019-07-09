@@ -78,7 +78,7 @@ citasIModule.nuevaCita = (cita,callback)=>{
                }
                else
                {
-                 callback(null,[{cedula:true}]);
+                 callback(null,[{ cedula:true }]);
                }
              }
            });
