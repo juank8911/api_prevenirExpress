@@ -40,18 +40,69 @@ citasIModule.nuevaCita = (cita,callback)=>{
       var starts = Finicio+" "+Hstart;
       var ends = Finicio+" "+Hend;
       //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
-      var eventss = {
-      color: cita.color,
-      start: starts,
-      end: ends,
-      usuario: cita.usuario,
-      servicio: cita.servicio,
-      mascota:cita.mascota
-      };
-      // console.log(eventss);
-      event.agregarEvento(eventss,(err,resp)=>{
-        callback(null,resp);
-      });
+      var benef = cita.benef;
+      console.log(cita);
+       if(benef.nuevo == true || benef.nuevo == 'true')
+       {
+         var consc = 'SELECT * from usuarios where cedula = ?';
+           connection.query(consc,[benef.ident],(err,res2)=>{
+             if(err){throw err}
+             else
+             {
+               console.log(res2);
+               if(JSON.stringify(res2)=='[]')
+               {
+                 console.log(benef);
+                 var add = 'INSERT INTO usuarios (cedula, nombre, apellidos, telefono,telefonowatshapp,fecha_nacimiento,usuariosBf_id, parentescos_id_parentescos,id_pais) VALUES (?,?,?,?,?,?,?,?,?);';
+                 connection.query(add,[benef.ident,benef.nombre,benef.apellidos,benef.tel,benef.tel,benef.fecha_n,benef.id_usu,benef.parent,benef.pais],(err,res)=>{
+                 if(err){callback(null,err)}
+                 else {
+                 {
+                   var eventss = {
+                   color: cita.color,
+                   start: starts,
+                   end: ends,
+                   usuario: res.insertId,
+                   servicio: cita.servicio,
+                   mascota:cita.mascota
+                   };
+
+                   console.log(res);
+                 // callback(null,res)
+                 event.agregarEvento(eventss,(err,resp)=>{
+                   callback(null,resp);
+                 });
+                 }
+                 }
+                 });
+               }
+               else
+               {
+                 callback(null,[{cedula:true}]);
+               }
+             }
+           });
+
+
+       }
+       else {
+         var eventss = {
+         color: cita.color,
+         start: starts,
+         end: ends,
+         usuario: cita.usuario,
+         servicio: cita.servicio,
+         mascota:cita.mascota
+         };
+         // console.log(eventss);
+         event.agregarEvento(eventss,(err,resp)=>{
+           callback(null,resp);
+         });
+
+       }
+
+
+
     }
     else
     {
@@ -124,18 +175,69 @@ citasIModule.nuevaCita = (cita,callback)=>{
                 var starts = Finicio+" "+Hstart;
                 var ends = Finicio+" "+Hend;
                 //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
-                var eventss = {
-                color: cita.color,
-                start: starts,
-                end: ends,
-                usuario: insert.insertId,
-                servicio: cita.servicio,
-                mascota:cita.mascota
-                };
+
                 // console.log(eventss);
-                event.agregarEvento(eventss,(err,resp)=>{
-                  callback(null,resp);
-                });
+                var benef = cita.benef;
+                console.log(cita);
+
+                 if(benef.nuevo == true || benef.nuevo == 'true')
+                 {
+                   var consc = 'SELECT * from usuarios where cedula = ?';
+                     connection.query(consc,[benef.ident],(err,res2)=>{
+                       if(err){throw err}
+                       else
+                       {
+                         console.log(res2);
+                         if(JSON.stringify(res2)=='[]')
+                         {
+                           console.log(benef);
+                           var add = 'INSERT INTO usuarios (cedula, nombre, apellidos, telefono,telefonowatshapp,fecha_nacimiento,usuariosBf_id, parentescos_id_parentescos,id_pais) VALUES (?,?,?,?,?,?,?,?,?);';
+                           connection.query(add,[benef.ident,benef.nombre,benef.apellidos,benef.tel,benef.tel,benef.fecha_n,insert.insertId,benef.parent,benef.pais],(err,res1)=>{
+                           if(err){callback(null,err)}
+                           else {
+                           {
+                             var events = {
+                             color: cita.color,
+                             start: starts,
+                             end: ends,
+                             usuario: res1.insertId,
+                             servicio: cita.servicio,
+                             mascota:cita.mascota
+                             };
+
+                             console.log(res1);
+                           // callback(null,res)
+                           event.agregarEvento(events,(err,resp)=>{
+                             callback(null,resp);
+                           });
+                           }
+                           }
+                           });
+
+                         }
+                         else {
+                           callback(null,[{cedula:true}]);
+                         }
+                       }
+                     });
+
+                 }
+                 else
+                 {
+                   var eventss = {
+                   color: cita.color,
+                   start: starts,
+                   end: ends,
+                   usuario: insert.insertId,
+                   servicio: cita.servicio,
+                   mascota:cita.mascota
+                   };
+
+                   event.agregarEvento(eventss,(err,resp)=>{
+                     callback(null,resp);
+                   });
+                 }
+
 
               }
             });
@@ -249,6 +351,7 @@ citasIModule.citaMascotas = (cita,callback)=>{
       }
       else
       {
+
         let ins = 'INSERT INTO usuarios ( cedula, nombre, apellidos, telefono, fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES ( ?, ?, ?, ?, ?, ?, ?);'
         connection.query(ins,[cita.usuario,cita.nombres,cita.apellidos,cita.contacto,cita.fecha_nacimiento,17,47],(err,insert)=>{
           if(err){throw err;}
