@@ -42,6 +42,16 @@ citasIModule.nuevaCita = (cita,callback)=>{
       //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
       var benef = cita.benef;
       console.log(cita);
+      var eventss = {
+      color: cita.color,
+      start: starts,
+      end: ends,
+      usuario: cita.usuario,
+      servicio: cita.servicio,
+      mascota:cita.mascota
+      };
+      console.log(eventss);
+      console.log('pregunta if');
        if(benef.nuevo == true || benef.nuevo == 'true')
        {
          var consc = 'SELECT * from usuarios where cedula = ?';
@@ -78,7 +88,7 @@ citasIModule.nuevaCita = (cita,callback)=>{
                }
                else
                {
-                 callback(null,[{ cedula:true }]);
+                 callback(null,[{ cedula:true}]);
                }
              }
            });
@@ -86,14 +96,7 @@ citasIModule.nuevaCita = (cita,callback)=>{
 
        }
        else {
-         var eventss = {
-         color: cita.color,
-         start: starts,
-         end: ends,
-         usuario: cita.usuario,
-         servicio: cita.servicio,
-         mascota:cita.mascota
-         };
+         console.log('cita de paciente exisitente');
          // console.log(eventss);
          event.agregarEvento(eventss,(err,resp)=>{
            callback(null,resp);
@@ -135,7 +138,7 @@ citasIModule.nuevaCita = (cita,callback)=>{
                           id:row.insertId
                           }
                           cita.id = usu.id;
-                          console.log('guhgbhjbjhg guiy guygo uyg uyg ouyg yiug uig uig iugiu gui giuyg ');
+                          console.log('guhg bhjbjhg guiy guygo uyg uyg ouyg yiug uig uig iugiu gui giuyg ');
                           console.log(cita.id);
                           console.log(usu.id);
                           email.BienvenidoBlock(usu,(err,ressp)=>{
@@ -175,7 +178,14 @@ citasIModule.nuevaCita = (cita,callback)=>{
                 var starts = Finicio+" "+Hstart;
                 var ends = Finicio+" "+Hend;
                 //var Hend = moment(ends).format('YYYY-MM-D HH:mm:ss');
-
+                var eventss = {
+                color: cita.color,
+                start: starts,
+                end: ends,
+                usuario: insert.insertId,
+                servicio: cita.servicio,
+                mascota:cita.mascota
+                };
                 // console.log(eventss);
                 var benef = cita.benef;
                 console.log(cita);
@@ -224,14 +234,6 @@ citasIModule.nuevaCita = (cita,callback)=>{
                  }
                  else
                  {
-                   var eventss = {
-                   color: cita.color,
-                   start: starts,
-                   end: ends,
-                   usuario: insert.insertId,
-                   servicio: cita.servicio,
-                   mascota:cita.mascota
-                   };
 
                    event.agregarEvento(eventss,(err,resp)=>{
                      callback(null,resp);
