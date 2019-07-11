@@ -153,8 +153,8 @@ citasIModule.nuevaCita = (cita,callback)=>{
             });
 
 
-            let ins = 'INSERT INTO usuarios ( id,cedula, correo,nombre, apellidos, telefono, fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES ( ?,?, ?,?, ?, ?, ?, ?, ?);'
-            connection.query(ins,[cita.id,cita.usuario,cita.correo,cita.nombres,cita.apellidos,cita.contacto,cita.fecha_nacimiento,17,47],(err,insert)=>{
+            let ins = 'INSERT INTO usuarios ( tipoDocumento,cedula, correo,nombre, apellidos, telefono, fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES ( ?,?, ?,?, ?, ?, ?, ?, ?);'
+            connection.query(ins,[cita.tipoDocumento,cita.usuario,cita.correo,cita.nombres,cita.apellidos,cita.contacto,cita.fecha_nacimiento,17,47],(err,insert)=>{
               // console.log(insert);
               if(err){throw err;}
               else

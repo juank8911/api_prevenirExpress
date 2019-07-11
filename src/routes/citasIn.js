@@ -26,7 +26,7 @@ res.json(data);
 });
 
 app.post('/citai',jwt.validaAdmin,(req,res)=>{
-  // console.log(req.body);
+  console.log(req.body);
   let cita = req.body;
   let masc = req.body.mascota;
   if(masc==true)
