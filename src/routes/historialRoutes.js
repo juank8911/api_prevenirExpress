@@ -73,5 +73,19 @@ app.get('/histusuced/:idser/:ced',(req,res)=>{
   });
 });
 
+//devuelkeve el historial segun el medico del servecio
+app.get('/histmed/:mes/:anio/:id_med/:masc/:ser',(req,res)=>{
+  ev = {
+    mes: req.params.mes,
+    anio: req.params.anio,
+    med: req.params.id_med,
+    id_mascotas: req.params.masc,
+    ser: req.params.ser
+  };
+  hist.historialMedico(ev,(err,resp)=>{
+    res.json(resp);
+  });
+});
+
 
 }
