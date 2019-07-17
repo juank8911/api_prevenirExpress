@@ -11,6 +11,14 @@ database: config.nombredb
 
 let sucurModule = {};
 
+sucurModule.agregarSucursales = (,callback)=> {
+
+
+};
+
+
+
+
 
 
 

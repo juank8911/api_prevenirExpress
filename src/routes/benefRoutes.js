@@ -21,7 +21,9 @@ app.post('/benef',jwts.valida,(req,res)=>{
     fecha_n: req.body.fecha_n,
     id_usu: req.body.id_usu,
     parent: req.body.parent,
-    pais: req.body.pais
+    pais: req.body.pais,
+    cuenta: req.body.cuenta,
+    correo: req.body.email,
   };
   // console.log(req.body);
   benef.agregarBeneficiario(bene,(err,resp)=>{

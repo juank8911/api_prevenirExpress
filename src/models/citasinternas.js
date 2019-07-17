@@ -132,6 +132,7 @@ citasIModule.nuevaCita = (cita,callback)=>{
               }
               else {
                 console.log('usuario creado');
+
                 var usu = {
                           to:cita.correo,
                           pss:cod,
@@ -152,9 +153,9 @@ citasIModule.nuevaCita = (cita,callback)=>{
                    }
             });
 
-
-            let ins = 'INSERT INTO usuarios ( tipoDocumento,cedula, correo,nombre, apellidos, telefono, fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES ( ?,?, ?,?, ?, ?, ?, ?, ?);'
-            connection.query(ins,[cita.tipoDocumento,cita.usuario,cita.correo,cita.nombres,cita.apellidos,cita.contacto,cita.fecha_nacimiento,17,47],(err,insert)=>{
+              console.log(row);
+            let ins = 'INSERT INTO usuarios ( tipoDocumento,cedula, correo,nombre, apellidos,direccion, telefono, fecha_nacimiento,estadoCivil,ocupacion,barrio,eps,members_id parentescos_id_parentescos, id_pais) VALUES ( ?,?, ?,?, ?,?, ?, ?, ?, ?,?,?,?,?,?);'
+            connection.query(ins,[cita.tipoDocumento,cita.usuario,cita.correo,cita.nombres,cita.apellidos,cita.direccion,cita.contacto,cita.fecha_nacimiento,cita.estadoCivil,cita.ocupacion,cita.barrio,cita.eps,row.insertId,17,47],(err,insert)=>{
               // console.log(insert);
               if(err){throw err;}
               else
