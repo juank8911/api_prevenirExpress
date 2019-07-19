@@ -156,7 +156,7 @@ citasIModule.nuevaCita = (cita,callback)=>{
             });
 
               // console.log(ids);
-            let ins = 'INSERT INTO usuarios ( tipoDocumento,cedula, correo,nombre, apellidos,direccion, telefono, fecha_nacimiento,estadoCivil,ocupacion,barrio,eps,members_id parentescos_id_parentescos, id_pais) VALUES ( ?,?, ?,?, ?,?, ?, ?, ?, ?,?,?,?,?,?);'
+            let ins = 'INSERT INTO usuarios ( tipoDocumento,cedula, correo,nombre, apellidos,direccion, telefono, fecha_nacimiento,estadoCivil,ocupacion,barrio,eps,members_id, parentescos_id_parentescos, id_pais) VALUES ( ?,?, ?,?, ?,?, ?, ?, ?, ?,?,?,?,?,?);'
             connection.query(ins,[cita.tipoDocumento,cita.usuario,cita.correo,cita.nombres,cita.apellidos,cita.direccion,cita.contacto,cita.fecha_nacimiento,cita.estadoCivil,cita.ocupacion,cita.barrio,cita.eps,id,17,47],(err,insert)=>{
               // console.log(insert);
               if(err){throw err;}
