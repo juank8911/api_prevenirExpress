@@ -149,7 +149,7 @@ histModule.historialMedico = (ser,callback) => {
     else
     {
       //console.log('no entro al if');
-      var sql = 'SELECT historial.id_historial, usuarios.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM historial,usuarios,servicios,medicos WHERE historial.servicios_idservicios = servicios.id_servicios AND servicios.id_servicios = ? AND servicios.medico_id = medicos.medico_id AND medicos.medico_id = ? AND MONTH(start) = ?  AND YEAR(start) = ?;'
+      var sql = 'SELECT historial.id_historial, usuarios.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM historial, servicios, medicos,usuarios WHERE historial.usuarios_id = usuarios.id AND historial.servicios_idservicios = servicios.id_servicios AND historial.servicios_idservicios = ? AND servicios.medico_id = medicos.medico_id and medicos.medico_id = ? AND MONTH(start) = ?  AND YEAR(start) = ?;'
     }
 
 
