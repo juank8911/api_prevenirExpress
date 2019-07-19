@@ -110,6 +110,7 @@ citasIModule.nuevaCita = (cita,callback)=>{
     else
     {
       console.log('///(/(/(/( CREANDO NUEVO PACIENTE))))');
+      var id;
       // let ins = "INSERT INTO usuarios (id,cedula, nombre, apellidos,telefono,fecha_nacimiento, parentescos_id_parentescos, id_pais) VALUES (?,?, ?, ?, ?, ?, ?, ?);"
       //agreagr member para que pueda tener usuario y contraseña
       ciclo.generaSalt((err,gen)=>{
@@ -131,6 +132,7 @@ citasIModule.nuevaCita = (cita,callback)=>{
               throw err;
               }
               else {
+                id = row.insertId;
                 console.log('usuario creado');
 
                 var usu = {
@@ -155,7 +157,7 @@ citasIModule.nuevaCita = (cita,callback)=>{
 
               // console.log(ids);
             let ins = 'INSERT INTO usuarios ( tipoDocumento,cedula, correo,nombre, apellidos,direccion, telefono, fecha_nacimiento,estadoCivil,ocupacion,barrio,eps,members_id parentescos_id_parentescos, id_pais) VALUES ( ?,?, ?,?, ?,?, ?, ?, ?, ?,?,?,?,?,?);'
-            connection.query(ins,[cita.tipoDocumento,cita.usuario,cita.correo,cita.nombres,cita.apellidos,cita.direccion,cita.contacto,cita.fecha_nacimiento,cita.estadoCivil,cita.ocupacion,cita.barrio,cita.eps,row.insertId,17,47],(err,insert)=>{
+            connection.query(ins,[cita.tipoDocumento,cita.usuario,cita.correo,cita.nombres,cita.apellidos,cita.direccion,cita.contacto,cita.fecha_nacimiento,cita.estadoCivil,cita.ocupacion,cita.barrio,cita.eps,id,17,47],(err,insert)=>{
               // console.log(insert);
               if(err){throw err;}
               else
