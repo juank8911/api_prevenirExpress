@@ -162,7 +162,7 @@ histModule.historialMedico = (ser,callback) => {
     {
       if(JSON.stringify(row)=='[]')
       {
-
+            callback(null,{citas:false})
       }
       else
       {
@@ -179,6 +179,53 @@ histModule.historialMedico = (ser,callback) => {
     }
   });
   }
+};
+
+histModule.histoServicio = (ser,callback) => {
+
+  let res =[];
+  if(connection)
+  {
+    //console.lo.log(ev.id_mascotas);
+    if(ev.id_mascotas==20 || ev.id_mascotas=='20')
+    {
+      //console.log('dentro del if');
+      var sql = 'SELECT  events_masc.id_eventos, mascotas.*,events_masc.id_mascotas, mascotas.nombre as title ,start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc, mascotas WHERE events_masc.id_mascotas = mascotas.id_mascotas AND MONTH(start) = ? AND YEAR(start) = ? and id_servicios = ?'
+    }
+    else
+    {
+      //console.log('no entro al if');
+      var sql = 'SELECT historial.id_historial, usuarios.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM historial, servicios, usuarios WHERE historial.usuarios_id = usuarios.id AND historial.servicios_idservicios = servicios.id_servicios AND historial.servicios_idservicios = ? AND MONTH(start) = ?  AND YEAR(start) = ?;'
+    }
+
+
+  connection.query(sql,[ser.ser,ser.mes,ser.anio],(err,row)=>{
+    if(err)
+    {
+      throw err;
+    }
+    else
+    {
+      if(JSON.stringify(row)=='[]')
+      {
+          callback(null,{citas:false})
+      }
+      else
+      {
+        for (var i = 0; i < row.length; i++) {
+          console.log(row[i]);
+          let vari = row[i];
+          vari.start = moment(vari.start).utc(-5).format();
+          vari.end =  moment(vari.end).utc(-5).format();
+          res.push(vari);
+        }
+        callback(null,res);
+      }
+
+    }
+  });
+  }
+
 };
 
 

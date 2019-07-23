@@ -87,5 +87,17 @@ app.get('/histmed/:mes/:anio/:id_med/:masc/:ser',(req,res)=>{
   });
 });
 
+app.get('/histser/:mes/:anio/:masc/:ser',(req,res)=>{
+  ev = {
+    mes: req.params.mes,
+    anio: req.params.anio,
+    id_mascotas: req.params.masc,
+    ser: req.params.ser
+  };
+  hist.histoServicio(ev,(err,resp)=>{
+    res.json(resp);
+  });
+});
+
 
 }
