@@ -13,6 +13,10 @@ let sucurModule = {};
 
 sucurModule.agregarSucursales = (,callback)=> {
 
+if(connection)
+{
+  var sql = 'INSERT INTO sucursales (nombre, direccion, telefono, id_municipio, id_provedor) VALUES (?, ?, ?, ?, ?);'
+}
 
 };
 
