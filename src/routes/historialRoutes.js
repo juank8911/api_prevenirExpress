@@ -87,7 +87,7 @@ app.get('/histmed/:mes/:anio/:id_med/:masc/:ser',(req,res)=>{
   });
 });
 
-app.get('/histser/:mes/:anio/:masc/:ser',(req,res)=>{
+app.get('/histser/:mes/:anio/:ser/:masc',(req,res)=>{
   ev = {
     mes: req.params.mes,
     anio: req.params.anio,

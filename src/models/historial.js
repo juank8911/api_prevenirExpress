@@ -184,6 +184,7 @@ histModule.historialMedico = (ser,callback) => {
 histModule.histoServicio = (ser,callback) => {
 
   let res =[];
+  // console.log(ser);
   if(connection)
   {
     //console.lo.log(ev.id_mascotas);
@@ -196,7 +197,7 @@ histModule.histoServicio = (ser,callback) => {
     {
       //console.log('no entro al if');
       var sql = 'SELECT historial.id_historial, usuarios.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM historial, servicios, usuarios WHERE historial.usuarios_id = usuarios.id AND historial.servicios_idservicios = servicios.id_servicios AND historial.servicios_idservicios = ? AND MONTH(start) = ?  AND YEAR(start) = ?;'
-    }
+
 
 
   connection.query(sql,[ser.ser,ser.mes,ser.anio],(err,row)=>{
@@ -206,6 +207,7 @@ histModule.histoServicio = (ser,callback) => {
     }
     else
     {
+      // console.log(row);
       if(JSON.stringify(row)=='[]')
       {
           callback(null,{citas:false})
@@ -226,12 +228,7 @@ histModule.histoServicio = (ser,callback) => {
   });
   }
 
+}
 };
-
-
-
-
-
-
 
 module.exports = histModule;
