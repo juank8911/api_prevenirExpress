@@ -145,6 +145,7 @@ require('./routes/parenntRoutes')(app);
 require('./routes/eMascRoutes')(app);
 require('./routes/mascRoutes')(app);
 require('./routes/opticaRoutes')(app);
+require('./routes/sucurRoutes')(app);
 // require('./routes/eventsMascRoutes')(apps);
 //app.use(rutas);
 
