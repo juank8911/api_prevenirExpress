@@ -19,6 +19,7 @@ horarioModel.agregarHorario = (horario,callback) =>
 var horas = horario;
 var semana = horas.semana;
 var dias={};
+respId =[];
 ///console.log(semana);
 // console.log('/////////*********Horario Recibido Prueba de nulls*********//////////////');
 //console.log(horario);
@@ -40,6 +41,7 @@ else
 {
 
 var idH = row.insertId;
+respId.push(row.insertId);
 dias={
 semanas:semana,
 id:idH,
@@ -71,6 +73,7 @@ else
 //console.log(.log('/////////************Row*************////////////');
 //console.log(.log(row);
 var idH = row.insertId;
+respId.push(row.insertId);
 //console.log(.log('/////////************horas*************////////////');
 //console.log(.log(horas);
 dias={
@@ -105,6 +108,7 @@ else
 {
 
 var idH = row.insertId;
+respId.push(row.insertId);
 dias={
 semanas:semana,
 id:idH,
@@ -112,7 +116,7 @@ ids:horas.id
 };
 // //console.log(.log(dias);
 dia.agregarDia(dias,(err,resp)=>{
-callback(null,{'res':resp});
+callback(null,respId);
 });
 
 

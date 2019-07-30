@@ -21,7 +21,7 @@ database: config.nombredb
 
 let servmodule1 = {};
 
-// guarda servicios 
+// guarda servicios
 servmodule1.save = (data , callback ) => {
   // console.log('adentro del save nuevo vamo a ver');
   console.log(data.medico_id);
@@ -60,7 +60,8 @@ servmodule1.save = (data , callback ) => {
                   // console.log('/////////////////******************Horario******************////');
                   // console.log(horas);
                     regH.agregarHorario(horas,(err,resp)=>{
-                    //console.log('////////////////*************HORARIO AGREGADO////////////*****************');
+                    console.log('////////////////*************HORARIO AGREGADO////////////*****************');
+                    console.log(resp);
                     respuesta.push(resp);
                     });
                 }
