@@ -3,7 +3,7 @@ const jwts = require('../models/jwt');
 
 module.exports=function(app)
 {
-//guarda las imagenes en el servido y en la base de datos
+//actualiza token de el member
 app.put('/push',(req, res)=>{
   // console.log(req.body);
 var token = {
@@ -21,6 +21,7 @@ push.addtoken(token,(err,resp)=>{
 });
 
 
+//envia una push al primer ingreso de la app
 app.post('/push',(req,res)=>{
   disp={
     to:'cDN3ljN80nY:APA91bE23ly2oG-rzVAI8i_oiPMZI_CBdU59a6dVznyjdK9FyGi2oPI_sQIQJTAV-xp6YQ6F7MlYYW_7Br0nGdbTIuicwIP4oR99Mf8KysM1ZEJiCmASeyxnOHO4ajgqTDIX6prWpQpG',

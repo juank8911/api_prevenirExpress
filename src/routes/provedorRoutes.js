@@ -27,6 +27,8 @@ app.get('/perprovedor/:id',(req,res)=>{
   });
 });
 
+
+//actualiza la informacion del provedor
 app.put('/provedores',jwts.validaAdmin,(req,res)=>{
 //prov.nit,prov.nombre,prov.direccion,prov.telefono,prov.whatsapp,prov.link,prov.video,,prov.id
 let prov = {

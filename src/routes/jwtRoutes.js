@@ -25,9 +25,6 @@ res.json(data);
 
 // realiza el registro de los ususarios y provedores segun si son admins o usuarios y si es por facebook o manual
 app.post('/register',(req, res)=>{
-  // console.log('////////////////////////req.body//////////////////');
-  // console.log(req.body);
-  // console.log('////////////////////////req.body//////////////////');
 var regist = {
 nombre: req.body.nombre,
 apellido: req.body.apellido,
@@ -137,6 +134,7 @@ res.json([{'menaje':'no se pudo agregar el usuario ya existe','existe':true},dat
 
 });
 
+//confirma la cuenta con el salt dado al correo
 app.put('/cuenta',jwts.valida,(req,res)=>{
   let salt = req.body;
   jwts.confirmaCuenta(salt,(err,row)=>{
@@ -144,7 +142,7 @@ app.put('/cuenta',jwts.valida,(req,res)=>{
   });
 });
 
-
+//desbloque la cuenta con el correo
 app.get('/locked/:id',(req,res)=>{
   let id = req.params.id;
   jwts.bloqueo(id,(err,resp)=>{

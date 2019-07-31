@@ -3,7 +3,7 @@ const jwts = require('../models/jwt');
 module.exports = function (app)
 {
 
-
+// crea una nueva mascota
 app.post('/mascota',(req,res)=>{
   var mascot = {
     especie:req.body.especie,
@@ -21,6 +21,7 @@ app.post('/mascota',(req,res)=>{
   });
 });
 
+//devuelve la  mascota segun el id de la misma
 app.get('/mascota/:id',(req,res)=>{
   let id = req.params.id
   masc.darMascotasId(id,(err,resp)=>{
@@ -28,6 +29,7 @@ app.get('/mascota/:id',(req,res)=>{
   });
 });
 
+//devuelve la mascota por el id del usuario
 app.get('/mascotam/:id',(req,res)=>{
   let id = req.params.id;
   masc.darMascotaIDm(id,(err,row)=>{

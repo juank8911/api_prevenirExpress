@@ -4,6 +4,7 @@ const jwt = require('../models/jwt');
 module.exports = function (app)
 {
 
+// Devuelve los medicos por su cedula
 app.get('/medicosc/:id',(req,res)=>{
   let id = req.params.id;
   med.buscarMedicoCedu(id,(err,medi)=>{
@@ -11,6 +12,7 @@ app.get('/medicosc/:id',(req,res)=>{
   });
 });
 
+// Busca los medicos por el id del medico
 app.get('/medicosi/:id',(req,res)=>{
   let id = req.params.id;
   med.buscarMedicoId(id,(err,medi)=>{
@@ -26,6 +28,7 @@ res.json(data);
 });
 });
 
+//devuelve medico por
 app.get('/medicosm/:id',(req,res)=>{
   let idm = req.params.id;
   console.log('ES MEDICO');
@@ -34,6 +37,7 @@ res.json(data);
 });
 });
 
+//devuelve los medicos por el del provedor
 app.get('/medicospr/:id',(req,res)=>{
   let id = req.params.id;
   // console.log(id);
@@ -45,7 +49,7 @@ app.get('/medicospr/:id',(req,res)=>{
 
 
 
-
+// crea un nuevo medico en caso de no exisitir si existe lo asosia al provedor
 app.post('/medicos',jwt.valida,(req,res)=>{
   let medico = req.body;
   // console.log(req.body);
@@ -67,6 +71,7 @@ app.post('/medicos',jwt.valida,(req,res)=>{
   }
 });
 
+//actualiza la informacion del medico.
 app.put('/medico',jwt.valida,(req,res)=>{
   let medico = req.body;
   med.setMedico(medico,(err,resp)=>{
@@ -74,6 +79,7 @@ app.put('/medico',jwt.valida,(req,res)=>{
   });
 });
 
+//desvincula al medico de el provedor o del servicio
 app.delete('/medico/:med/:prov',jwt.validaAdmin,(req,res)=>{
   let ids = {medico:req.params.med,
              prov:req.params.prov};

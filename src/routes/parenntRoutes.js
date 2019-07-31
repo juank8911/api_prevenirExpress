@@ -12,7 +12,7 @@ res.json(data);
 
 
 
-
+//no me acuerdo que hace revisar en models-> paretensco -> prueba
 app.get('/prus',(req,resp)=>{
   parent.prueba((err,data)=>{
     resp.json(data);

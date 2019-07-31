@@ -4,6 +4,7 @@ const jwts = require('../models/jwt');
 module.exports=function(app)
 {
 
+//agrega horario de un servivcio
 app.post('/horario',(req, res)=>{
 var respuesta=[];
 var p=0;

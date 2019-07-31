@@ -14,6 +14,7 @@ img.subida(imagen,req);
 
 });
 
+//devuelve las imagenes
 app.get('/images',(req,res)=>{img.ver((err,data)=>{res.json(data);});});
 app.get('/',jwts.valida,(req, res) => {User.getUsers((err, data) => {res.json(data);});});
 }

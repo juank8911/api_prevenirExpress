@@ -96,6 +96,7 @@ res.json(resp);
 });
 });
 
+//devuleve un servicio por el id del mismo
 app.get('/sservicio/:id',(req,res)=>{
   var id = req.params.id;
   serv.onlyservicio(id,(err,resp)=>{
