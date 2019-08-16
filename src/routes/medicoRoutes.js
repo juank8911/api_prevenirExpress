@@ -7,6 +7,7 @@ module.exports = function (app)
 // Devuelve los medicos por su cedula
 app.get('/medicosc/:id',(req,res)=>{
   let id = req.params.id;
+  console.log(id);
   med.buscarMedicoCedu(id,(err,medi)=>{
     res.json(medi);
   });
@@ -28,7 +29,7 @@ res.json(data);
 });
 });
 
-//devuelve medico por
+//devuelve medico con member correo y titulos
 app.get('/medicosm/:id',(req,res)=>{
   let idm = req.params.id;
   console.log('ES MEDICO');
@@ -86,6 +87,16 @@ app.delete('/medico/:med/:prov',jwt.validaAdmin,(req,res)=>{
 med.deleteMedico(ids,(err,row)=>{
   res.json(row);
 });
+});
+
+app.get('/medicosucser/:idsuc/:idser',(req,res)=>{
+  let ids = {
+    id_sucur:req.params.idsuc,
+    id_serv: req.params.idser
+  }
+  med.darMedicosSucursal(ids,(err,row)=>{
+    res.json(row);
+  });
 });
 
 

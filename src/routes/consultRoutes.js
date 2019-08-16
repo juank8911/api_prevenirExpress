@@ -12,4 +12,13 @@ app.post('/addconsul',(req,res)=>{
   });
 });
 
+
+app.get('/consulsuc/:ids',(req,res)=>{
+    consu.buscarConsulSuc(req.params.ids,(err,resp)=>{
+        res.json(resp);
+    });
+});
+
+app.delete('')
+
 }

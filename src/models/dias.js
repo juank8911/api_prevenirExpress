@@ -14,18 +14,22 @@ let diasModel={};
 
 // agrega los dias la base de datos
 diasModel.agregarDia=(dia,callback)=> {
-var sql = 'INSERT INTO dias(dia,id_horario,servicios_id_servicios) value (?,?,?)';
+var sql = 'INSERT INTO dias(dia,id_horario) value (?,?)';
+console.log('(((S(S(S(S(S( ))))))))');
+console.log(dia);
 semana=dia.semanas;
 id = dia.id;
 ids=dia.ids;
 var fin = [];
 var p=0;
+// console.log('SEMANA LARGA');
+// console.log(semana);
 for (var i = 0; i < semana.length; i++)
 {
 // //console.lo.log('dia '+semana[i]);
 // //console.lo.log('id_horario '+id);
 // //console.lo.log('id_servicio '+ids);
-connection.query(sql,[semana[i],id,ids],(err,resp)=>{
+connection.query(sql,[semana[i],id],(err,resp)=>{
 if(err){throw err}
 else
 {
@@ -89,14 +93,15 @@ res.json(respuesta);
 };
 
 diasModel.darDiasEd=(rows,callback)=>{
-  let dias = 'SELECT dias.dia FROM dias where  id_horario = ?;';
+  let dias = 'SELECT dias.dia FROM dias, horario WHERE dias.id_horario = horario.id_horario AND horario.id_horario = ?;';
   //console.lo.log(rows);
   let id_horario = rows.id_horario;
   connection.query(dias,[id_horario],(err,row2)=>{
     if(err){throw err}
     else
     {
-
+      // console.log('DIAS DE HORARIO');
+      // console.log(row2);
       rows.dias = row2;
       //console.lo.log(rows);
       callback(null,rows);

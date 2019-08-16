@@ -16,9 +16,31 @@ module.exports = function (app)
   app.post('/addsucon',(req,res)=>{
     // console.log(req.body);
     var sucurs = req.body;
-    sucur.agregaSuCon(sucurs,(err,resp)=>{
+    sucur.agregarSucursales(sucurs,(err,resp)=>{
       res.json(resp);
     });
+  });
+
+  app.get('/sucursales/:idp',(req,res)=>{
+    let id = req.params.idp;
+    sucur.verSucrxprovedor(id,(err,resp)=>{
+        res.json(resp);
+    });
+  });
+
+
+  app.get('/sucuserprovmuni/:idser/:idprov/:idmun',(req,res)=>{
+
+    var ids = {
+      id_ser:req.params.idser,
+      id_prov:req.params.idprov,
+      id_muni:req.params.idmun
+    }
+    // console.log('IDS QUE LLEGAN COMO PARAMTEROS');
+    // console.log(ids);
+    sucur.sucurServMun(ids,(err,resp)=>{
+      res.json(resp)
+    })
   });
 
 

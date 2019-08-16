@@ -108,7 +108,8 @@ userModel.darUserId=(id,callback)=>{
 if(connection)
 {
 var sql = "SELECT usuarios.*, CONCAT( usuarios.nombre,' ', usuarios.apellidos) as nombres,TIMESTAMPDIFF(YEAR,fecha_nacimiento,CURDATE()) as edad, municipio.id_municipio,municipio.nombre as nomMuni,departamento.nombre as nomDepa, departamento.id_departamento FROM usuarios,municipio,departamento where usuarios.id_municipio = municipio.id_municipio AND departamento.id_departamento = municipio.id_departamento AND usuarios.id = ?;";
-connection.query(sql,id,(err,row)=>{if(err){throw err}
+connection.query(sql,id,(err,row)=> {
+  if(err){throw err}
 else{
 var par = "SELECT acompañante.*, parentescos.nombre as parentesco FROM acompañante,parentescos WHERE acompañante.id_parentescos = parentescos.id_parentescos AND acompañante.usuarios_id = ?;"
 connection.query(par,id,(err,resp)=>{

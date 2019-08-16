@@ -119,11 +119,17 @@ direccion:req.body.direccion,
 categoria:req.body.id_ctga,
 id:req.body.id
 };
-console.log(servi);
+// console.log(servi);
 serv.updateServ(servi,(err,resp)=>{
   res.json(resp);
 });
 });
 
+
+app.get('/prom',(req,res)=>{
+  serv.pruebaP((err,resp)=>{
+    res.json(resp);
+  });
+});
 
 }

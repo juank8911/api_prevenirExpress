@@ -115,5 +115,11 @@ app.delete('/horariodel/:id',jwts.validaAdmin,(req,res)=>{
   });
 });
 
+app.get('/gethorcon/:idc',(req,res)=>{
+  hora.darHorarioCon(req.params.idc,(err,resp)=>{
+      res.json(resp);
+  });
+});
+
 
 }

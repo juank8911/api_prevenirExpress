@@ -6,6 +6,7 @@ let titulo = require('./titulos');
 let ciclo = require('../controler/ciclos')
 let email = require('./email');
 var async = require("async");
+var forEach = require('async-foreach').forEach;
 
 connection = new mysql({
 host: config.host,
@@ -20,7 +21,7 @@ let medicosModule = {};
 medicosModule.darMedicosProv = (id, callback)=>{
 if(connection)
 {
-var sql = 'SELECT *, CONCAT(nombres," ",apellidos) as nombre FROM medicos, provedores_has_medicos WHERE provedores_has_medicos.medico_id = medicos.medico_id AND provedores_has_medicos.id_provedor = ?;';
+var sql = 'SELECT *, CONCAT(nombres," ",apellidos) as nombre FROM medicos, provedores_has_medicos WHERE provedores_has_medicos.medico_id = medicos.medico_id AND provedores_has_medicos.id_provedor = ? ;';
 connection.query(sql,[id],(err,row)=>{
 if(err)
 {
@@ -312,5 +313,45 @@ medicosModule.deleteMedico = (ids,callback)=>{
     });
   }
 };
+
+medicosModule.activaMedico = (ids,callback)=>
+{
+  if(connection)
+  {
+    console.log(ids);
+    let ins = 'UPDATE provedores_has_medicos SET id_sucursales = ?, id_consultorio = ?, activo = ? WHERE (id_provedor = ?) and (medico_id = ?);';
+    forEach(ids, function(idt, index, arr)
+      {
+            connection.query(ins,[idt.id_sucursal, idt.id_consultorio,'true', idt.id_provedor, idt.id_medico,],(err,add)=>{
+              if(err){throw err}
+              else
+              {
+                console.log('ok');
+                console.log(index, ' ',ids.length-1 );
+                if(index>=ids.length-1)
+                {
+                  callback(null,true);
+                }
+              }
+            })
+        });
+
+  }
+}
+
+medicosModule.darMedicosSucursal = (ids, callback) =>
+{
+  if(connection)
+  {
+    var sql = 'SELECT medicos.* FROM medicos, consultorio, sucursales WHERE medicos.medico_id = consultorio.medico_id AND consultorio.id_sucursales = sucursales.id_sucursales AND sucursales.id_sucursales = ? AND consultorio.id_servicios = ?;';
+    connection.query(sql,[ids.id_sucur,ids.id_serv],(err,row)=>{
+        if(err){throw err}
+        else
+        {
+          callback(null,row);
+        }
+    });
+  }
+}
 
 module.exports = medicosModule;

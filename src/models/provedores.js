@@ -51,7 +51,7 @@ callback(null,mensaje);
 
 
 //retorna una lista de provedores
-provedorModule.darProvedor = (callback)=>{
+provedorModule.darProvedor = (callback)=> {
 if(connection)
 {
 var sql = 'SELECT * FROM provedores';

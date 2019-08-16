@@ -34,8 +34,8 @@ servmodule.save = (data , callback ) => {
   var p=0;
   var mensaje = [];
   var cliente = data.precio*((100-data.descuento)/100);
-  var sql = 'INSERT INTO servicios(nombre,descripcion,duracion,max_citas_ves,video,precio,descuento,precio_cliente_prevenir,direccion,id_provedores,municipio_id_municipio,medico_id) values (?,?,?,?,?,?,?,?,?,?,?,?);';
-  connection.query(sql,[data.nombre,data.descripcion,data.duracion,data.max_citas,data.video,data.precio,data.descuento,cliente,data.direccion,data.id_prov,data.muni,data.medico_id],(err,res)=>{
+  var sql = 'INSERT INTO servicios(nombre,descripcion,duracion,max_citas_ves,video,precio,descuento,precio_cliente_prevenir,direccion,id_provedores,) values (?,?,?,?,?,?,?,?,?,?);';
+  connection.query(sql,[data.nombre,data.descripcion,data.duracion,data.max_citas,data.video,data.precio,data.descuento,cliente,data.direccion,data.id_prov],(err,res)=>{
   if(err)
   {
   throw err
@@ -48,22 +48,23 @@ servmodule.save = (data , callback ) => {
     //obteniendo el horario
     horarios = horario[0];
     horarios = horarios.horario;
-    // console.log(horarios);
-        for (var i = 0; i < horarios.length; i++)
-          {
-              var horas = horarios[i];
-                //console.log(horas.length);
-                if(horas.m_de!=null || horas.t_de!=null )
-                {
-                  horas.id=idinsert;
-                  // console.log('/////////////////******************Horario******************////');
-                  // console.log(horas);
-                    regH.agregarHorario(horas,(err,resp)=>{
-                    //console.log('////////////////*************HORARIO AGREGADO////////////*****************');
-                    respuesta.push(resp);
-                    });
-                }
-          }
+    //FOR PARA AGREGAR HORARIOS EN LOS SERVICIOS
+    // // console.log(horarios);
+    //     for (var i = 0; i < horarios.length; i++)
+    //       {
+    //           var horas = horarios[i];
+    //             //console.log(horas.length);
+    //             if(horas.m_de!=null || horas.t_de!=null )
+    //             {
+    //               horas.id=idinsert;
+    //               // console.log('/////////////////******************Horario******************////');
+    //               // console.log(horas);
+    //                 regH.agregarHorario(horas,(err,resp)=>{
+    //                 //console.log('////////////////*************HORARIO AGREGADO////////////*****************');
+    //                 respuesta.push(resp);
+    //                 });
+    //             }
+    //       }
           sqlss = 'INSERT INTO servicios_categoria (servicios_idservicios, categoria_idcategoria) VALUES (?, ?)';
           console.log('id_Servicio'+idInd+'/*/*/*'+'Id Cate'+data.categoria);
           connection.query(sqlss,[idInd,data.categoria],(err,row)=>{
@@ -123,7 +124,7 @@ servmodule.DarServiceUsu = (ids,callback) => {
 // console.log('prueba de servicios')
 if(connection)
 {
-var sql = 'SELECT servicios.*, categoria.nombre as categoria,categoria.id_categoria FROM servicios,servicios_categoria,categoria WHERE servicios_categoria.servicios_idservicios = servicios.id_servicios and servicios_categoria.categoria_idcategoria = categoria.id_categoria and id_provedores = ? ORDER BY createdupdate';
+var sql = 'SELECT servicios.*, categoria.nombre as categoria,categoria.id_categoria, consultorio.nombre as consultorio FROM servicios,servicios_categoria,categoria, consultorio, con_ser_hor WHERE servicios.id_servicios = con_ser_hor.id_servicios AND con_ser_hor.id_consultorio = consultorio.id_consultorio AND servicios_categoria.servicios_idservicios = servicios.id_servicios and servicios_categoria.categoria_idcategoria = categoria.id_categoria AND id_provedores = ? group by con_ser_hor.id_servicios ORDER BY servicios.createdupdate;';
 var sel = 'SELECT comentarios.*,usuarios.avatar, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombre FROM comentarios,servicios,usuarios WHERE comentarios.servicios_idservicios = servicios.id_servicios AND usuarios.id = comentarios.usuarios_id AND servicios.id_servicios = ? ORDER BY comentarios.createdAt asc LIMIT 3;';
 connection.query(sql,[ids],(err,row)=>{
 if(err)
@@ -393,21 +394,21 @@ servmodule.darServiciosMunCat = (ids,callback)=>{
 //console.log('////////////////Servicios ')
 var idm = ids.idm;
 var idc = ids.idc;
-
+console.log(idc);
 if(connection)
 {
-if(idc==0)
+if(idc>=0)
 {
-//console.log('////////////////Servicios por muunicipios/////////// ')
+console.log('////////////////Servicios por muunicipios/////////// ')
 
 if(idc!=20)
 {
-  var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ? AND categoria_idcategoria != 20;';
+  var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria, municipio.id_municipio FROM servicios, servicios_categoria, categoria, municipio, sucursales, consultorio WHERE sucursales.id_sucursales = consultorio.id_sucursales AND consultorio.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND sucursales.id_municipio = municipio.id_municipio AND municipio.id_municipio= ? AND categoria_idcategoria != 20 GROUP BY servicios.id_servicios;';
   var sel = 'SELECT comentarios.*,usuarios.avatar, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombre FROM comentarios,servicios,usuarios WHERE comentarios.servicios_idservicios = servicios.id_servicios AND usuarios.id = comentarios.usuarios_id AND servicios.id_servicios = ? ORDER BY comentarios.createdAt asc LIMIT 3;';
 }
 else
 {
-  var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_municipio= ?;';
+  var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio, sucursales, consultorio WHERE sucursales.id_sucursales = consultorio.id_sucursales AND consultorio.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND sucursales.id_municipio = municipio.id_municipio AND municipio.id_municipio= ? AND categoria_idcategoria = 20 GROUP BY servicios.id_servicios;';
   var sel ='SELECT comentarios_masc.*,mascotas.avatar, mascotas.nombre FROM comentarios_masc,servicios,mascotas WHERE comentarios_masc.id_servicios = servicios.id_servicios AND mascotas.id_mascotas = comentarios_masc.id_mascotas AND servicios.id_servicios = ?  ORDER BY comentarios_masc.createdAt asc LIMIT 3;';
 }
 
@@ -615,8 +616,9 @@ if(connection)
 }
 };
 
+//devuelve un servicio por su id
 servmodule.onlyservicio = (id,callback) =>{
-  let sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_cate, municipio.id_municipio as id_muni, departamento.id_departamento, departamento.nombre as depar, municipio.nombre as muni FROM servicios, servicios_categoria, categoria, municipio, departamento WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND municipio.id_departamento = departamento.id_departamento AND servicios.municipio_id_municipio = municipio.id_municipio AND servicios.id_servicios = ? ';
+  let sql = 'SELECT servicios.*, categoria.nombre as categoria FROM servicios,categoria, servicios_categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria AND servicios.id_servicios = ?;';
   connection.query(sql,[id],(err,row)=>{
     if(err){throw err}
     else
@@ -813,6 +815,34 @@ servmodule.serviciosMedicoProvedor = (pr,callback) =>{
 
 
   }
+};
+
+servmodule.pruebaP = (callback)=>{
+  var sql = 'select * FROM members;';
+  var promise = new Promise(function (res,rej){
+    connection.query(sql,(err,data) => {
+      return (err) ? rej(err) :  res(data)
+    })
+  });
+
+promise
+        .then((resolve,reject)=>{
+          var con =0;
+          var datos = resolve;
+          console.log(datos);
+          for (var i = 0; i < datos.length; i++) {
+            console.log(datos[i]);
+            con++;
+            console.log(con);
+          }
+          console.log('DESPUES DEL FOR');
+                return con
+           })
+           .then((res,rej)=>{
+             console.log(res);
+             callback(null,res)
+           })
+        .catch((err)=>{console.error(err);})
 };
 
 

@@ -3,6 +3,7 @@ let config = require('../config');
 let moment = require('moment');
 let citas = require('./citas');
 let dia = require('./dias');
+var forEach = require('async-foreach').forEach;
 
 connection = mysql.createConnection({
 host: config.host,
@@ -16,40 +17,49 @@ let horarioModel = {};
 //agrega el horario a la base de datos
 horarioModel.agregarHorario = (horario,callback) =>
 {
+console.log('HORARIO SS');
+console.log(horario);
 var horas = horario;
-var semana = horas.semana;
+var semana = horario.semana;
+console.log(semana);
 var dias={};
 respId =[];
-///console.log(semana);
-// console.log('/////////*********Horario Recibido Prueba de nulls*********//////////////');
-//console.log(horario);
+console.log(semana);
+console.log('/////////*********Horario Recibido Prueba de nulls*********//////////////');
+console.log(horario);
 if(connection)
 {
 //console.log(horas.t_de+'/'+horas.m_de);
 if(horas.t_de==undefined || horas.t_de=='undefind' || horas.t_de==null || horas.t_de=='null' )
 {
-//console.log('horarios de tarde indefinido');
+console.log('horarios de tarde indefinido');
 
-var hsql = 'INSERT INTO horario (de_maniana,a_maniana,id_servicios) VALUES (?,?,?)';
+var hsql = 'INSERT INTO horario (de_maniana,a_maniana) VALUES (?,?)';
 
-connection.query(hsql,[horas.m_de,horas.m_hasta,horas.id],(err,row)=>{
+connection.query(hsql,[horas.m_de,horas.m_hasta],(err,row)=>{
 if(err)
 {
 throw err
 }
 else
 {
-
+console.log('ROW DE AGREGADO');
+console.log(row);
 var idH = row.insertId;
-respId.push(row.insertId);
+// respId.push(row.insertId);
 dias={
 semanas:semana,
 id:idH,
-ids:horas.id
 };
-// //console.log(dias);
-dia.agregarDia(dias,(err,resp)=>{
-callback(null,{'res':resp});
+console.log('&%/%&/%&/UYFYUFUYFYUFUYFUYFYUFYUF%&$&$%&$%&$%&');
+console.log(horario);
+res = {id_ser:horario.id_servicio,id_consul:horario.id_consul,id_hora:row.insertId};
+respId.push(res);
+
+console.log(dias);
+dia.agregarDia(dias,(err,respId)=>{
+  console.log(res);
+callback(null,res);
 });
 
 
@@ -61,9 +71,9 @@ callback(null,{'res':resp});
 else if (horas.m_de==undefined || horas.m_de=='undefind' || horas.m_de==null || horas.m_de=='null')
 {
 //console.log(.log('horario de mañana indefinido');
-var hsql = 'INSERT INTO horario (de_tarde,a_tarde,id_servicios) VALUES (?,?,?)';
+var hsql = 'INSERT INTO horario (de_tarde,a_tarde) VALUES (?,?)';
 
-connection.query(hsql,[horas.t_de,horas.t_hasta,horas.id],(err,row)=>{
+connection.query(hsql,[horas.t_de,horas.t_hasta],(err,row)=>{
 if(err)
 {
 throw err
@@ -79,27 +89,22 @@ respId.push(row.insertId);
 dias={
 semanas:semana,
 id:idH,
-ids:horas.id
 };
+res = {id_ser:horario.id_servicio,id_consul:horario.id_consul,id_hora:row.insertId};
+respId.push(res);
 //console.log(.log('/////////************Dias*************////////////');
 //console.log(.log(dias);
 dia.agregarDia(dias,(err,resp)=>{
-callback(null,{'res':resp});
+callback(null,respId);
 });
-
-
 }
-
 });
-
-
-
 }
 else
 {
-var hsql = 'INSERT INTO horario (de_maniana,a_maniana,de_tarde,a_tarde,id_servicios) VALUES (?,?,?,?,?)';
+var hsql = 'INSERT INTO horario (de_maniana,a_maniana,de_tarde,a_tarde) VALUES (?,?,?,?)';
 
-connection.query(hsql,[horas.m_de,horas.m_hasta,horas.t_de,horas.t_hasta,horas.id],(err,row)=>{
+connection.query(hsql,[horas.m_de,horas.m_hasta,horas.t_de,horas.t_hasta],(err,row)=>{
 if(err)
 {
 throw err
@@ -108,12 +113,13 @@ else
 {
 
 var idH = row.insertId;
-respId.push(row.insertId);
+// respId.push(row.insertId);
 dias={
 semanas:semana,
 id:idH,
-ids:horas.id
 };
+res = {id_ser:horario.id_servicio,id_consul:horario.id_consul,id_hora:row.insertId};
+respId.push(res);
 // //console.log(.log(dias);
 dia.agregarDia(dias,(err,resp)=>{
 callback(null,respId);
@@ -127,6 +133,187 @@ callback(null,respId);
 
 
 }
+}
+
+
+//agrega el horario a la base de datos
+horarioModel.agregarHorario1 = (horarios,callback) =>
+{
+    // console.log('DENTRO DE AGREGAR HORARIOS');
+    console.log(horarios);
+  var p = 0;
+  var d = 0;
+      forEach(horarios,(horario, index, arr)=>{
+          // console.log('DENTRO DEL FOR EACH DE HORARIOS');
+          // console.log('HORARIO');
+          // console.log(horario);
+          console.log('longitud del for array');
+          console.log(horario.length);
+          console.log('------------ddddddd-----------------');
+          var horas = horario;
+          var semana = horario.semana;
+          // console.log('SEMANA');
+          // console.log(horario.semana);
+          var dias={};
+          respId =[];
+          // console.log(semana);
+          // console.log(horario);
+          console.log(horas.m_de,' PRUEBA ', horas.t_de);
+          if ((horas.m_de==undefined || horas.m_de=='undefind' || horas.m_de==null || horas.m_de=='null') && (horas.t_de==undefined || horas.t_de=='undefind' || horas.t_de==null || horas.t_de=='null' ))
+          {
+            console.log('no existe horario');
+            d++;
+          }
+            else if(horas.t_de==undefined || horas.t_de=='undefind' || horas.t_de==null || horas.t_de=='null' )
+              {
+                  // console.log('horarios de tarde indefinido');
+                  var hsql = 'INSERT INTO horario (de_maniana,a_maniana) VALUES (?,?)';
+                  connection.query(hsql,[horas.m_de,horas.m_hasta],(err,row)=>{
+                    if(err){throw err}
+                    else
+                    {
+                      // console.log('ROW DE AGREGADO');
+                      // console.log(row);
+                      var idH = row.insertId;
+                      // respId.push(row.insertId);
+                      dias={
+                        semanas:semana,
+                        id:idH,
+                      };
+                      // console.log('&%/%&/%&/UYFYUFUYFYUFUYFUYFYUFYUF%&$&$%&$%&$%&');
+                      // console.log(horario);
+                      resId = {id_ser:horario.id_servicio,id_consul:horarios.id_consul,id_hora:row.insertId};
+                      respId.push(resId);
+                      // console.log(dias);
+                      return new Promise((res,rej)=>{
+                        console.log(dias);
+                          dia.agregarDia(dias,(err,rspad)=>{
+                              return(err) ? rej(err):res(resId);
+                          })
+                      })
+                        .then((res,rej)=>{
+                          p++;
+                            // console.log('Despues de la promesa agregar dias');
+                            // console.log(res);
+                            console.log(p, ' contra ', horarios.length);
+                            if(p >= horarios.length-d)
+                              {
+                                // console.log('fin de agregado horarios');
+                                console.log(respId);
+                                callback(null,respId);
+                              }
+                        })
+
+                      }
+                    });
+              }
+              else if (horas.m_de==undefined || horas.m_de=='undefind' || horas.m_de==null || horas.m_de=='null')
+              {
+              // console.log('horario de mañana indefinido');
+                var hsql = 'INSERT INTO horario (de_tarde,a_tarde) VALUES (?,?)';
+
+                connection.query(hsql,[horas.t_de,horas.t_hasta],(err,row)=>{
+                  if(err){throw err}
+                  else
+                  {
+
+                    var idH = row.insertId;
+                    // respId.push(row.insertId);
+                    //console.log(.log('/////////************horas*************////////////');
+                    //console.log(.log(horas);
+                    dias={
+                      semanas:semana,
+                      id:idH,
+                    };
+                      resId = {id_ser:horario.id_servicio,id_consul:horarios.id_consul,id_hora:row.insertId};
+                      respId.push(resId);
+                      //console.log(.log('/////////************Dias*************////////////');
+                      //console.log(.log(dias);
+                      return new Promise((res,rej)=>{
+                        console.log(dias);
+                          dia.agregarDia(dias,(err,rspad)=>{
+                              return(err) ? rej(err):res(resId);
+                          })
+                      })
+                        .then((res,rej)=>{
+                          p++
+                            // console.log('Despues de la promesa agregar dias');
+                            // console.log(res);
+                            console.log(p, ' contra ', horarios.length);
+                            if(p >= horarios.length-d)
+                              {
+                                // console.log('fin de agregado horarios');
+                                console.log(respId);
+                                callback(null,respId);
+                              }
+                        })
+                        // dia.agregarDia(dias,(err,resp)=>{
+                        //   console.log(index, ' contra ', horarios.length);
+                        //   if(index >= horarios.length)
+                        //   {
+                        //     console.log('fin de agregado horarios');
+                        //   }
+                        // });
+                      }
+                    });
+              }
+              else {
+
+                var hsql = 'INSERT INTO horario (de_maniana,a_maniana,de_tarde,a_tarde) VALUES (?,?,?,?)';
+
+                connection.query(hsql,[horas.m_de,horas.m_hasta,horas.t_de,horas.t_hasta],(err,row)=>{
+                if(err)
+                {
+                throw err
+                }
+                else
+                {
+
+                var idH = row.insertId;
+                // respId.push(row.insertId);
+                dias={
+                semanas:semana,
+                id:idH,
+                };
+                resId = {id_ser:horario.id_servicio,id_consul:horarios.id_consul,id_hora:row.insertId};
+                respId.push(resId);
+                // //console.log(.log(dias);
+                return new Promise((res,rej)=>{
+                  console.log(dias);
+                    dia.agregarDia(dias,(err,rspad)=>{
+                        return(err) ? rej(err):res(resId);
+                    })
+                })
+                  .then((res,rej)=>{
+                    p++;
+                      // console.log('Despues de la promesa agregar dias');
+                      // console.log(res);
+                      console.log(p, ' contra ', horarios.length);
+                      if(p >= horarios.length-d)
+                        {
+                          // console.log('fin de agregado horarios');
+                          console.log(res);
+                            callback(null,respId);
+                        }
+                  });
+                // dia.agregarDia(dias,(err,resp)=>{
+                //   console.log(index, ' contra ', horarios.length);
+                //   if(index >= horarios.length)
+                //   {
+                //     console.log('fin de agregado horarios');
+                //   }
+                // });
+                }
+
+                });
+
+                }
+      //FIN DEL FOREACH
+
+      });
+      console.log('FUERA DEL forEach');
+
+
 }
 
 // retorna los dias de la semana con su horario
@@ -903,7 +1090,34 @@ horarioModel.eliminarHorarioEd = (idh,callback)=>{
 
 
 
+horarioModel.darHorarioCon = (id,callback) =>{
+  if(connection)
+  {
+    var res = [];
+    var hor = 'SELECT horario.* FROM horario, con_ser_hor WHERE con_ser_hor.id_horario = horario.id_horario AND con_ser_hor.id_consultorio = ?;';
+    connection.query(hor,[id],(err,horarios)=>{
+      if(err){throw err}
+      else
+      {
 
+        forEach(horarios, function(horario, index, arr)
+      {
+          // console.log(horario);
+          let idc = horario.id_horario;
+          dia.darDiasEd(horario,(err,hor)=>{
+              // console.log(hor);
+              res.push(hor);
+              if(index>=horarios.length-1)
+              {
+                callback(null,res);
+              }
+          });
+
+      });
+      }
+    });
+  }
+};
 
 
 
