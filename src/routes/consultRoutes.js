@@ -19,6 +19,17 @@ app.get('/consulsuc/:ids',(req,res)=>{
     });
 });
 
-app.delete('')
+
+//devuelve los consulturos de un servicio por sucursales
+app.get('/consulsucse/:idsu/:idser',(req,res)=>{
+  let ids = { idsu: req.params.idsu,
+              idser: req.params.idser};
+  console.log(ids);
+  consu.getConsultorioSucSer(ids,(err,resp)=>{
+    res.json( resp);
+  })
+});
+
+
 
 }

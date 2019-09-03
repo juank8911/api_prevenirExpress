@@ -72,11 +72,11 @@ app.get('/horariosed/:id',(req,res)=>{
 
 
 
-// retorna las citas segun la fecha y el id del servicio para los provedores
-app.get('/servcitas/:fecha/:id/:masc',(req,res)=>{
+// retorna las citas segun la fecha y el id del servicio para los consultorios
+app.get('/servcitas/:fecha/:idc/:masc',(req,res)=>{
 prov  = {
 fecha:req.params.fecha,
-id:req.params.id,
+id:req.params.idc,
 cat:req.params.masc
 };
 hora.darDiaOc(prov,(err,resp)=>{

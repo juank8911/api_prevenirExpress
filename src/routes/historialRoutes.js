@@ -33,7 +33,8 @@ app.post('/coment',(req,res)=>{
     califica:req.body.califica,
     id_servicio:req.body.ids,
     id_usuario:req.body.idU,
-    id_historial:req.body.idh
+    id_historial:req.body.idh,
+    id_consultorio: req.body.id_consultorio
   };
   let masc = req.body.masc;
   console.log(comm);
@@ -97,6 +98,42 @@ app.get('/histser/:mes/:anio/:ser/:masc',(req,res)=>{
   hist.histoServicio(ev,(err,resp)=>{
     res.json(resp);
   });
+});
+
+
+app.get('/histsuc/:mes/:anio/:ser/:masc/:idsuc/:idcon',(req,res)=>{
+
+  console.log(req.params);
+  if(req.params.idcon=='0' || req.params.idcon==0)
+  {
+    ev = {
+      mes: req.params.mes,
+      anio: req.params.anio,
+      id_mascotas: req.params.masc,
+      ser: req.params.ser,
+      suc: req.params.idsuc
+    };
+
+    hist.histoSucursal(ev,(err,resp)=>{
+      res.json(resp);
+    });
+
+  }
+  else
+  {
+    ev = {
+      mes: req.params.mes,
+      anio: req.params.anio,
+      id_mascotas: req.params.masc,
+      ser: req.params.ser,
+      con: req.params.idcon,
+      suc: req.params.idsuc
+    };
+    hist.histoSucCon(ev,(err,resp)=>{
+      res.json(resp);
+    });
+  }
+
 });
 
 

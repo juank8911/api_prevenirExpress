@@ -35,11 +35,12 @@ color: req.body.color,
 start: starts,
 end: ends,
 usuario: req.body.usuario,
+consultorio: req.body.consultorio,
 servicio: req.body.servicio,
 mascota:req.body.mascota
 };
 console.log('/*/*/*/*/*/*MIRADAA DEL EVENTO COMO LLEGA');
-console.log(eventss);
+console.log(req.body);
 //console.log(starts + " "+ends);
 events.agregarEvento(eventss,(err,data)=>{
 res.json(data);
@@ -70,6 +71,8 @@ res.json(row);
 });
 });
 
+
+
 // elimina eventos segun el id del evento
 app.delete('/events/:id/:masc',jwts.valida,(req,res)=>{
 var el = {
@@ -79,6 +82,21 @@ var el = {
 console.log(el);
 events.eliminarEvento(el,(err,row)=>{
 res.json(row);
+});
+});
+
+app.delete('/eventss/:ide/:idc/:masc',jwts.validaAdmin, (req,res)=>{
+  console.log('PARAMETrOS DEL REQUERIE');
+  console.log(req.params);
+  console.log('PARAMETrOS DEL REQUERIE');
+let ev = {
+ide:req.params.ide,
+idc: req.params.idc,
+cate:req.params.masc
+};
+//console.log(ev);
+events.delEventSuc(ev,(err,resp)=>{
+res.json(resp);
 });
 });
 
@@ -94,15 +112,49 @@ app.get('/eventser/:mes/:anio/:id_serv/:masc',(req,res)=>{
   });
 });
 
-app.delete('/eventss/:ide/:idp/:masc',jwts.validaAdmin, (req,res)=>{
-let ev = {
-ide:req.params.ide,
-idp: req.params.idp,
-cate:req.params.masc
-};
-//console.log(ev);
-events.delEventProv(ev,(err,resp)=>{
-res.json(resp);
+
+
+
+// app.get('/eventsuc/:mes/:anio/:id_serv',(req,res)=>{
+//   res.json(['prueba']);
+// });
+
+
+app.get('/eventsuc/:mes/:anio/:id_serv/:id_suc/:masc/:idcon',(req,res)=>{
+  if(req.params.idcon==0||req.params.idcon=='0')
+  {
+    ev = {
+      mes: req.params.mes,
+      anio: req.params.anio,
+      id_servicio: req.params.id_serv,
+      id_sucursal: req.params.id_suc,
+      id_mascotas: req.params.masc
+    };
+    events.eventsCalendarSuc(ev,(err,resp)=>{
+      // console.log(resp);
+      res.json(resp);
+    });
+
+  }
+  else
+  {
+
+    ev = {
+      mes: req.params.mes,
+      anio: req.params.anio,
+      id_servicio: req.params.id_serv,
+      id_sucursal: req.params.id_suc,
+      id_mascotas: req.params.masc,
+      id_consultorio: req.params.idcon
+    };
+    events.eventsCalendarSucCon(ev,(err,resp)=>{
+      // console.log(resp);
+      res.json(resp);
+    });
+
+  }
+
 });
-});
+
+
 }

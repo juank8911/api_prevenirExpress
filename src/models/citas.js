@@ -18,10 +18,10 @@ citasModel.countCitas = (row,callback)=>{
 var hora =0;
 let p=1;
 let jsonHd = [];
- // console.log('***************////CONTEO DE CITAS//');
-// console.log(row);
+console.log('***************////CONTEO DE CITAS//');
+console.log(row);
 var cate = row.cate;
-//console.log(cate);
+console.log(cate);
 var serv = {};
 
 for (var i = 0; i < row.length; i++)
@@ -33,7 +33,7 @@ hora:hora.hora,
 id:row.id,
 cate:row.cate
 };
-////console.lo.log(serv);
+// console.log(serv);
 eject.darLibres(serv,(err,resp)=> {
 ////console.lo.log(resp);
 p++;
@@ -111,16 +111,16 @@ citasModel.CitasUsuarioProv = (usu,callback)=>{
   let res = [];
   let res1 = [];
   let rest = [];
-var sql = "SELECT CONVERT_TZ(events.start,'+00:00','-05:00') as start,events.id_eventos,events.usuarios_id,events.servicios_idservicios,servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente,usuarios.avatar, day(now()) as hoy,month(now()) as mes, day(events.start) as cita, month(events.start) as mescita, servicios_categoria.categoria_idcategoria as categoria FROM events, provedores, servicios, usuarios,servicios_categoria WHERE events.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = provedores.id_provedor AND events.usuarios_id = usuarios.id AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND provedores.id_provedor = ? AND usuarios.cedula = ? ;";
-  connection.query(sql,[usu.ser,usu.id],(err,row)=>{
+var sql = "SELECT CONVERT_TZ(events.start,'+00:00','-05:00') as start,events.id_eventos,events.usuarios_id, servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente, usuarios.avatar, day(now()) as hoy,month(now()) as mes, day(events.start) as cita, month(events.start) as mescita, consultorio.nombre as consultorio, servicios_categoria.categoria_idcategoria as categoria FROM events, consultorio, sucursales, usuarios, servicios, con_ser_hor, servicios_categoria WHERE events.id_consultorio = consultorio.id_consultorio AND sucursales.id_sucursales = consultorio.id_consultorio AND events.usuarios_id = usuarios.id AND consultorio.id_consultorio = con_ser_hor.id_consultorio AND con_ser_hor.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND sucursales.id_sucursales = ? AND usuarios.cedula = ? GROUP BY events.id_eventos;";
+  connection.query(sql,[usu.suc,usu.id],(err,row)=>{
     if(err){throw err}
     else
     {
       // console.log(row);
 
 
-                    let act = "SELECT citas_activas.*,CONVERT_TZ(citas_activas.start,'+00:00','-05:00') as start,CONVERT_TZ(citas_activas.end,'+00:00','-05:00') as end, servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente,usuarios.avatar FROM citas_activas, usuarios, servicios WHERE citas_activas.usuarios_id = usuarios.id AND citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_provedores = ? AND usuarios.cedula = ?;";
-                    connection.query(act,[usu.ser, usu.id],(err,ress)=>{
+                    let act = "SELECT citas_activas.*, citas_activas.start as start, servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente, usuarios.avatar, day(now()) as hoy,month(now()) as mes, day(citas_activas.start) as cita, month(citas_activas.start) as mescita, consultorio.nombre as consultorio, servicios_categoria.categoria_idcategoria as categoria FROM citas_activas, consultorio, sucursales, usuarios, servicios, con_ser_hor, servicios_categoria WHERE citas_activas.id_consultorio = consultorio.id_consultorio AND sucursales.id_sucursales = consultorio.id_sucursales AND citas_activas.usuarios_id = usuarios.id AND consultorio.id_consultorio = con_ser_hor.id_consultorio AND con_ser_hor.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND sucursales.id_sucursales = ? AND usuarios.cedula = ? GROUP BY citas_activas.id_citas_activas;";
+                    connection.query(act,[usu.suc,usu.id],(err,ress)=>{
                       if(err){throw err}
                       else
                       {
@@ -155,13 +155,13 @@ var sql = "SELECT CONVERT_TZ(events.start,'+00:00','-05:00') as start,events.id_
                     });
 
 
-      var masc = 'SELECT events_masc.start,events_masc.id_eventos,events_masc.id_mascotas,events_masc.id_servicios,servicios.nombre as servicio, mascotas.nombre as paciente, mascotas.avatar, servicios.nombre, servicios_categoria.categoria_idcategoria, day(now()) as hoy,month(now()) as mes, day(events_masc.start) as cita, month(events_masc.start) as mescita FROM events_masc, mascotas, servicios, servicios_categoria, usuarios, provedores WHERE events_masc.id_mascotas = mascotas.id_mascotas AND events_masc.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND mascotas.id_usuarios = usuarios.id AND servicios.id_provedores = provedores.id_provedor AND provedores.id_provedor = ? AND usuarios.cedula = ?;'
-                  connection.query(masc,[usu.ser,usu.id],(err,row1)=>{
+                    var masc = "SELECT events_masc.*,CONVERT_TZ(events_masc.start,'+00:00','-05:00') as start, mascotas.nombre, mascotas.avatar, day(now()) as hoy,month(now()) as mes, day(events_masc.start) as cita, month(events_masc.start) as mescita, consultorio.nombre as consultorio, servicios_categoria.categoria_idcategoria as categoria, servicios.id_servicios FROM events_masc, consultorio, sucursales, mascotas, usuarios, servicios, servicios_categoria WHERE events_masc.id_mascotas = mascotas.id_mascotas AND mascotas.id_usuarios = usuarios.id AND events_masc.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND consultorio.id_sucursales = sucursales.id_sucursales AND sucursales.id_sucursales = ? AND usuarios.cedula = ? GROUP BY events_masc.id_eventos;";
+                  connection.query(masc,[usu.suc,usu.id],(err,row1)=>{
                     if(err){throw err}
                     else
                     {
-                        let act = 'SELECT citas_activas_masc.*, servicios.nombre as servicio,mascotas.nombre as paciente, mascotas.avatar FROM citas_activas_masc, mascotas,usuarios, servicios WHERE citas_activas_masc.id_mascotas = mascotas.id_mascotas AND citas_activas_masc.id_servicios = servicios.id_servicios AND mascotas.id_usuarios = usuarios.id AND servicios.id_provedores = ? AND usuarios.cedula = ?;';
-                        connection.query(act,[usu.ser, usu.id],(err,resm)=>{
+                        let act = 'SELECT citas_activas_masc.*, mascotas.nombre as paciente, mascotas.avatar, consultorio.nombre as consultorio, servicios.nombre as servicio, servicios_categoria.categoria_idcategoria as categoria FROM citas_activas_masc, consultorio, sucursales, mascotas, usuarios, servicios, servicios_categoria, con_ser_hor WHERE citas_activas_masc.id_mascotas = mascotas.id_mascotas AND mascotas.id_usuarios = usuarios.id AND citas_activas_masc.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND servicios.id_servicios = con_ser_hor.id_servicios AND consultorio.id_consultorio = con_ser_hor.id_consultorio AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND consultorio.id_sucursales = sucursales.id_sucursales AND sucursales.id_sucursales = ? AND usuarios.cedula = ? GROUP BY citas_activas_masc.id_citas_activas;';
+                        connection.query(act,[usu.suc,usu.id],(err,resm)=>{
                             if(err){throw err}
                             else
                             {

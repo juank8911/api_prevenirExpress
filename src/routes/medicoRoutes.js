@@ -89,6 +89,7 @@ med.deleteMedico(ids,(err,row)=>{
 });
 });
 
+//da los medicos por el id de la sucursal y del servicio
 app.get('/medicosucser/:idsuc/:idser',(req,res)=>{
   let ids = {
     id_sucur:req.params.idsuc,

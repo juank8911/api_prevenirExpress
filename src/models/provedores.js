@@ -65,19 +65,12 @@ if(err){throw err;}else{callback(null,row)}
 
 provedorModule.darProvedorid = (id,callback)=>{
   console.log('hola buscando provedores');
-  let vl = {};
-var sql = 'SELECT * FROM provedores WHERE id_provedor = ?';
+var sql = 'SELECT provedores.* FROM provedores, members WHERE provedores.members_id = members.id AND members.id = ?;';
 connection.query(sql,[id],(err,row)=>{
 if(err){throw err}else{
 console.log(row);
-vl = row[0];
-// topic.topicsProvedor(id,(err,rsp)=>{
-  // console.log(row[0]);
-  // vl.topics=rsp;
   console.log('respuesta A LA APP');
-  // console.log(vl);
-  callback(null,vl)
-// });
+  callback(null,row)
 }
 });
 };

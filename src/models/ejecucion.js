@@ -5,6 +5,7 @@ let pushs = require('./push')
 var sleep = require('system-sleep');
 let ciclo = require('../controler/ciclos')
 let email = require('./email');
+var forEach = require('async-foreach').forEach;
 
 connection = mysql.createConnection({
 host: config.host,
@@ -19,20 +20,20 @@ let ejectModel = {};
 //retorna una lista de horarios libres para la citas medicas
 ejectModel.darLibres = (serv,callback)=>
 {
-console.log(serv);
+// console.log(serv);
 if(connection)
 {
-var sql = 'SELECT servicios.max_citas_ves-count(events.id_eventos) as libres  FROM servicios, events WHERE servicios.id_servicios = events.servicios_idservicios and start = ? AND servicios_idservicios = ? ;'
+var sql = ' SELECT servicios.max_citas_ves-count(events.id_eventos) as libres FROM servicios, consultorio, events WHERE consultorio.id_servicios = servicios.id_servicios AND events.id_consultorio = consultorio.id_consultorio AND events.start = ? AND consultorio.id_consultorio = ?;'
 connection.query(sql,[serv.hora,serv.id],(err,res)=>{
 res = res[0];
 res=res.libres;
-console.log('///////////****//////////');
-console.log(res);
+// console.log('///////////**RESPUESTA DE DAR LIBTRES**//////////');
+// console.log(res);
 serv.libres = res;
 serv.disponible = true;
 serv.hora = moment(serv.hora).format('hh:mm a');
 
-console.log(serv);
+// console.log(serv);
 callback(null,serv);
 });
 
@@ -49,28 +50,28 @@ if(connection)
   if(serv.cate==20)
   {
     console.log('Mascotas');
-    var sql = "SELECT events_masc.id_eventos,events_masc.id_mascotas as usuarios_id,events_masc.id_servicios as servicios_idservicios,events_masc.start,events_masc.end, mascotas.nombre as nombres FROM events_masc, mascotas, servicios WHERE mascotas.id_mascotas = events_masc.id_mascotas AND servicios.id_servicios = events_masc.id_servicios AND start = ? AND events_masc.id_servicios = ?;"
+    var sql = "SELECT events_masc.id_eventos,events_masc.id_mascotas as usuarios_id, events_masc.start, events_masc.end, consultorio.id_servicios as servicios_idservicios, mascotas.nombre as nombres FROM events_masc, consultorio, servicios, mascotas WHERE mascotas.id_mascotas = events_masc.id_mascotas AND events_masc.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND events_masc.start = ? AND consultorio.id_consultorio = ?;"
   }
   else
   {
     console.log('usuario');
-    var sql = "SELECT events.* ,concat(usuarios.nombre,' ',usuarios.apellidos) as nombres FROM servicios, events, usuarios WHERE servicios.id_servicios = events.servicios_idservicios and usuarios.id = events.usuarios_id and start = ? AND servicios_idservicios = ? ;"
+    var sql = "SELECT events.* ,concat(usuarios.nombre,' ',usuarios.apellidos) as nombres FROM events, consultorio, servicios, usuarios WHERE events.usuarios_id = usuarios.id AND events.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND events.start = ? AND consultorio.id_consultorio = ?;"
   }
 
 ////console.lo.log(sql);
 connection.query(sql,[serv.hora,serv.id],(err,res)=>{
 //res;
 //res=res.libres;
-////console.lo.log('///////////****//////////');
+//console.log('///////////****//////////');
 ////console.lo.log(res);
 if(serv.cate==20)
 {
   console.log('Contando mascotas');
-  var sql1 = 'SELECT count(events_masc.id_eventos) as echas, servicios.max_citas_ves-count(events_masc.id_eventos) as libres  FROM servicios, events_masc WHERE servicios.id_servicios = events_masc.id_servicios and start = ? AND events_masc.id_servicios = ?;';
+  var sql1 = 'SELECT count(events_masc.id_eventos) as echas, servicios.max_citas_ves-count(events_masc.id_eventos) as libres FROM events_masc, consultorio, servicios WHERE events_masc.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND events_masc.start = ? AND consultorio.id_consultorio = ?;';
 }
 else
 {
-var sql1 = 'SELECT count(events.id_eventos) as echas, servicios.max_citas_ves-count(events.id_eventos) as libres  FROM servicios, events WHERE servicios.id_servicios = events.servicios_idservicios and start = ? AND servicios_idservicios = ? ';
+var sql1 = 'SELECT count(events.id_eventos) as echas, servicios.max_citas_ves-count(events.id_eventos) as libres FROM events, consultorio, servicios WHERE events.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND events.start = ? AND consultorio.id_consultorio = ?;';
 }
 connection.query(sql1,[serv.hora,serv.id],(err,resp)=>{
   console.log(resp);
@@ -219,7 +220,8 @@ if(connection)
 
 };
 
-ejectModel.histrialBenf = (row,callback)=>{
+ejectModel.histrialBenf1 = (row,callback)=>{
+  console.log('ROW PARA OBTENER CITAS DE BENEFICIARIOS');
   console.log(row);
   let pens = [];
   let p = 1;
@@ -249,6 +251,43 @@ ejectModel.histrialBenf = (row,callback)=>{
   }
 
 };
+
+ejectModel.histrialBenf = (row,callback)=>{
+  console.log('ROW PARA OBTENER CITAS DE BENEFICIARIOS');
+  console.log(row);
+  let pens = [];
+  let p = 1;
+  if(connection)
+  {
+    let sel = 'SELECT historial.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombres, servicios.nombre as servicio, servicios.id_servicios, consultorio.id_consultorio, sucursales.nombre as sucursal, sucursales.direccion, sucursales.telefono, sucursales.id_sucursales, sucursales.id_municipio FROM historial, usuarios, consultorio, servicios, sucursales WHERE consultorio.id_sucursales = sucursales.id_sucursales AND historial.usuarios_id = usuarios.id AND historial.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND historial.usuarios_id = ? ORDER BY historial.calificada asc, historial.start asc;';
+    forEach(row,(ids, index, arr)=>{
+
+      connection.query(sel,[row[index]],(err,resp)=>{
+        if(err){throw err}
+        else
+        {
+          // console.log(resp);
+              forEach(resp,(hist, index2, ar) =>{
+
+                console.log(hist);
+                pens.push(hist);
+              })
+              console.log(index,' contra ',row.length-1);
+              if(index>=row.length-1)
+              {
+                console.log('FINALIZA CONSULTA');
+                callback(null,pens);
+              }
+              }
+        })
+
+      })
+
+    }
+  };
+
+
+
 
 ejectModel.cambioSalt = (id,callback)=>{
   if(connection)

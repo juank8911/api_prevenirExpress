@@ -60,6 +60,11 @@ else if (admins=='false')
   console.log('usuario');
 admins=2;
 }
+else if (admins=='sucu')
+{
+  console.log('usuario');
+  admins=4;
+}
 else
 {
   console.log('medico');
@@ -198,7 +203,7 @@ return res.status(403).send({'mensaje':'error al validar usuario, inicie sesion 
 }
 req.decoded = decoded;
 // console.log(decoded);
-if(decoded.admin==true || decoded.admin=='true' )
+if(decoded.admin==true || decoded.admin=='true' || decoded.admin=='sucu')
 {
 next();
 }

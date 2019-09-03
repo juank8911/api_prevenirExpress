@@ -343,12 +343,12 @@ medicosModule.darMedicosSucursal = (ids, callback) =>
 {
   if(connection)
   {
-    var sql = 'SELECT medicos.* FROM medicos, consultorio, sucursales WHERE medicos.medico_id = consultorio.medico_id AND consultorio.id_sucursales = sucursales.id_sucursales AND sucursales.id_sucursales = ? AND consultorio.id_servicios = ?;';
+    var sql = 'SELECT medicos.*, consultorio.id_consultorio as consultorio FROM medicos, consultorio, sucursales WHERE medicos.medico_id = consultorio.medico_id AND consultorio.id_sucursales = sucursales.id_sucursales AND sucursales.id_sucursales = ? AND consultorio.id_servicios = ?;';
     connection.query(sql,[ids.id_sucur,ids.id_serv],(err,row)=>{
         if(err){throw err}
         else
         {
-          callback(null,row);
+          callback(null,row)
         }
     });
   }

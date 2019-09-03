@@ -28,6 +28,8 @@ res.json(data);
 app.post('/citai',jwt.validaAdmin,(req,res)=>{
   console.log(req.body);
   let cita = req.body;
+  console.log('NUEVA CITA INTERNA *********');
+  console.log(cita);
   let masc = req.body.mascota;
   if(masc==true)
   {
@@ -50,10 +52,10 @@ app.post('/citai',jwt.validaAdmin,(req,res)=>{
 
 
 //devuelve las citas de un paciente por cedula segun el provedor
-app.get('/ordencita/:ced/:prov',(req,res)=>{
+app.get('/ordencita/:ced/:suc',(req,res)=>{
   let usu = {
     id: req.params.ced,
-    ser: req.params.prov
+    suc: req.params.suc
   }
     citas.CitasUsuarioProv(usu,(err,resp)=>{
       res.json(resp);

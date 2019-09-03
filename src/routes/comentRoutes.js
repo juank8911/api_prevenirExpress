@@ -17,6 +17,7 @@ res.json(data);
 
 app.put('/comentmed',(req,res)=>{
   let coment = req.body;
+  console.log('LOG DE EL BODY RECIBIDO');
   console.log(coment);
   comentarios.UpdateComentMed(coment,(err,data)=>{
     res.json(data);

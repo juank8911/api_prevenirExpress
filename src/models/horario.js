@@ -454,16 +454,19 @@ var cate = parseInt(fecha.cate);
 moment.locale('es');
 
 var dia = moment(fecha.fecha).format('dddd');
+console.log(dia);
 // console.log(fecha.id);
 //callback(null,dia);
 if(connection)
 {
 
-  var sql1 = 'select * from horario where id_horario = (select dias.id_horario from dias where dias.dia = ? and servicios_id_servicios = ?);';
-
-connection.query(sql1,[dia,fecha.id],(err,rows)=>{
+  var sql1 = 'select * from horario where id_horario = (SELECT dias.id_horario FROM dias, horario, con_ser_hor WHERE  dias.id_horario = horario.id_horario AND horario.id_horario = con_ser_hor.id_horario AND con_ser_hor.id_consultorio = ? AND dias.dia = ? group by dias.id_horario);';
+console.log(fecha.id);
+connection.query(sql1,[fecha.id,dia],(err,rows)=>{
+  console.log(rows);
 console.log('/////////////////primera consulta*******************');
 var row = rows;
+console.log(rows);
 rows = rows[0];
 console.log(row.length);
 console.log(row);
@@ -482,17 +485,18 @@ else
 if((rows.de_maniana !=null && rows.de_tarde==null)|| (rows.de_maniana !='null' && rows.de_tarde=='null'))
 {
 console.log('////////////////citas en la tarde vacias *******************');
-var sql = 'SELECT dias.*, horario.id_horario,horario.de_maniana, horario.a_maniana,horario.id_servicios from dias,horario WHERE dias.id_horario = horario.id_horario and dias.dia = ? and  id_servicios = ? ';
-connection.query(sql,[dia,fecha.id],(err,row)=>{
+var sql = 'SELECT dias.*, horario.id_horario,horario.de_maniana, horario.a_maniana,horario.id_servicios FROM dias, horario, con_ser_hor WHERE dias.id_horario = horario.id_horario AND horario.id_horario = con_ser_hor.id_horario AND con_ser_hor.id_consultorio = ? AND  dias.dia = ?;';
+connection.query(sql,[fecha.id,dia],(err,row)=>{
 
 if(err){throw err}
 else
 {
+  console.log('/////////ROW DE CONSULTA EN LA MAÑANA//////');
   console.log(row);
 if (JSON.stringify(row)=='[]')
 {
 //execute
-//  console.log('vacio');
+ console.log('vacio');
 callback(null,[{'maniana':[{"hora": "No ahy citas",'disponible':false,"echas":0},]},{'tardes':[{"hora": "No ahy citas",'disponible':false,"echas":0},]}]);
 }
 else
@@ -521,6 +525,8 @@ hora = moment(m_hasta).format('YYYY-MM-DD HH:mm:ss');
 manana.push({hora,'disponible':true});
 manana.id = parseInt(fecha.id);
 manana.cate = cate;
+console.log('LOG CONTEO DE CITAS TARDE');
+console.log(maniana);
 citas.countCitas(manana,(err,maniana)=>{
 //tardes.push({tarde});
 derro.push({maniana},{tardes});
@@ -532,8 +538,8 @@ callback(null,derro);
 else if((rows.de_maniana ==null && rows.de_tarde!=null)|| (rows.de_maniana =='null' && rows.de_tarde!='null') )
 {
 console.log('////////////////citas en la tarde llenas mañana vacias *******************');
-var sql = 'SELECT dias.*, horario.id_horario,horario.de_tarde, horario.a_tarde,horario.id_servicios from dias,horario WHERE dias.id_horario = horario.id_horario and dias.dia = ? and  id_servicios = ? ';
-connection.query(sql,[dia,fecha.id],(err,row)=>{
+var sql = 'SELECT dias.*, horario.id_horario,horario.de_tarde, horario.a_tarde,horario.id_servicios FROM dias, horario, con_ser_hor WHERE dias.id_horario = horario.id_horario AND horario.id_horario = con_ser_hor.id_horario AND con_ser_hor.id_consultorio = ? AND  dias.dia = ?;';
+connection.query(sql,[fecha.id,dia],(err,row)=>{
 if(err){throw err}
 else
 {
@@ -585,15 +591,15 @@ callback(null,derro);
 else if ((rows.de_maniana !=null && rows.de_tarde!=null) || (rows.de_maniana !='null' && rows.de_tarde!='null'))
 {
   console.log('////////////////dos horarios iguales *******************');
-var sql = 'SELECT dias.*, horario.* from dias,horario WHERE dias.id_horario = horario.id_horario and dias.dia = ? and  id_servicios = ? ';
-connection.query(sql,[dia,fecha.id],(err,row)=>{
+var sql = 'SELECT dias.*, horario.* FROM dias, horario, con_ser_hor WHERE dias.id_horario = horario.id_horario AND horario.id_horario = con_ser_hor.id_horario AND con_ser_hor.id_consultorio = ? AND  dias.dia = ?;';
+connection.query(sql,[fecha.id,dia],(err,row)=>{
 if(err){throw err}
 else
 {
 //console.log(dia);
 if (JSON.stringify(row)=='[]') {
 //execute
-//  console.log('vacio');
+ console.log('vacio');
 callback(null,[{'maniana':[{"hora": "No ahy citas",'disponible':false,"echas":0},]},{'tardes':[{"hora": "No ahy citas",'disponible':false,"echas":0},]}]);
 }
 else
@@ -621,6 +627,8 @@ hora = moment(m_hasta).format('YYYY-MM-DD HH:mm:ss');
 manana.push({hora,'disponible':true});
 manana.id = parseInt(fecha.id);
 manana.cate = cate;
+console.log('MANIANA LOG COUNT DE CITAS ROW AL CONTADOR');
+console.log(maniana);
 citas.countCitas(manana,(err,maniana)=>{
 derro.push({maniana});
 //console.log(derro[0]);
@@ -664,12 +672,14 @@ console.log(dia);
 console.log('//*/*/*/*/*/*/ DAR DIAS OC');
 if(connection)
 {
-  var sql1 = 'select * from horario where id_horario = (select dias.id_horario from dias where dias.dia = ? and servicios_id_servicios = ?);';
-  connection.query(sql1,[dia,fecha.id],(err,rows)=>{
+  var sql1 = 'select * from horario where id_horario = (SELECT dias.id_horario FROM dias, horario, con_ser_hor WHERE  dias.id_horario = horario.id_horario AND horario.id_horario = con_ser_hor.id_horario AND con_ser_hor.id_consultorio = ? AND dias.dia = ? group by dias.id_horario);';
+  connection.query(sql1,[fecha.id,dia],(err,rows)=>{
+    if(err){throw err}
   console.log('/////////////////primera consulta*******************');
   var row = rows;
-  rows = rows[0];
-  console.log(row);
+  console.log(rows);
+  row = rows[0];
+
   console.log('/////////////////primera consulta*******************');
   //if cuando solo ahy citas para la mañana y la tarde esta vacia
   if (JSON.stringify(row)=='[]')
@@ -682,12 +692,12 @@ if(connection)
   {
 
 
-if(rows.de_maniana !=null && rows.de_tarde==null)
+if((rows.de_maniana !=null && rows.de_tarde==null)|| (rows.de_maniana !='null' && rows.de_tarde=='null'))
 {
   console.log('si ahy horario en la mañana');
 // console.log('////////////////citas en la tarde vacias *******************');
-var sql = 'SELECT dias.*, horario.id_horario,horario.de_maniana, horario.a_maniana,horario.id_servicios from dias,horario WHERE dias.id_horario = horario.id_horario and dias.dia = ? and  id_servicios = ? ';
-connection.query(sql,[dia,fecha.id],(err,row)=>{
+var sql = 'SELECT dias.*, horario.id_horario,horario.de_maniana, horario.a_maniana,horario.id_servicios FROM dias, horario, con_ser_hor WHERE dias.id_horario = horario.id_horario AND horario.id_horario = con_ser_hor.id_horario AND con_ser_hor.id_consultorio = ? AND  dias.dia = ?;';
+connection.query(sql,[fecha.id, dia],(err,row)=>{
 if(err){throw err}
 else
 {
@@ -736,11 +746,11 @@ callback(null,derro);
 });}}});
 
 }
-else if(rows.de_maniana ==null && rows.de_tarde!=null)
+else if((rows.de_maniana ==null && rows.de_tarde!=null)|| (rows.de_maniana =='null' && rows.de_tarde!='null'))
 {
 // console.log('////////////////si ahy horario en la tarde');
-var sql = 'SELECT dias.*, horario.id_horario,horario.de_tarde, horario.a_tarde,horario.id_servicios from dias,horario WHERE dias.id_horario = horario.id_horario and dias.dia = ? and  id_servicios = ? ';
-connection.query(sql,[dia,fecha.id],(err,row)=>{
+var sql = 'SELECT dias.*, horario.id_horario,horario.de_tarde, horario.a_tarde,horario.id_servicios FROM dias, horario, con_ser_hor WHERE dias.id_horario = horario.id_horario AND horario.id_horario = con_ser_hor.id_horario AND con_ser_hor.id_consultorio = ? AND  dias.dia = ?;';
+connection.query(sql,[fecha.id,dia],(err,row)=>{
 if(err){throw err}
 else
 {
@@ -790,11 +800,11 @@ callback(null,derro);
 }});
 
 }
-else if (rows.de_maniana !=null && rows.de_tarde!=null)
+else if ((rows.de_maniana !=null && rows.de_tarde!=null) || (rows.de_maniana !='null' && rows.de_tarde!='null'))
 {
-  console.log('/////***** dos horarios');
-var sql = 'SELECT dias.*, horario.* from dias,horario WHERE dias.id_horario = horario.id_horario and dias.dia = ? and  id_servicios = ? ';
-connection.query(sql,[dia,fecha.id],(err,row)=>{
+console.log('/////***** dos horarios');
+var sql = 'SELECT dias.*, horario.* FROM dias, horario, con_ser_hor WHERE dias.id_horario = horario.id_horario AND horario.id_horario = con_ser_hor.id_horario AND con_ser_hor.id_consultorio = ? AND  dias.dia = ?;';
+connection.query(sql,[fecha.id, dia],(err,row)=>{
 if(err){throw err}
 else
 {

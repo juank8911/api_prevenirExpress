@@ -21,7 +21,8 @@ let citasIModule = {};
 citasIModule.nuevaCita = (cita,callback)=>{
   if(connection)
   {
-    // console.log(cita.existe);
+    console.log('LOG DE NUEVA CITA SI EXISTE O NO EL PACIENTE');
+    console.log(cita);
     if(cita.existe == true || cita.existe == 'true')
     {
       // console.log(cita);
@@ -48,7 +49,8 @@ citasIModule.nuevaCita = (cita,callback)=>{
       end: ends,
       usuario: cita.usuario,
       servicio: cita.servicio,
-      mascota:cita.mascota
+      mascota:cita.mascota,
+      consultorio:cita.consultorio
       };
       console.log(eventss);
       console.log('pregunta if');
@@ -74,7 +76,8 @@ citasIModule.nuevaCita = (cita,callback)=>{
                    end: ends,
                    usuario: res.insertId,
                    servicio: cita.servicio,
-                   mascota:cita.mascota
+                   mascota:cita.mascota,
+                   consultorio:cita.consultorio
                    };
 
                    console.log(res);
@@ -187,7 +190,8 @@ citasIModule.nuevaCita = (cita,callback)=>{
                 end: ends,
                 usuario: insert.insertId,
                 servicio: cita.servicio,
-                mascota:cita.mascota
+                mascota:cita.mascota,
+                consultorio:cita.consultorio
                 };
                 // console.log(eventss);
                 var benef = cita.benef;
@@ -215,7 +219,8 @@ citasIModule.nuevaCita = (cita,callback)=>{
                              end: ends,
                              usuario: res1.insertId,
                              servicio: cita.servicio,
-                             mascota:cita.mascota
+                             mascota:cita.mascota,
+                             consultorio:cita.consultorio
                              };
 
                              console.log(res1);
@@ -492,13 +497,13 @@ citasIModule.activaCitaP = (cita,callback) =>{
   if (cita.id_ctga != 20)
   {
     console.log('cita de usuario')
-    var insrt = 'INSERT INTO citas_activas (color, start, end , usuarios_id, servicios_idservicios ) select events.color, events.start, events.end, events.usuarios_id, events.servicios_idservicios FROM events WHERE events.id_eventos = ?;';
+    var insrt = 'INSERT INTO citas_activas (color, start, end , usuarios_id, id_consultorio ) select events.color, events.start, events.end, events.usuarios_id, events.id_consultorio FROM events WHERE events.id_eventos = ?;';
     // var hist = 'INSERT INTO historial (color,start, end, usuarios_id, servicios_idservicios, calificada, fue)  SELECT events.color ,events.start, events.end, events.usuarios_id, events.servicios_idservicios, events.calificada, ? as fue FROM events WHERE events.id_eventos = ? ;';
     var dele = 'DELETE FROM events WHERE events.id_eventos = ?;';
   }
   else
   {
-    var insrt = 'INSERT INTO citas_activas_masc ( color, start, end, id_mascotas, id_servicios ) SELECT color, start, end, id_mascotas, id_servicios FROM events_masc WHERE id_eventos = ?;';
+    var insrt = 'INSERT INTO citas_activas_masc ( color, start, end, id_mascotas, id_consultorio ) SELECT color, start, end, id_mascotas, id_consultorio FROM events_masc WHERE id_eventos = ?;';
     var dele = 'DELETE FROM events_masc WHERE id_eventos = ?;'
   console.log('cita de mascota');
   }
@@ -524,8 +529,8 @@ citasIModule.citasProvAc = (prov,callback) =>{
   if(connection)
   {
     let jsonCitas = [];
-    let sql = "SELECT citas_activas.*,CONVERT_TZ(citas_activas.start,'+00:00','+05:00') as start,CONVERT_TZ(citas_activas.end,'+00:00','+05:00') as end, usuarios.*, servicios.nombre as servicio, servicios_categoria.categoria_idcategoria as categoria  from citas_activas,servicios,usuarios, servicios_categoria WHERE citas_activas.usuarios_id = usuarios.id AND citas_activas.servicios_idservicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND servicios.id_provedores = ? ;";
-    let masc = 'SELECT citas_activas_masc.*, mascotas.*,servicios.nombre as servicio, servicios_categoria.categoria_idcategoria as categoria FROM citas_activas_masc, mascotas,servicios, servicios_categoria WHERE citas_activas_masc.id_mascotas = mascotas.id_mascotas AND citas_activas_masc.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND servicios.id_provedores = ?;';
+    let sql = "SELECT citas_activas.*, CONVERT_TZ(citas_activas.start,'+00:00','-05:00') as start, servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente,usuarios.nombre, usuarios.apellidos, usuarios.cedula, usuarios.id, usuarios.telefono, usuarios.avatar, day(now()) as hoy,month(now()) as mes, day(citas_activas.start) as cita, month(citas_activas.start) as mescita, consultorio.nombre as consultorio, consultorio.id_consultorio ,servicios_categoria.categoria_idcategoria as categoria FROM citas_activas, consultorio, sucursales, usuarios, servicios, con_ser_hor, servicios_categoria WHERE citas_activas.id_consultorio = consultorio.id_consultorio AND sucursales.id_sucursales = consultorio.id_sucursales AND citas_activas.usuarios_id = usuarios.id AND consultorio.id_consultorio = con_ser_hor.id_consultorio AND con_ser_hor.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND sucursales.id_sucursales = ? GROUP BY citas_activas.id_citas_activas;";
+    let masc = "SELECT citas_activas_masc.*,CONVERT_TZ(citas_activas_masc.start,'+00:00','-05:00') as start, mascotas.nombre as paciente, mascotas.avatar, consultorio.nombre as consultorio, consultorio.id_consultorio, servicios.nombre as servicio, servicios_categoria.categoria_idcategoria as categoria FROM citas_activas_masc, consultorio, sucursales, mascotas, usuarios, servicios, servicios_categoria, con_ser_hor WHERE citas_activas_masc.id_mascotas = mascotas.id_mascotas AND mascotas.id_usuarios = usuarios.id AND citas_activas_masc.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND servicios.id_servicios = con_ser_hor.id_servicios AND consultorio.id_consultorio = con_ser_hor.id_consultorio AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND consultorio.id_sucursales = sucursales.id_sucursales AND sucursales.id_sucursales = ? GROUP BY citas_activas_masc.id_citas_activas;";
     connection.query(sql,[prov],(err,row)=>{
       if(err){throw err}
       else
@@ -549,12 +554,12 @@ citasIModule.cambioestadocitas = (activa,callback) =>{
 if(connection){
   if(activa.cat != 20)
   {
-  var sel = 'SELECT citas_activas.* FROM citas_activas, servicios WHERE citas_activas.estado = 1 AND citas_activas.servicios_idservicios = ? group by citas_activas.id_citas_activas;';
+  var sel = 'SELECT citas_activas.* FROM citas_activas WHERE citas_activas.estado = 1 AND citas_activas.id_consultorio = ? group by citas_activas.id_citas_activas;';
   var updt = 'UPDATE citas_activas SET estado = 1 WHERE id_citas_activas = ?;';
   }
   else
   {
-    var sel = 'SELECT citas_activas_masc.* FROM citas_activas_masc, servicios WHERE citas_activas_masc.estado = 1 AND citas_activas_masc.id_servicios = ? group by citas_activas_masc.id_citas_activas;';
+    var sel = 'SELECT citas_activas_masc.* FROM citas_activas_masc WHERE citas_activas_masc.estado = 1 AND citas_activas_masc.id_consultorio = ? group by citas_activas_masc.id_citas_activas;';
     var updt = 'UPDATE citas_activas_masc SET estado = 1 WHERE id_citas_activas = ?;';
   }
 console.log(activa);
@@ -597,12 +602,12 @@ if(connection)
 {
   if(cita.ctg!=20)
   {
-    var ins = 'INSERT INTO historial (color,start,end,usuarios_id,servicios_idservicios,fue) SELECT color, start, end, usuarios_id, servicios_idservicios, ? FROM citas_activas WHERE citas_activas.id_citas_activas = ?;';
+    var ins = 'INSERT INTO historial (color,start,end,usuarios_id, id_consultorio,fue) SELECT color, start, end, usuarios_id, id_consultorio, ? FROM citas_activas WHERE citas_activas.id_citas_activas = ?;';
     var del = 'DELETE FROM citas_activas WHERE citas_activas.id_citas_activas = ?;';
   }
   else
   {
-      var ins = 'INSERT INTO historial_masc (color,start,end,id_mascotas,id_servicios,fue) SELECT color, start, end,id_mascotas,id_servicios , ? FROM citas_activas_masc WHERE citas_activas_masc.id_citas_activas = ?;';
+      var ins = 'INSERT INTO historial_masc (color,start,end,id_mascotas,id_consultorio,fue) SELECT color, start, end,id_mascotas,id_consultorio , ? FROM citas_activas_masc WHERE citas_activas_masc.id_citas_activas = ?;';
       var del = 'DELETE FROM citas_activas_masc WHERE citas_activas_masc.id_citas_activas = ?;';
   }
       connection.query(ins,[cita.fue,cita.idcta],(err,res)=>{

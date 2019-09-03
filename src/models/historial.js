@@ -20,38 +20,14 @@ histModule.darHistorialU = (id,callback)=>{
     if(connection)
   {
     // let benf = 'SELECT usuarios.id FROM usuarios WHERE usuariosBf_id = ? ;';
-    let sel = 'SELECT historial.*,servicios.direccion, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombres, servicios.nombre as servicio FROM historial, usuarios, servicios WHERE usuarios.id = historial.usuarios_id AND servicios.id_servicios = historial.servicios_idservicios AND usuarios_id = ? ORDER BY historial.calificada asc, historial.start asc;';
-    // connection.query(benf,[id],(err,benf)=>{
-    //   if(err){throw err}
-    //   else
-    //   {
-    //     console.log(benf.length);
-    //     if(benf.length==0)
-    //     {
+    let sel = 'SELECT historial.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombres, servicios.nombre as servicio, servicios.id_servicios, consultorio.id_consultorio, sucursales.nombre as sucursal, sucursales.direccion, sucursales.telefono, sucursales.id_sucursales, sucursales.id_municipio FROM historial, usuarios, consultorio, servicios, sucursales WHERE consultorio.id_sucursales = sucursales.id_sucursales AND historial.usuarios_id = usuarios.id AND historial.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND historial.usuarios_id = ? ORDER BY historial.calificada asc, historial.start asc';
+
           connection.query(sel,[id],(err,resp)=>{
             console.log('en historial ejecutando');
             // console.log(resp);
               callback(null,resp);
           });
-    //     }
-    //     else
-    //     {
-    //       for (var i = 0; i < benf.length; i++) {
-    //       benefs.push(benf[i].id);
-    //       console.log(i +' / '+ benf.length);
-    //       if(p==benf.length)
-    //       {
-    //           console.log(benefs);
-    //           eject.histrialBenf(benefs,(err,res)=>{
-    //             callback(null,res);
-    //           });
-    //       }
-    //       p++;
-    //     }
-    //   }
-    //
-    //   }
-    // });
+
 
   }
 };
@@ -72,11 +48,8 @@ histModule.darHistorialB = (id,callback)=>{
         console.log(benf.length);
         if(benf.length==0)
         {
-          connection.query(sel,[id],(err,resp)=>{
-            console.log('en historial ejecutando');
-            // console.log(resp);
-              callback(null,resp);
-          });
+          console.log(benf);
+            callback(null,benf);
         }
         else
         {
@@ -104,9 +77,14 @@ histModule.darHistorialB = (id,callback)=>{
 histModule.historialPel = (id,callback)=>{
 if(connection)
 {
-  let mas = 'SELECT historial_masc.*,historial_masc.id_servicios as servicios_idservicios, servicios.nombre as servicio, mascotas.nombre as nombres, servicios.direccion FROM mascotas, usuarios, historial_masc, servicios WHERE mascotas.id_usuarios = usuarios.id AND mascotas.id_mascotas = historial_masc.id_mascotas AND servicios.id_servicios = historial_masc.id_servicios AND usuarios.id = ? ORDER BY historial_masc.calificada asc, historial_masc.start asc;';
+  let mas = 'SELECT historial_masc.*, mascotas.nombre, consultorio.id_consultorio, servicios.nombre as servicio, servicios.id_servicios, sucursales.nombre as sucursal, sucursales.direccion, sucursales.telefono, sucursales.id_sucursales, sucursales.id_municipio FROM historial_masc, mascotas, consultorio, servicios, sucursales WHERE historial_masc.id_mascotas = mascotas.id_mascotas AND historial_masc.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND consultorio.id_sucursales = sucursales.id_sucursales AND mascotas.id_usuarios = ? ORDER BY historial_masc.calificada asc, historial_masc.start asc;';
   connection.query(mas,[id],(err,row)=>{
-    callback(null,row);
+    if(err){throw err}
+    else
+    {
+      console.log(row);
+      callback(null,row);
+    }
   });
 }
 
@@ -231,4 +209,107 @@ histModule.histoServicio = (ser,callback) => {
 }
 };
 
+
+
+histModule.histoSucursal = (ser,callback) => {
+
+  let res =[];
+  // console.log(ser);
+  if(connection)
+  {
+    //console.lo.log(ev.id_mascotas);
+    if(ev.id_mascotas==20 || ev.id_mascotas=='20')
+    {
+      //console.log('dentro del if');
+      var sql = 'SELECT  events_masc.id_eventos, mascotas.*,events_masc.id_mascotas, mascotas.nombre as title ,start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc, mascotas, consultorio, sucursales WHERE events_masc.id_mascotas = mascotas.id_mascotas AND events_masc.id_consultorio = consultorio.id_consultorio AND sucursales.id_sucursales = ? AND  MONTH(start) = ? AND YEAR(start) = ? AND consultorio.id_servicios = ?;'
+    }
+    else
+    {
+      //console.log('no entro al if');
+      var sql = 'SELECT historial.id_historial, usuarios.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM historial, consultorio,sucursales, usuarios WHERE historial.usuarios_id = usuarios.id AND historial.id_consultorio = consultorio.id_consultorio AND consultorio.id_sucursales = sucursales.id_sucursales AND sucursales.id_sucursales = ? AND MONTH(start) = ?  AND YEAR(start) = ? AND consultorio.id_servicios = ?;'
+
+
+
+  connection.query(sql,[ser.suc,ser.mes,ser.anio,ser.ser],(err,row)=>{
+    if(err)
+    {
+      throw err;
+    }
+    else
+    {
+      // console.log(row);
+      if(JSON.stringify(row)=='[]')
+      {
+          callback(null,{citas:false})
+      }
+      else
+      {
+        for (var i = 0; i < row.length; i++) {
+          console.log(row[i]);
+          let vari = row[i];
+          vari.start = moment(vari.start).utc(-5).format();
+          vari.end =  moment(vari.end).utc(-5).format();
+          res.push(vari);
+        }
+        callback(null,res);
+      }
+
+    }
+  });
+  }
+
+}
+};
+
+
+
+histModule.histoSucCon = (ser,callback) => {
+
+  let res =[];
+  // console.log(ser);
+  if(connection)
+  {
+    //console.lo.log(ev.id_mascotas);
+    if(ev.id_mascotas==20 || ev.id_mascotas=='20')
+    {
+      //console.log('dentro del if');
+      var sql = 'SELECT  events_masc.id_eventos, mascotas.*,events_masc.id_mascotas, mascotas.nombre as title ,start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc, mascotas, consultorio, sucursales WHERE events_masc.id_mascotas = mascotas.id_mascotas AND events_masc.id_consultorio = consultorio.id_consultorio AND sucursales.id_sucursales = ? AND  MONTH(start) = ? AND YEAR(start) = ? AND consultorio.id_servicios = ? AND consultorio.id_consultorio = ?;'
+    }
+    else
+    {
+      //console.log('no entro al if');
+      var sql = 'SELECT historial.id_historial, usuarios.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM historial, consultorio,sucursales, usuarios WHERE historial.usuarios_id = usuarios.id AND historial.id_consultorio = consultorio.id_consultorio AND consultorio.id_sucursales = sucursales.id_sucursales AND sucursales.id_sucursales = ? AND MONTH(start) = ?  AND YEAR(start) = ? AND consultorio.id_servicios = ? AND consultorio.id_consultorio = ?;'
+
+
+
+  connection.query(sql,[ser.suc,ser.mes,ser.anio,ser.ser,ser.con],(err,row)=>{
+    if(err)
+    {
+      throw err;
+    }
+    else
+    {
+      // console.log(row);
+      if(JSON.stringify(row)=='[]')
+      {
+          callback(null,{citas:false})
+      }
+      else
+      {
+        for (var i = 0; i < row.length; i++) {
+          console.log(row[i]);
+          let vari = row[i];
+          vari.start = moment(vari.start).utc(-5).format();
+          vari.end =  moment(vari.end).utc(-5).format();
+          res.push(vari);
+        }
+        callback(null,res);
+      }
+
+    }
+  });
+  }
+
+}
+};
 module.exports = histModule;

@@ -121,7 +121,7 @@ consulModule.deleteConsultorio = (idc,callback)=>
 //------------------------------------------------------------------------------------
 //                   METODOS DE BUSQUEDA DE CONSULTORIOS
 //  - por SUCURSAl,
-//  -
+//  - por Sucursal y Servicio.
 //____________________________________________________________________________________
 
 consulModule.buscarConsulSuc = (ids, callback) =>
@@ -164,6 +164,22 @@ if(connection)
   }
   })
 }
+}
+
+consulModule.getConsultorioSucSer = (ids,callback) =>
+{
+  if(connection)
+  {
+    console.log(ids);
+    var sql = 'SELECT consultorio.*, CONCAT(medicos.nombres," ",medicos.apellidos) as medico FROM consultorio, sucursales, servicios, medicos WHERE consultorio.id_sucursales = sucursales.id_sucursales AND consultorio.id_servicios = servicios.id_servicios AND sucursales.id_sucursales = ? AND servicios.id_servicios = ? AND consultorio.medico_id = medicos.medico_id;';
+    connection.query(sql,[ids.idsu, ids.idser],(err,row)=>{
+      if(err){throw err}
+      else {
+        console.log(row);
+        callback(null,row)
+      };
+    })
+  }
 }
 
 

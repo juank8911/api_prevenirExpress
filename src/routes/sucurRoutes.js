@@ -28,6 +28,13 @@ module.exports = function (app)
     });
   });
 
+  app.get('/sucursal/:ids',(req,res)=>{
+    let id = req.params.ids;
+    sucur.verSucrId(id,(err,resp)=>{
+        res.json(resp);
+    });
+  });
+
 
   app.get('/sucuserprovmuni/:idser/:idprov/:idmun',(req,res)=>{
 
@@ -40,6 +47,14 @@ module.exports = function (app)
     // console.log(ids);
     sucur.sucurServMun(ids,(err,resp)=>{
       res.json(resp)
+    })
+  });
+
+  app.get('/sucumem/:idm',(req,res)=>{
+    let id = req.params.idm;
+    sucur.sucurIdMember(id,(err,resp)=>{
+      console.log(resp);
+        res.json(resp);
     })
   });
 
