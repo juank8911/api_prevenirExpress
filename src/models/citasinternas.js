@@ -267,7 +267,7 @@ citasIModule.nuevaCita = (cita,callback)=>{
 
 };
 
-
+//agrega una cita para cualquier servicio de veterinaria
 citasIModule.citaMascotas = (cita,callback)=>{
   if(connection)
   {
@@ -416,9 +416,7 @@ citasIModule.citaMascotas = (cita,callback)=>{
   }
 };
 
-
-
-
+//retorna los usuarios del sisitema
 citasIModule.darUsuarios = (callback)=>{
   if(connection)
   {
@@ -434,6 +432,7 @@ citasIModule.darUsuarios = (callback)=>{
   }
 };
 
+//retorna los ususarios por su id
 citasIModule.darUsuariosID = (id,callback)=>{
   let ids = parseInt(id.ids);
   console.log(id.masc);
@@ -488,7 +487,6 @@ citasIModule.darUsuariosID = (id,callback)=>{
   }
 };
 
-
 //cambia las citas de eventos a la tabla de citas activas y las elimina
 citasIModule.activaCitaP = (cita,callback) =>{
   if(connection){
@@ -523,7 +521,6 @@ citasIModule.activaCitaP = (cita,callback) =>{
 
             }});}});}};
 
-
 //devuelve las citas del povedor activas en usuarios y mascotas
 citasIModule.citasProvAc = (prov,callback) =>{
   if(connection)
@@ -550,6 +547,7 @@ citasIModule.citasProvAc = (prov,callback) =>{
   }
 };
 
+//cambia el estado de las citas de espera a activas
 citasIModule.cambioestadocitas = (activa,callback) =>{
 if(connection){
   if(activa.cat != 20)
@@ -596,7 +594,7 @@ console.log(activa);
   }
 };
 
-
+//finaliza una cita saliente del consultorio
 citasIModule.finCita = (cita,callback)=>{
 if(connection)
 {
@@ -632,6 +630,7 @@ if(connection)
 
 };
 
+//muestra las citas activas de un medico
 citasIModule.activasMedico = (id,callback) => {
 if(connection)
 {
@@ -658,7 +657,7 @@ if(connection)
 }
 };
 
-
+//muestra las citas activas en un servicio
 citasIModule.citaActiva = (idser,callback)=>{
     if(connection)
     {

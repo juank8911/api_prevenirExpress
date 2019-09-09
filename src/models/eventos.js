@@ -117,7 +117,18 @@ eventmodule.darEventsMasc = (id,callback)=>{
   }
 };
 
-
+eventmodule.eventsConsultorio = (idc, callback)=>{
+    if(connection)
+    {
+      var sql = 'SELECT COUNT(events.id_eventos) as eventsC FROM events WHERE events.id_consultorio = ?;';
+            connection.query(sql,[idc],(err,resp)=>{
+                if(err){throw err}
+                else {
+                  callback(null,resp);
+                }
+            });
+    }
+};
 
 //retorna una lista de eventos por servicio
 eventmodule.darEventsIdService = (ids,callback)=>{
@@ -366,7 +377,7 @@ eventmodule.citaHistorial = (callback)=>{
 if(connection)
 {
 var h = moment().format('YYYY-MM-DD HH:mm:ss');
-var citas = 'INSERT INTO historial (color,start,end,usuarios_id,servicios_idservicios,fue) SELECT color, start, end, usuarios_id, servicios_idservicios, 0 FROM events WHERE events.start < curdate();'
+var citas = 'INSERT INTO historial (color,start,end,usuarios_id,id_consultorio,fue) SELECT color, start, end, usuarios_id, id_consultorio, 0 FROM events WHERE events.start < curdate();'
 var del = 'DELETE FROM events WHERE events.start < curdate() AND events.id_eventos > 0;'
 connection.query(citas,[h],(err,res)=>{
 if(err){throw err}
@@ -389,7 +400,7 @@ eventmodule.citaHistorialM = (callback)=>{
 if(connection)
 {
 var h = moment().format('YYYY-MM-DD HH:mm:ss');
-var citas = 'INSERT INTO historial_masc (color,start,end,id_mascotas,id_servicios,fue) SELECT color, start, end, id_mascotas, id_servicios, 0 FROM events_masc WHERE events_masc.start < curdate();'
+var citas = 'INSERT INTO historial_masc (color,start,end,id_mascotas,id_consultorio,fue) SELECT color, start, end, id_mascotas, id_consultorio, 0 FROM events_masc WHERE events_masc.start < curdate();'
 var del = 'DELETE FROM events_masc WHERE events_masc.start < curdate() AND events_masc.id_eventos > 0;'
 connection.query(citas,[h],(err,res)=>{
 if(err){throw err}

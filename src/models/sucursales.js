@@ -62,6 +62,20 @@ let sucurModule = {};
     }
      };
 
+sucurModule.editarSucursal = (sucur,callback) => {
+  if(connection)
+  {
+    var sql = 'UPDATE sucursales SET nombre = ?, direccion = ?, telefono = ? WHERE id_sucursales = ?;';
+    connection.query(sql,[sucur.nombre, sucur.direccion, sucur.telefono, sucur.id_sucursal],(err,row)=>{
+        if(err){throw err}
+        else
+        {
+          callback(404,row.protocol41);
+        }
+    });
+  }
+};
+
 //------------------------------------------------------------------------------------
 //                   METODOS DE BUSQUEDA DE sucursales
 //  - por Provedor,

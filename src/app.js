@@ -35,16 +35,16 @@ app.set('port',config.puerto);
 //   // });
 // } ) ;
 
-//ARREGLAR LOS CAMPOS QUE SOLICITA EN EL CAMBIO EL QUERY Y DEMAS OPCIONES
- // cron.schedule(' 0 11 * * * *', () => {
- //   console.log('running a task every 30 minutes');
- //   horas.citaHistorial((err,res)=>{
- //     horas.citaHistorialM((err,resp)=>{
- //       console.log(res+' ok '+resp);
- //     });
- //
- //    });
- // });
+// ARREGLAR LOS CAMPOS QUE SOLICITA EN EL CAMBIO EL QUERY Y DEMAS OPCIONES
+ cron.schedule(' 0 11 * * * *', () => {
+   console.log('running a task every 30 minutes');
+   horas.citaHistorial((err,res)=>{
+     horas.citaHistorialM((err,resp)=>{
+       console.log(res+' ok '+resp);
+     });
+
+    });
+ });
 
 // cron.schedule('* */1 * * *', () => {
 // //   horas.citaHistorial((err,res)=>{
@@ -59,6 +59,8 @@ app.set('port',config.puerto);
 //       });
 //
 //      });
+//    });
+
 //    console.log('corre cada minuto * */1 * * *');
 //    eject.notificaCitaHumanos((err,row)=>{
 //      eject.notiCitasPeluditos((err,row)=>{

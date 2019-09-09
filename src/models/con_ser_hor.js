@@ -11,6 +11,7 @@ database: config.nombredb
 
 let cshModule = {};
 
+//agrega los id de los horarios servisios y consultorios a la tabla con_ser_hor de la base de datos
 cshModule.agregaids = (ids,callback) =>{
   var p =0;
 if(connection)

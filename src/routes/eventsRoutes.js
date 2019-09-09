@@ -63,6 +63,12 @@ app.get('/eventsb/:id',(req,res)=>{
   });
 });
 
+app.get('/eventsco/:idc',(req,res)=>{
+  events.eventsConsultorio(req.params.idc,(err,resp)=>{
+    res.json(resp);
+  })
+})
+
 // retorna eventos segun el id del servicio
 app.get('/sevents/:ids',(req,res)=>{
 var ids = req.params.ids;

@@ -1,11 +1,12 @@
 const hora = require('../models/horario');
+const csh = require('..//models/con_ser_hor');
 const jwts = require('../models/jwt');
+const dias = require('../models/dias');
 
 module.exports=function(app)
 {
-
 //agrega horario de un servivcio
-app.post('/horario',(req, res)=>{
+app.post('/horarios',(req, res)=>{
 var respuesta=[];
 var p=0;
 //console.log(req.body);
@@ -19,7 +20,7 @@ for (var i = 0; i < horarios.length; i++)
 {
 // console.log("horarios nuemro" + i);
 // console.log(horarios[i]);
-hora.agregarHorario(horarios[i],(err,resp)=>{
+hora.agregarHorario1(horarios[i],(err,resp)=>{
 respuesta.push(resp);
 console.log(p);
 p++;
@@ -27,15 +28,42 @@ if(p>=horarios.length)
 {
 res.json(respuesta);
 }
-
 });
 
 }
 
-// hora.agregarHorario(horario,(err,resp)=>{
-//   res.json(resp);
-// })
 });
+
+app.post('/horario',(req, res)=>{
+var respuesta=[];
+var p=0;
+console.log(req.body);
+horarios = req.body;
+// console.log(horarios);
+// console.log(horarios.length);
+hora.agregar1Horario(horarios,(err,resp)=>{
+  console.log('Respuesta de agregar horario');
+  if(err){throw err}
+  else
+    {
+        csh.agregaids(resp,(err,adds)=>{
+          console.log(adds);
+            res.json(adds)
+        });
+    }
+});
+});
+
+app.get('/exevents/:idh',(req,res)=>{
+  dias.ExcitasDias(req.params.idh,(err,resp)=>{
+          res.json(resp);
+  });
+});
+
+
+
+
+
 
 // retorna las citas segun la fecha y el id del servicio
 app.get('/citas/:fecha/:id/:masc',(req,res)=>{
@@ -69,8 +97,6 @@ app.get('/horariosed/:id',(req,res)=>{
     res.json(resp);
   });
 });
-
-
 
 // retorna las citas segun la fecha y el id del servicio para los consultorios
 app.get('/servcitas/:fecha/:idc/:masc',(req,res)=>{
@@ -108,12 +134,13 @@ hora.agregarHorarioEd(hor[i],(err,data)=>{
 
 });
 
-app.delete('/horariodel/:id',jwts.validaAdmin,(req,res)=>{
-  let id = req.params.id;
+app.delete('/delhorario/:idh',(req,res)=>{
+  let id = req.params.idh;
   hora.eliminarHorarioEd(id,(err,resp)=>{
     res.json(resp);
   });
 });
+
 
 app.get('/gethorcon/:idc',(req,res)=>{
   hora.darHorarioCon(req.params.idc,(err,resp)=>{

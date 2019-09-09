@@ -106,16 +106,41 @@ consulModule.deleteConsultorio = (idc,callback)=>
 {
   if(connection)
   {
-    var selho = 'SELECT id_horario FROM con_ser_hor WHERE id_consultorio = ?'
-    connection.query(selhor,[idc],(rer,idshor)=>{
+    var selho = 'UPDATE consultorio SET eliminado = 1 WHERE id_consultorio = ?;'
+    var med = 'UPDATE provedores_has_medicos SET activo = "false" WHERE id_consultorio = ? ;'
+    connection.query(selho,[idc],(err,idshor)=>{
           if(err){throw err}
           else
           {
-            console.log(idshor);
+
+              connection.query(med,[idc],(err,med)=>{
+                if(err){throw err}
+                else
+                {
+                  console.log(idshor);
+                  callback(303,med.protocol41)
+                }
+              });
+
           }
     });
   }
 }
+
+consulModule.editarConsultorio = (consul,callback) => {
+  if(connection)
+  {
+    var sql = 'UPDATE consultorio SET nombre = ?, extencion = ? WHERE id_consultorio = ?;';
+    connection.query(sql,[consul.nombre,consul.extencion,consul.id_consultorio],(err,resp)=>{
+        if(err){throw err}
+        else
+        {
+          console.log(resp.protocol41);
+          callback(null,resp.protocol41);
+        }
+    });
+  }
+};
 
 
 //------------------------------------------------------------------------------------
@@ -128,7 +153,7 @@ consulModule.buscarConsulSuc = (ids, callback) =>
 {
 if(connection)
 {
-  var sql = "SELECT consultorio.*, CONCAT(medicos.nombres ,' ', medicos.apellidos) as medico, servicios.nombre as servicio FROM consultorio, medicos, servicios WHERE consultorio.medico_id = medicos.medico_id AND consultorio.id_servicios = servicios.id_servicios AND  id_sucursales = ?;"
+  var sql = "SELECT consultorio.*, CONCAT(medicos.nombres ,' ', medicos.apellidos) as medico, servicios.nombre as servicio FROM consultorio, medicos, servicios WHERE consultorio.medico_id = medicos.medico_id AND consultorio.id_servicios = servicios.id_servicios AND  id_sucursales = ? AND consultorio.eliminado = 0;"
   var suc = 'SELECT sucursales.*, municipio.nombre as municipio FROM sucursales, municipio WHERE sucursales.id_municipio = municipio.id_municipio AND id_sucursales = ?;'
   connection.query(suc,[ids],(err,res)=>{
     if(err){throw err}
@@ -139,25 +164,33 @@ if(connection)
       if(err){throw err}
       else
       {
-        // console.log(consuls);
-        res = res[0];
-        // console.log(res);
-        // res.consultorio = consuls
-        // callbak(null,res);
-        forEach(consuls, function(consul, index, arr)
-      {
-          // console.log(consul);
-          hors.darHorarioCon(consul.id_consultorio,(err,hora)=>{
-              consul.horario = hora;
-              // console.log(consul);
-              if(index>=consuls.length-1)
-              {
-                res.consultorio = consuls;
-                callback(null,res);
+        if(JSON.stringify(consuls)=='[]')
+        {
+          console.log('vacio');
+           callback(303,consuls);
+        }
+              else
+                {
+                  console.log('si ahy consultorios');
+                         // console.log(consuls);
+                    res = res[0];
+                      // console.log(res);
+                        // res.consultorio = consuls
+                        // callbak(null,res);
+                        forEach(consuls, function(consul, index, arr)
+                        {
+                          // console.log(consul);
+                            hors.darHorarioCon(consul.id_consultorio,(err,hora)=>{
+                              consul.horario = hora;
+                              // console.log(consul);
+                              if(index>=consuls.length-1)
+                              {
+                                res.consultorio = consuls;
+                                callback(null,res);
+                              }
+                            })
+                          })
               }
-          })
-      })
-
 
       }
     });
@@ -171,7 +204,7 @@ consulModule.getConsultorioSucSer = (ids,callback) =>
   if(connection)
   {
     console.log(ids);
-    var sql = 'SELECT consultorio.*, CONCAT(medicos.nombres," ",medicos.apellidos) as medico FROM consultorio, sucursales, servicios, medicos WHERE consultorio.id_sucursales = sucursales.id_sucursales AND consultorio.id_servicios = servicios.id_servicios AND sucursales.id_sucursales = ? AND servicios.id_servicios = ? AND consultorio.medico_id = medicos.medico_id;';
+    var sql = 'SELECT consultorio.*, CONCAT(medicos.nombres," ",medicos.apellidos) as medico FROM consultorio, sucursales, servicios, medicos WHERE consultorio.id_sucursales = sucursales.id_sucursales AND consultorio.id_servicios = servicios.id_servicios AND sucursales.id_sucursales = ? AND servicios.id_servicios = ? AND consultorio.medico_id = medicos.medico_id AND consultorio.eliminado = 0;';
     connection.query(sql,[ids.idsu, ids.idser],(err,row)=>{
       if(err){throw err}
       else {
@@ -179,6 +212,42 @@ consulModule.getConsultorioSucSer = (ids,callback) =>
         callback(null,row)
       };
     })
+  }
+}
+
+consulModule.getConsultorioIdc = (id,callback) =>
+{
+  if(connection)
+  {
+    var sql = 'SELECT consultorio.*, CONCAT(medicos.nombres ," ", medicos.apellidos) as medico, servicios.nombre as servicio FROM consultorio, medicos, servicios WHERE consultorio.medico_id = medicos.medico_id AND consultorio.id_servicios = servicios.id_servicios AND  consultorio.id_consultorio = ? AND consultorio.eliminado = 0; '
+    connection.query(sql,[id],(err,consuls)=>{
+      if(err){throw err}
+      else
+      {
+        // console.log(consuls);
+        // res = res[0];
+        // console.log(res);
+        // res.consultorio = consuls
+        // callbak(null,res);
+        forEach(consuls, function(consul, index, arr)
+      {
+          // console.log(consul);
+          hors.darHorarioCon(id,(err,hora)=>{
+              consul.horario = hora;
+              // console.log(consul);
+              if(index>=consuls.length-1)
+              {
+                // res.consultorio = consuls;
+                callback(null,consuls);
+              }
+          })
+      })
+
+
+      }
+    });
+
+
   }
 }
 

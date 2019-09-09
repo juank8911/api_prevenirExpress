@@ -83,8 +83,6 @@ callback(null,jsonHd);
 }
 };
 
-
-
 // retorna las citas por el usuario
 citasModel.darCitasUsu = (id,callback)=>{
 if(connection)

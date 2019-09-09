@@ -63,6 +63,7 @@ else
 }
 };
 
+//retorna los beneficiarios por el id del titular
 benefModule.darBenefId = (id,callback)=>{
 var sel = 'SELECT usuarios.*, parentescos.nombre as parentesco FROM usuarios,parentescos WHERE usuarios.parentescos_id_parentescos = parentescos.id_parentescos and usuariosBf_id = ? and parentescos_id_parentescos != 17;'
 if(connection)

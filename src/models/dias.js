@@ -92,6 +92,7 @@ res.json(respuesta);
 }
 };
 
+
 diasModel.darDiasEd=(rows,callback)=>{
   let dias = 'SELECT dias.dia FROM dias, horario WHERE dias.id_horario = horario.id_horario AND horario.id_horario = ?;';
   //console.lo.log(rows);
@@ -116,6 +117,29 @@ diasModel.darDiasEd=(rows,callback)=>{
     // }
   }
   });
+};
+
+//cunsalta si existen citas en esos horararios para ser eliminados o no
+diasModel.ExcitasDias = (id,callback) =>{
+  console.log(id);
+  var sql ='SELECT count(events.start) as eventH FROM events WHERE DAYNAME(events.start) IN (SELECT dias.dia FROM dias WHERE dias.id_horario = ?);';
+  // var sql = 'SELECT DAYNAME(events.start) FROM events';
+  var sql1 = "SET lc_time_names = 'es_MX';"
+      connection.query(sql1,(err,resp)=>{
+        if(err){throw err}
+        else
+        {
+          // console.log(resp);
+          connection.query(sql,id,(err,respu)=>{
+              if(err){throw err}
+              else
+              {
+                // console.log(respu);
+                callback(null,respu);
+              }
+          });
+        }
+      });
 };
 
 module.exports = diasModel;

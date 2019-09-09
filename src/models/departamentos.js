@@ -29,6 +29,7 @@ callback(null,row);
 }
 };
 
+//retorna los paises de la base de datos
 departModel.darPais = (callback)=>{
   if(connection)
   {

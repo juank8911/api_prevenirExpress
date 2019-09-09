@@ -59,4 +59,11 @@ module.exports = function (app)
   });
 
 
+  app.put('/sucursal',(req,res)=>{
+      sucur.editarSucursal(req.body,(err,resp)=>{
+          res.json(resp);
+      });
+  });
+
+
 }

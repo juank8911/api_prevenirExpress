@@ -41,7 +41,7 @@ connection.query(ins,[coment.comentario,coment.califica,coment.id_usuario,coment
 }
 };
 
-
+//agrega los comentaroios de la cita de una mascota
 comentmodule.agregarComentarioM = (coment,callback) =>
 {
 if(connection)
@@ -70,7 +70,7 @@ connection.query(ins,[coment.comentario,coment.califica,coment.id_servicio,comen
 }
 };
 
-
+//guarda la respuesta del medico al comentario de el paciente
 comentmodule.respuestasFaltaMed = (ids,callback) =>{
   if(connection)
   {
@@ -101,6 +101,7 @@ comentmodule.respuestasFaltaMed = (ids,callback) =>{
   }
 };
 
+//cambia el comentario del medico
 comentmodule.UpdateComentMed = (coment,callback)=>{
   if(connection)
   {
