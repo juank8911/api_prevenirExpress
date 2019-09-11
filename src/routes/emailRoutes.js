@@ -13,7 +13,7 @@ module.exports = function (app)
         texto: req.body.texto
     };
 
-console.log(req.body);
+// console.log(req.body);
 email.sendMail(mail,(err,data)=>{
   res.json(data);
 });
@@ -24,7 +24,7 @@ app.get('/confirm/:id/:salt',(req,res)=>{
     id:req.params.id,
     salt:req.params.salt
   };
-console.log(conf);
+// console.log(conf);
 email.confirm(conf,(err,data)=>{
   res.json(data);
 });
@@ -32,7 +32,7 @@ email.confirm(conf,(err,data)=>{
 
 
 app.post('/emails',(req,res)=>{
-  console.log(req.body);
+  // console.log(req.body);
   let mails = [];
   obj = {
     mail: req.body.mail,
@@ -45,10 +45,10 @@ app.post('/emails',(req,res)=>{
     asunto: req.body.asunto
   };
 
-  console.log('maiiiiils //***********//////////////');
-  console.log(obj);
+  // console.log('maiiiiils //***********//////////////');
+  // console.log(obj);
   mails.push(obj);
-  console.log(mails);
+  // console.log(mails);
   email.senCorreos(mails,(err,data)=>{
     res.json(data);
   });

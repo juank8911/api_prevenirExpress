@@ -24,7 +24,7 @@ let servmodule1 = {};
 // guarda servicios
 servmodule1.save = (data , callback ) => {
   // console.log('adentro del save nuevo vamo a ver');
-  console.log(data.medico_id);
+  // console.log(data.medico_id);
   img = data.foto64;
   nombre = data.nombre;
   horario = data.horario;
@@ -60,14 +60,14 @@ servmodule1.save = (data , callback ) => {
                   // console.log('/////////////////******************Horario******************////');
                   // console.log(horas);
                     regH.agregarHorario(horas,(err,resp)=>{
-                    console.log('////////////////*************HORARIO AGREGADO////////////*****************');
-                    console.log(resp);
+                    // console.log('////////////////*************HORARIO AGREGADO////////////*****************');
+                    // console.log(resp);
                     respuesta.push(resp);
                     });
                 }
           }
           sqlss = 'INSERT INTO servicios_categoria (servicios_idservicios, categoria_idcategoria) VALUES (?, ?)';
-          console.log('id_Servicio'+idInd+'/*/*/*'+'Id Cate'+data.categoria);
+          // console.log('id_Servicio'+idInd+'/*/*/*'+'Id Cate'+data.categoria);
           connection.query(sqlss,[idInd,data.categoria],(err,row)=>{
           if(err)
           {
@@ -146,12 +146,12 @@ else
   row.forEach((serv)=>{
   // console.log(serv.idservicios)
   var id = serv.id_servicios;
-  console.log(id);
+  // console.log(id);
   connection.query(sql1,[id],(err,ft)=>{
     if(err){throw err}
     else
     {
-      console.log(ft);
+      // console.log(ft);
       ft = ft[0];
       serv.foto = ft.ruta;
     }
@@ -296,7 +296,7 @@ callback(null,resp);
 };
 // da servicios por el id de del servicio
 servmodule.darServiciosIdS = (id,callback)=>{
- console.log('prueba de servicios')
+ // console.log('prueba de servicios')
 if(connection)
 {
 var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria, municipio WHERE municipio.id_municipio = servicios.municipio_id_municipio and servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ?';
@@ -308,7 +308,7 @@ throw err;
 }
 else
 {
-console.log(row);
+// console.log(row);
 var p =1;
 var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
 var jsonServ = [];
@@ -584,17 +584,17 @@ if(connection)
         var sql3 = 'DELETE FROM medicos WHERE servicios_idservicios = ?';
 
 
-        console.log('borrando fotos');
+        // console.log('borrando fotos');
         connection.query(sql1,[id],(err,res)=>{
         if(err){throw err;}
         else {
         {
-          console.log('borrando categoria');
+          // console.log('borrando categoria');
         connection.query(sql2,[id],(err,res2)=>{
         if(err){throw err;}
         else
         {
-          console.log('borrando servicio');
+          // console.log('borrando servicio');
         connection.query(sql,[id],(err,row)=>{
         if(err)
         {
@@ -666,7 +666,7 @@ connection.query(sql1,[serv.categoria,serv.id],(err,row)=>{
 servmodule.serviciosMedicoProv = (ids,callback) =>{
   if(connection)
   {
-    console.log('id uno a uno');
+    // console.log('id uno a uno');
     // console.log(ids);
     let idser = 0;
     var servi
@@ -680,7 +680,7 @@ servmodule.serviciosMedicoProv = (ids,callback) =>{
       else
       {
         // ids.serv = ser;
-        console.log(ser);
+        // console.log(ser);
         // for (var i = 0; i < ser.length; i++) {
         //   idser = ser[i].id_servicios;
         //   servi = ser[i];
@@ -716,10 +716,10 @@ servmodule.serviciosMedicoProv = (ids,callback) =>{
               // console.log('PRUEBOTA');
             data.fotos = row1;
             respu.push(data);
-            console.log(respu.length);
+            // console.log(respu.length);
           });
         });
-        console.log('respuesta');
+        // console.log('respuesta');
           callback(null,respu);
 
       }

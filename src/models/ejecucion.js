@@ -43,18 +43,18 @@ callback(null,serv);
 // retorna las citas por servicio cuando ahy una cita separada
 ejectModel.darCitasOc = (serv,callback)=>
 {
-  console.log('************////////////////////');
-console.log(serv);
+//   console.log('************////////////////////');
+// console.log(serv);
 if(connection)
 {
   if(serv.cate==20)
   {
-    console.log('Mascotas');
+    // console.log('Mascotas');
     var sql = "SELECT events_masc.id_eventos,events_masc.id_mascotas as usuarios_id, events_masc.start, events_masc.end, consultorio.id_servicios as servicios_idservicios, mascotas.nombre as nombres FROM events_masc, consultorio, servicios, mascotas WHERE mascotas.id_mascotas = events_masc.id_mascotas AND events_masc.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND events_masc.start = ? AND consultorio.id_consultorio = ?;"
   }
   else
   {
-    console.log('usuario');
+    // console.log('usuario');
     var sql = "SELECT events.* ,concat(usuarios.nombre,' ',usuarios.apellidos) as nombres FROM events, consultorio, servicios, usuarios WHERE events.usuarios_id = usuarios.id AND events.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND events.start = ? AND consultorio.id_consultorio = ?;"
   }
 
@@ -66,7 +66,7 @@ connection.query(sql,[serv.hora,serv.id],(err,res)=>{
 ////console.lo.log(res);
 if(serv.cate==20)
 {
-  console.log('Contando mascotas');
+  // console.log('Contando mascotas');
   var sql1 = 'SELECT count(events_masc.id_eventos) as echas, servicios.max_citas_ves-count(events_masc.id_eventos) as libres FROM events_masc, consultorio, servicios WHERE events_masc.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND events_masc.start = ? AND consultorio.id_consultorio = ?;';
 }
 else
@@ -74,11 +74,11 @@ else
 var sql1 = 'SELECT count(events.id_eventos) as echas, servicios.max_citas_ves-count(events.id_eventos) as libres FROM events, consultorio, servicios WHERE events.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND events.start = ? AND consultorio.id_consultorio = ?;';
 }
 connection.query(sql1,[serv.hora,serv.id],(err,resp)=>{
-  console.log(resp);
+  // console.log(resp);
 resp = resp[0];
 respu = resp.libres
-console.log('*-4+4**/*/*/*/*/*/*/*/*/* respuesta de conteo');
-console.log(resp);
+// console.log('*-4+4**/*/*/*/*/*/*/*/*/* respuesta de conteo');
+// console.log(resp);
 // serv.echas = resp;
 serv.citas = res;
 if(respu<=0)
@@ -111,19 +111,19 @@ var fecha2 = moment('2018-11-12');  //fecha actual
 
 ejectModel.eliminaNotifica = (env,callback) =>
 {
-  console.log(env);
+  // console.log(env);
   // sleep(5000);
   connection.query(env.sql,[env.id],(err,rowph)=>{
     if(err){throw err}
     else
     {
-        console.log(rowph);
+        // console.log(rowph);
         // console.log('enviando e-mail');
         // console.log('/////////////////////*******************//////////////////');
         rowph = rowph[0];
         // console.log('cDN3ljN80nY:APA91bE23ly2oG-rzVAI8i_oiPMZI_CBdU59a6dVznyjdK9FyGi2oPI_sQIQJTAV-xp6YQ6F7MlYYW_7Br0nGdbTIuicwIP4oR99Mf8KysM1ZEJiCmASeyxnOHO4ajgqTDIX6prWpQpG');
-        console.log('ROW DE LA BASE DE DATOS');
-        console.log(rowph);
+        // console.log('ROW DE LA BASE DE DATOS');
+        // console.log(rowph);
         var disp = {
           to:rowph.tokenpsh,
           body:'Su cita de '+rowph.nombre+', separada para el dia: '+moment(rowph.start).format('DD-MM-YYYY')+' a las: '+moment(rowph.start).format('HH:mm a')+' fue cancelada por inconvenientes ajenos a nostros por favor revisa tus citas',
@@ -131,9 +131,9 @@ ejectModel.eliminaNotifica = (env,callback) =>
         };
         // console.log(disp);
       pushs.sendPush(disp,(err,respus)=>{
-
-        console.log(respus);
-        console.log('enviando respuesta');
+        //
+        // console.log(respus);
+        // console.log('enviando respuesta');
         callback(null,{'borrado':true});
       });
 
@@ -150,8 +150,8 @@ if(connection)
   let hora = moment().add(3,'hours').format('YYYY-MM-DD HH:mm:ss');
 
   // let hora = '2018-11-19 16:00:00';
-  console.log('Inicio de notificaciones a los usuarios ////////////********************');
-  console.log(hora);
+  // console.log('Inicio de notificaciones a los usuarios ////////////********************');
+  // console.log(hora);
   var sele = 'SELECT events.usuarios_id, events.start, CONCAT(jhg.nombre," ",jhg.apellidos) as nombres,servicios.nombre, if(jhg.usuariosBf_id !="",(SELECT members.tokenpsh FROM usuarios as pr, usuarios as bf,members WHERE pr.id = bf.usuariosBf_id AND members.id = pr.members_id AND bf.id = jhg.id ), (SELECT members.tokenpsh FROM members,usuarios WHERE members.id = usuarios.id AND usuarios.id = jhg.id)) as tokenpsh  FROM events, usuarios as jhg, servicios where jhg.id = events.usuarios_id AND servicios.id_servicios = events.servicios_idservicios AND start = ?;';
   connection.query(sele,[hora],(err,row)=>{
     if(err){throw err}
@@ -168,7 +168,7 @@ if(connection)
       };
       // console.log(disp);
       pushs.sendPush(disp,(err,respus)=>{
-        console.log(respus);
+        // console.log(respus);
         // console.log('enviando respuesta');
       });
 
@@ -190,7 +190,7 @@ if(connection)
   let hora = moment().add(3,'hours').format('YYYY-MM-DD HH:mm:ss');
 
   // let hora = '2018-11-19 16:00:00';
-  console.log(hora);
+  // console.log(hora);
   var sele ='SELECT events_masc.start, mascotas.nombre as peludito, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombres ,servicios.nombre , members.tokenpsh FROM events_masc, mascotas, usuarios, members, servicios WHERE mascotas.id_mascotas = events_masc.id_mascotas AND mascotas.id_usuarios = usuarios.id AND usuarios.members_id = members.id AND servicios.id_servicios = events_masc.id_servicios AND events_masc.start = ?;';
   connection.query(sele,[hora],(err,row)=>{
     if(err){throw err}
@@ -207,7 +207,7 @@ if(connection)
             title:'RECORDATORIO DE CITA'
           };
           pushs.sendPush(disp,(err,respus)=>{
-            console.log(respus);
+            // console.log(respus);
             // console.log('enviando respuesta');
           });
         }
@@ -221,25 +221,25 @@ if(connection)
 };
 
 ejectModel.histrialBenf1 = (row,callback)=>{
-  console.log('ROW PARA OBTENER CITAS DE BENEFICIARIOS');
-  console.log(row);
+  // console.log('ROW PARA OBTENER CITAS DE BENEFICIARIOS');
+  // console.log(row);
   let pens = [];
   let p = 1;
   if(connection)
   {
     let sel = 'SELECT historial.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as nombres, servicios.nombre as servicio FROM historial, usuarios, servicios WHERE usuarios.id = historial.usuarios_id AND servicios.id_servicios = historial.servicios_idservicios AND usuarios_id = ? ORDER BY historial.calificada asc, historial.start asc; ;';
     for (var i = 0; i < row.length; i++) {
-      console.log(row[i]);
+      // console.log(row[i]);
       connection.query(sel,[row[i]],(err,resp)=>{
-        console.log('en historial ejecutando');
+        // console.log('en historial ejecutando');
         // console.log(resp);
         for (var k = 0; k < resp.length; k++) {
           resp[k]
           pens.push(resp[k]);
-          console.log(p+'  '+row.length);
+          // console.log(p+'  '+row.length);
           if(p==row.length)
           {
-            console.log(pens);
+            // console.log(pens);
             callback(null,pens);
           }
         }
@@ -253,8 +253,8 @@ ejectModel.histrialBenf1 = (row,callback)=>{
 };
 
 ejectModel.histrialBenf = (row,callback)=>{
-  console.log('ROW PARA OBTENER CITAS DE BENEFICIARIOS');
-  console.log(row);
+  // console.log('ROW PARA OBTENER CITAS DE BENEFICIARIOS');
+  // console.log(row);
   let pens = [];
   let p = 1;
   if(connection)
@@ -269,13 +269,13 @@ ejectModel.histrialBenf = (row,callback)=>{
           // console.log(resp);
               forEach(resp,(hist, index2, ar) =>{
 
-                console.log(hist);
+                // console.log(hist);
                 pens.push(hist);
               })
-              console.log(index,' contra ',row.length-1);
+              // console.log(index,' contra ',row.length-1);
               if(index>=row.length-1)
               {
-                console.log('FINALIZA CONSULTA');
+                // console.log('FINALIZA CONSULTA');
                 callback(null,pens);
               }
               }
@@ -363,14 +363,14 @@ ejectModel.cambioContra = (id,callback)=>{
 ejectModel.aceptaContra = (dts,callback)=>{
   if(connection)
   {
-    console.log('Cambio de contrseña');
+    // console.log('Cambio de contrseña');
     var upt = 'UPDATE members SET password = ? WHERE salt_contra = ?;';
     connection.query(upt,[dts.pssw,dts.salt],(err,row)=>{
       if(err){throw err}
       else
       {
         // console.log(row);
-        console.log(row.affectedRows);
+        // console.log(row.affectedRows);
         if(row.affectedRows>=1)
         {
                   callback(null,true);

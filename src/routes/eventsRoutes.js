@@ -39,8 +39,8 @@ consultorio: req.body.consultorio,
 servicio: req.body.servicio,
 mascota:req.body.mascota
 };
-console.log('/*/*/*/*/*/*MIRADAA DEL EVENTO COMO LLEGA');
-console.log(req.body);
+// console.log('/*/*/*/*/*/*MIRADAA DEL EVENTO COMO LLEGA');
+// console.log(req.body);
 //console.log(starts + " "+ends);
 events.agregarEvento(eventss,(err,data)=>{
 res.json(data);
@@ -57,7 +57,7 @@ res.json(row);
 
 app.get('/eventsb/:id',(req,res)=>{
   var id = req.params.id;
-  console.log(id);
+  // console.log(id);
   events.darEventsBenf(id,(err,row)=>{
     res.json(row);
   });
@@ -80,21 +80,21 @@ res.json(row);
 
 
 // elimina eventos segun el id del evento
-app.delete('/events/:id/:masc',jwts.valida,(req,res)=>{
+app.delete('/events/:id/:masc',(req,res)=>{
 var el = {
   id: req.params.id,
   masc: req.params.masc
 };
-console.log(el);
+// console.log(el);
 events.eliminarEvento(el,(err,row)=>{
 res.json(row);
 });
 });
 
 app.delete('/eventss/:ide/:idc/:masc',jwts.validaAdmin, (req,res)=>{
-  console.log('PARAMETrOS DEL REQUERIE');
-  console.log(req.params);
-  console.log('PARAMETrOS DEL REQUERIE');
+  // console.log('PARAMETrOS DEL REQUERIE');
+  // console.log(req.params);
+  // console.log('PARAMETrOS DEL REQUERIE');
 let ev = {
 ide:req.params.ide,
 idc: req.params.idc,

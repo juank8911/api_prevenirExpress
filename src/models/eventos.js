@@ -144,16 +144,18 @@ if(err){throw err}else{callback(null,row);}
 //agrega los eventos a la base de datos
 eventmodule.agregarEvento = (events,callback) =>{
 if(connection){
-  console.log('*/*/*/*/*/*/*/*/*/*');
+  // console.log('*/*/*/*/*/*/*/*/*/*');
 // console.log(events);
 //console.lo.log(events.servicio+'///////////*************************');
 if(events.mascota==true)
 {
+  // console.log('mascota');
   var sql = 'INSERT INTO events_masc(color,start,end,id_mascotas,id_consultorio) VALUES (?,?,?,?,?)';
   var valida = 'SELECT createdAT,start FROM events_masc where id_mascotas = ? and DATE(start) = DATE(?); ';
 }
 else
 {
+  // console.log('humano');
   var sql = 'INSERT INTO events(color,start,end,usuarios_id,id_consultorio) VALUES (?,?,?,?,?)';
   var valida = 'SELECT createdAT,start FROM events where usuarios_id = ? and DATE(start) = DATE(?); ';
 }
@@ -163,12 +165,12 @@ if(err){throw err}
 else {
 
 // res = res[0];
-console.log('/*/*/*/*/RESPUESTA DE AGREGAR CITASC /*/*/*/*/*/');
-console.log(res);
+// console.log('/*/*/*/*/RESPUESTA DE AGREGAR CITASC /*/*/*/*/*/');
+// console.log(res);
 if(JSON.stringify(res)=='[]')
 {
-  console.log('EVENTS EN AGREGAR EVENTO ********');
-  console.log(events);
+  // console.log('EVENTS EN AGREGAR EVENTO ********');
+  // console.log(events);
 connection.query(sql,[events.color,events.start,events.end,events.usuario,events.consultorio],(err,row)=>{
 if(err){throw err}
 else
@@ -186,24 +188,24 @@ connection.query(psh,[events.servicio],(err,rowph)=>{
   if(err){throw err}
   else
 {
-  console.log('respuesta solicitud de push');
-  console.log(rowph);
+  // console.log('respuesta solicitud de push');
+  // console.log(rowph);
   email.emailCitaPr(corr,(err,rowss)=>{
       // console.log(psh);
     // console.log('enviando e-mail');
     // console.log('/////////////////////*******************//////////////////');
     rowph = rowph[0];
     // console.log('cDN3ljN80nY:APA91bE23ly2oG-rzVAI8i_oiPMZI_CBdU59a6dVznyjdK9FyGi2oPI_sQIQJTAV-xp6YQ6F7MlYYW_7Br0nGdbTIuicwIP4oR99Mf8KysM1ZEJiCmASeyxnOHO4ajgqTDIX6prWpQpG');
-    console.log('ROW DE LA BASE DE DATOS');
-    console.log(rowph);
+    // console.log('ROW DE LA BASE DE DATOS');
+    // console.log(rowph);
     var disp = {
       to:rowph.tokenpsh,
       body:'Tienes una nueva cita de '+rowph.nombre+', a traves de nuesta app de descuentos medicos para el: '+moment(events.start).format('DD-MM-YYYY')+' a las: '+moment(events.start).format('HH:mm a')+' por favor revisa tus citas en la aplicacion',
       title:'NUEVA CITA'
     };
     // console.log(disp);
-    console.log('tokenpsh de rowph');
-    console.log(rowph.tokenpsh);
+    // console.log('tokenpsh de rowph');
+    // console.log(rowph.tokenpsh);
     if(rowph.tokenpsh==null||rowph.tokenpsh=='null')
     {
   pushs.sendPush(disp,(err,respus)=>{
@@ -212,8 +214,8 @@ connection.query(psh,[events.servicio],(err,rowph)=>{
     connection.query(med,[events.consultorio],(err,rowm)=>{
       if(err){throw err}
       else {
-        console.log('TOKEN PUSH');
-        console.log(rowm);
+        // console.log('TOKEN PUSH');
+        // console.log(rowm);
         if(JSON.stringify(rowm)!='[]'){
         rowm = rowm[0];
         disp = {
@@ -223,8 +225,8 @@ connection.query(psh,[events.servicio],(err,rowph)=>{
         };
         pushs.sendPush(disp,(err,respus)=>{
           sleep(1000);
-          console.log(respus);
-          console.log('enviando respuesta');
+          // console.log(respus);
+          // console.log('enviando respuesta');
           callback(null,[{'agregado':true, 'push':respus}]);
         });
         }
@@ -329,27 +331,27 @@ if(connection)
   //selecciona el id del servicio con el id de los provedores
   if(ev.cate == 20 || ev.cate == '20')
   {
-    //console.lo.log('mascota');
+    // console.log('mascota');
     var sel = 'SELECT consultorio.id_servicios FROM  events_masc, consultorio WHERE events_masc.id_consultorio = consultorio.id_consultorio AND consultorio.id_consultorio = ? AND events_masc.id_eventos = ? limit 1;';
     var sql = 'DELETE FROM events_masc where events_masc.id_eventos = ? AND events_masc.id_consultorio = ?;';
     var psh = 'SELECT events_masc.start, servicios.nombre, provedores.nombre, members.tokenpsh FROM events_masc, consultorio, servicios, sucursales, provedores, usuarios, members, mascotas WHERE events_masc.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND consultorio.id_sucursales = sucursales.id_sucursales AND sucursales.id_provedor = provedores.id_provedor AND events_masc.id_mascotas = mascotas.id_mascotas AND mascotas.id_usuarios = usuarios.id AND usuarios.members_id = members.id AND events_masc.id_eventos =  ?;';
   }
   else
   {
-    //console.lo.log('humano');
+    // console.log('humano');
     var sel = 'SELECT consultorio.id_servicios FROM  events, consultorio WHERE events.id_consultorio = consultorio.id_consultorio AND consultorio.id_consultorio = ? AND events.id_eventos = ? limit 1 ';
     var sql = 'DELETE FROM events where events.id_eventos = ? AND events.id_consultorio = ?;';
     var psh = 'SELECT events.start, servicios.nombre, provedores.nombre, members.tokenpsh FROM events, consultorio, servicios, sucursales, provedores, usuarios, members WHERE events.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND consultorio.id_sucursales = sucursales.id_sucursales AND sucursales.id_provedor = provedores.id_provedor AND events.usuarios_id = usuarios.id AND usuarios.members_id = members.id AND events.id_eventos =  ?;';
   }
-console.log(ev);
+// console.log(ev);
 connection.query(sel,[ev.idc,ev.ide],(err,row)=>{
 if(err){throw err}
 else
 {
 row = row[0];
-console.log('///////////RESPUESTA LOG ROW ');
-console.log(row);
-console.log('///////////RESPUESTA LOG ROW ');
+// console.log('///////////RESPUESTA LOG ROW ');
+// console.log(row);
+// console.log('///////////RESPUESTA LOG ROW ');
 let evs = {
   id:ev.ide,
   sql:psh
@@ -429,12 +431,12 @@ eventmodule.eventsCalendar = (ev,callback) =>{
     if(ev.id_mascotas==20 || ev.id_mascotas=='20')
     {
       //console.log('dentro del if');
-      var sql = 'SELECT  events_masc.id_eventos, mascotas.*,events_masc.id_mascotas, mascotas.nombre as title ,start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc, mascotas WHERE events_masc.id_mascotas = mascotas.id_mascotas AND MONTH(start) = ? AND YEAR(start) = ? and id_servicios = ?'
+      var sql = 'SELECT  events_masc.id_eventos, mascotas.*,events_masc.id_mascotas, mascotas.nombre as title ,start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc, mascotas WHERE events_masc.id_mascotas = mascotas.id_mascotas AND MONTH(start) = ? AND YEAR(start) = ? and events.id_consultorio = ?'
     }
     else
     {
       //console.log('no entro al if');
-      var sql = 'SELECT events.id_eventos, usuarios.*,events.usuarios_id, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events, usuarios WHERE events.usuarios_id = usuarios.id AND MONTH(start) = ? AND YEAR(start) = ? and servicios_idservicios = ?;'
+      var sql = 'SELECT events.id_eventos, usuarios.*,events.usuarios_id, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events, usuarios WHERE events.usuarios_id = usuarios.id AND MONTH(start) = ? AND YEAR(start) = ? and events.id_consultorio = ?;'
     }
 
 
@@ -452,7 +454,7 @@ eventmodule.eventsCalendar = (ev,callback) =>{
       else
       {
         for (var i = 0; i < row.length; i++) {
-          console.log(row[i]);
+          // console.log(row[i]);
           let vari = row[i];
           vari.start = moment(vari.start).utc(-5).format();
           vari.end =  moment(vari.end).utc(-5).format();
@@ -516,13 +518,14 @@ eventmodule.eventsCalendarSuc = (ev,callback) =>{
 
 eventmodule.eventsCalendarSucCon = (ev,callback) =>{
   let res =[];
+  // console.log(ev);
   if(connection)
   {
     //console.lo.log(ev.id_mascotas);
     if(ev.id_mascotas==20 || ev.id_mascotas=='20')
     {
       //console.log('dentro del if');
-      var sql = 'SELECT events_masc.*,mascotas.nombre as title,mascotas.*, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc, servicios,consultorio,sucursales, mascotas WHERE events_masc.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND servicios.id_servicios = ? AND consultorio.id_sucursales = sucursales.id_sucursales AND events_masc.id_mascotas = mascotas.id_mascotas AND MONTH(start) = ? AND YEAR(start) = ? AND sucursales.id_sucursales = ? AND AND consultorio.id_consultorio = ?;'
+      var sql = 'SELECT events_masc.*,mascotas.nombre as title,mascotas.*, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events_masc, servicios,consultorio,sucursales, mascotas WHERE events_masc.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND servicios.id_servicios = ? AND consultorio.id_sucursales = sucursales.id_sucursales AND events_masc.id_mascotas = mascotas.id_mascotas AND MONTH(start) = ? AND YEAR(start) = ? AND sucursales.id_sucursales = ? AND consultorio.id_consultorio = ?;'
     }
     else
     {
@@ -547,7 +550,7 @@ eventmodule.eventsCalendarSucCon = (ev,callback) =>{
       {
         // console.log('cambiando hora');
         for (var i = 0; i < row.length; i++) {
-          console.log(row[i]);
+          // console.log(row[i]);
           let vari = row[i];
           vari.start = moment(vari.start).utc(-5).format();
           vari.end =  moment(vari.end).utc(-5).format();

@@ -22,7 +22,7 @@ tituloModule.agregarTitulos = (titulos,callback)=>{
       let titulo = titulos[i];
 
       let dif = moment.duration(moment(titulo.end).diff(moment(titulo.start))).asYears();
-      console.log(dif);
+      // console.log(dif);
       if(dif<=0.0)
       {
         f.push({'fecha':false})

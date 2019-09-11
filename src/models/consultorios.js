@@ -21,21 +21,21 @@ let consulModule = {};
 consulModule.insertConsul = (consuls,callback)=>{
 if(connection)
 {
-  console.log('CONSULS DENTRO DE AGREGAR CONSULTORIOS');
-  console.log(consuls);
+  // console.log('CONSULS DENTRO DE AGREGAR CONSULTORIOS');
+  // console.log(consuls);
   let id_sucu = consuls.id_sucursal;
   var sql = 'INSERT INTO consultorio (nombre, extencion, medico_id, id_sucursales) VALUES (?, ?, ?, ?);';
   var p = 0;
   var ids=[];
   for (var i = 0; i < consuls.length; i++) {
     var consul = consuls[i];
-    console.log(consuls.length);
-    console.log(consul);
+    // console.log(consuls.length);
+    // console.log(consul);
     connection.query(sql,[consul.nombre, consul.extencion, consul.medico_id, id_sucu],(err,res)=>{
       if(err){throw err}
       else
       {
-        console.log('HORARIOS');
+        // console.log('HORARIOS');
           console.log(consul.horarios);
       }
     });
@@ -53,27 +53,31 @@ if(connection)
   var p = 0;
   var sch=[]
   // console.log('CONSULS DENTRO DE AGREGAR CONSULTORIOS');
-  let id_sucu = consuls.id_sucursal;
-  let id_prov = consuls.id_provedor;
+
   let medicos = [];
   var sql = 'INSERT INTO consultorio (nombre, extencion, medico_id, id_sucursales, id_servicios) VALUES (?, ?, ?, ?, ?);';
   var horarios = [];
+  // console.log('AGREGANDO CONSULTORIO');
   forEach(consuls, function(consul, index, arr)
 {
+  // console.log('dentro del for each');
+  // console.log(consul.id_sucursal);
       return new Promise((res,rej)=>{
-        connection.query(sql,[consul.nombre, consul.extencion, consul.medico_id, id_sucu, consul.id_servicio],(err,data) => {
+        connection.query(sql,[consul.nombre, consul.extencion, consul.medico_id, consul.id_sucursal, consul.id_servicio],(err,data) => {
           return (err) ? rej(err) :  res(data)
         })
         })
         .then((res,rej)=>{
               consul.horarios.id_consul = res.insertId;
-              medicos.push({id_sucursal:id_sucu,id_provedor:id_prov,id_consultorio:res.insertId,id_medico:consul.medico_id});
+              let id_prov = consul.id_provedor;
+              let id_sucu = consul.id_sucursal;
+              medicos.push({id_sucursal:consul.id_sucursal,id_provedor:consul.id_provedor,id_consultorio:res.insertId,id_medico:consul.medico_id});
               // console.log('MEDICO');
               // console.log(medicos);
                 // console.log('dentro del if de consultorios');
-                console.log('HORARIOS');
-                console.log(consul.horarios);
-                console.log('--------------------------------');
+                // console.log('HORARIOS');
+                // console.log(consul.horarios);
+                // console.log('--------------------------------');
                 hors.agregarHorario1(consul.horarios,(err,data1)=> {
                   // console.log('////////////////////////////////////////');
                   // console.log(data1);
@@ -94,8 +98,8 @@ if(connection)
                 });
               })
               // console.log('FUERA DE PROMESA');
-})
-
+});
+// console.log('FUERA DEL FOR EACH');
 
 }
 
@@ -117,7 +121,7 @@ consulModule.deleteConsultorio = (idc,callback)=>
                 if(err){throw err}
                 else
                 {
-                  console.log(idshor);
+                  // console.log(idshor);
                   callback(303,med.protocol41)
                 }
               });
@@ -135,7 +139,7 @@ consulModule.editarConsultorio = (consul,callback) => {
         if(err){throw err}
         else
         {
-          console.log(resp.protocol41);
+          // console.log(resp.protocol41);
           callback(null,resp.protocol41);
         }
     });
@@ -166,12 +170,12 @@ if(connection)
       {
         if(JSON.stringify(consuls)=='[]')
         {
-          console.log('vacio');
+          // console.log('vacio');
            callback(303,consuls);
         }
               else
                 {
-                  console.log('si ahy consultorios');
+                  // console.log('si ahy consultorios');
                          // console.log(consuls);
                     res = res[0];
                       // console.log(res);
@@ -203,12 +207,12 @@ consulModule.getConsultorioSucSer = (ids,callback) =>
 {
   if(connection)
   {
-    console.log(ids);
+    // console.log(ids);
     var sql = 'SELECT consultorio.*, CONCAT(medicos.nombres," ",medicos.apellidos) as medico FROM consultorio, sucursales, servicios, medicos WHERE consultorio.id_sucursales = sucursales.id_sucursales AND consultorio.id_servicios = servicios.id_servicios AND sucursales.id_sucursales = ? AND servicios.id_servicios = ? AND consultorio.medico_id = medicos.medico_id AND consultorio.eliminado = 0;';
     connection.query(sql,[ids.idsu, ids.idser],(err,row)=>{
       if(err){throw err}
       else {
-        console.log(row);
+        // console.log(row);
         callback(null,row)
       };
     })

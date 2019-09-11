@@ -25,7 +25,7 @@ connection.query(sql,[id],(err,row)=>{
 };
 
 optModule.createHisto = (opt,callback) => {
-  console.log(opt);
+  // console.log(opt);
 var sql = 'INSERT INTO historia_opt (motivoCons, antecedentes, lensometriaOd, lensometriaOi, agudeazaVisualOd, agudeazaVisualOi, visionLejanaOd, visionLejanaOi, visionCercanaOd, visionCercanaOi,adicion, tipoLente, examenExternoOd, examenExternoOi, oftalmologiaOd, oftalmologiaOi, examenMotorOd, examenMotorOi, queratometriaOd, queratometriaOi, refraccionOd, refraccionOi, formulaFinalOd, formulaFinalOi, avvlOd, avvlOi, avvpOd, avvpOi, adicionOd, adicionOi, dnpOd, dnpOi, testIshihara,';
 var sql2 ='testEstereopsis,diagnosticoInical,conducta,medicamentos,remision,observaciones,tipo_consulta,rips,id_usuario,id_servicios) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
 // console.log(sql+sql2);
@@ -33,7 +33,7 @@ connection.query(sql+sql2,[opt.motivoConsulta,opt.antecedentes,opt.lensometriaOd
   if(err){throw err}
   else
   {
-    console.log('?=)(/&%/()=)(/&/TRUE');
+    // console.log('?=)(/&%/()=)(/&/TRUE');
     callback(null,true)
   }
 });

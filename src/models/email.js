@@ -157,7 +157,7 @@ transporter.sendMail(mailOptions, function(error, info){
 
 
 emailModel.contraseña = (usu,callback) =>{
-  console.log('dentro de envio de correos');
+  // console.log('dentro de envio de correos');
 };
 
 emailModel.confirm = (conf,callback) =>{
@@ -214,7 +214,7 @@ emailModel.confirm = (conf,callback) =>{
 
 emailModel.sendMailCita = (mail,callback)=>{
 
-console.log('///**/*/*/*/*/*/*/*/* enviando correro');
+// console.log('///**/*/*/*/*/*/*/*/* enviando correro');
 
 var  transporter = nodemailer.createTransport(smtpTransport({
     service: 'gmail',
@@ -259,7 +259,7 @@ emailModel.emailCitaPr = (mail,callback) =>{
   let prov = '';
   if(connection)
   {
-    console.log(mail);
+    // console.log(mail);
     let corr = 'SELECT provedores.correo, provedores.nombre FROM provedores, servicios WHERE servicios.id_provedores = provedores.id_provedor AND servicios.id_servicios = ?;';
     connection.query(corr,[mail.id_serv],(err,rowc)=>{
       rowc = rowc[0];
@@ -302,11 +302,11 @@ emailModel.emailCitaPr = (mail,callback) =>{
 
                         transporter.sendMail(mailOptions, function(error, info){
                             if (error){
-                                console.log(error);
+                                // console.log(error);
                                 callback(null,false);
                               //callback(null,'not send');
                             } else {
-                                console.log("Email sent");
+                                // console.log("Email sent");
                                 callback(null,true);
                             }
                         });
@@ -345,7 +345,7 @@ emailModel.senCorreos = (mails,callback) => {
     // console.log(mail);
     let send = [];
     let cont = 1;
-    console.log(mails.length);
+    // console.log(mails.length);
     if(mails.length>=0)
     {
       for (var i = 0; i < mails.length; i++) {
@@ -369,13 +369,13 @@ emailModel.senCorreos = (mails,callback) => {
 
               transporter.sendMail(mailOptions, function(error, info){
                   if (error){
-                      console.log(error);
+                      // console.log(error);
                       send.push({send:'no'});
                     //callback(null,'not send');
                   } else {
-                      console.log("Email sent");
+                      // console.log("Email sent");
                       send.push({send:'si',mail: mail.mail});
-                      console.log(cont);
+                      // console.log(cont);
                       if(cont==mails.length)
                       {
                         callback(null,send);

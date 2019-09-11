@@ -14,7 +14,7 @@ id:req.body.id
 };
 var admin = req.body.admin;
 var med = req.body.medico;
-console.log('admin '+admin+' medico '+med);
+// console.log('admin '+admin+' medico '+med);
 if(admin==false && med==false)
 {
 fotos.setFotoUsu(foto,(err,data)=>{

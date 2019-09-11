@@ -16,7 +16,7 @@ app.get('/user',jwts.validaAdmin,(req, res)=>{User.getUsers((err, data) => {res.
 //retorna la informacion del usuario segun su id
 app.get('/user/:id',(req,res)=>{
 var id=req.params.id;
-console.log('ES USUARIO');
+// console.log('ES USUARIO');
 User.darUserId(id,(err,resp)=>{
 res.json(resp);
 });
@@ -38,7 +38,7 @@ app.put('/user',jwts.valida,(req,res)=>{
 // console.log(req.body);
 var fecha = moment(req.body.fecha_nacimiento).format('YYYY-MM-DD');
 fecha = fecha.toString();
-console.log(req.body);
+// console.log(req.body);
 let usu = {
 tipoDocumento: req.body.tipoDocumento,
 cedula:req.body.cedula,
@@ -86,7 +86,7 @@ app.get('/usua/:ced',(req,res)=>{
     });
     });
 
-//ruta para validar los correos. 
+//ruta para validar los correos.
 app.get('/vemail/:email',(req,res)=>{
     var correo = req.params.ced;
     User.validaCorreo(correo,(err,resp)=>{

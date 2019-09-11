@@ -37,8 +37,8 @@ app.post('/coment',(req,res)=>{
     id_consultorio: req.body.id_consultorio
   };
   let masc = req.body.masc;
-  console.log(comm);
-  console.log(masc);
+  // console.log(comm);
+  // console.log(masc);
   if(masc==true)
   {
     comen.agregarComentarioM(comm,(err,resp)=>{
@@ -75,13 +75,13 @@ app.get('/histusuced/:idser/:ced',(req,res)=>{
 });
 
 //devuelkeve el historial segun el medico del servecio
-app.get('/histmed/:mes/:anio/:id_med/:masc/:ser',(req,res)=>{
+app.get('/histmed/:mes/:anio/:id_med/:masc/:con',(req,res)=>{
   ev = {
     mes: req.params.mes,
     anio: req.params.anio,
     med: req.params.id_med,
     id_mascotas: req.params.masc,
-    ser: req.params.ser
+    con: req.params.con
   };
   hist.historialMedico(ev,(err,resp)=>{
     res.json(resp);
@@ -103,7 +103,7 @@ app.get('/histser/:mes/:anio/:ser/:masc',(req,res)=>{
 
 app.get('/histsuc/:mes/:anio/:ser/:masc/:idsuc/:idcon',(req,res)=>{
 
-  console.log(req.params);
+  // console.log(req.params);
   if(req.params.idcon=='0' || req.params.idcon==0)
   {
     ev = {
@@ -111,7 +111,8 @@ app.get('/histsuc/:mes/:anio/:ser/:masc/:idsuc/:idcon',(req,res)=>{
       anio: req.params.anio,
       id_mascotas: req.params.masc,
       ser: req.params.ser,
-      suc: req.params.idsuc
+      suc: req.params.idsuc,
+
     };
 
     hist.histoSucursal(ev,(err,resp)=>{
@@ -127,7 +128,7 @@ app.get('/histsuc/:mes/:anio/:ser/:masc/:idsuc/:idcon',(req,res)=>{
       id_mascotas: req.params.masc,
       ser: req.params.ser,
       con: req.params.idcon,
-      suc: req.params.idsuc
+      suc: req.params.idsuc,
     };
     hist.histoSucCon(ev,(err,resp)=>{
       res.json(resp);

@@ -18,10 +18,10 @@ citasModel.countCitas = (row,callback)=>{
 var hora =0;
 let p=1;
 let jsonHd = [];
-console.log('***************////CONTEO DE CITAS//');
-console.log(row);
+// console.log('***************////CONTEO DE CITAS//');
+// console.log(row);
 var cate = row.cate;
-console.log(cate);
+// console.log(cate);
 var serv = {};
 
 for (var i = 0; i < row.length; i++)
@@ -55,14 +55,14 @@ citasModel.countCitasOc = (row,callback)=>{
 var hora =0;
 let p=0;
 let jsonHd = [];
-console.log(row.id);
+// console.log(row.id);
 var serv = {};
 
 for (var i = 0; i < row.length; i++)
 {
 hora=row[i];
-console.log('/**************CONTeO DE CITAS');
-console.log(hora.hora);
+// console.log('/**************CONTeO DE CITAS');
+// console.log(hora.hora);
 serv = {
 hora:hora.hora,
 id:row.id,
@@ -75,7 +75,7 @@ p++;
 jsonHd.push(resp);
 if(p>=row.length)
 {
-console.log('jsonHd');
+// console.log('jsonHd');
 ////console.lo.log(jsonHd);
 callback(null,jsonHd);
 }
@@ -128,7 +128,7 @@ var sql = "SELECT CONVERT_TZ(events.start,'+00:00','-05:00') as start,events.id_
                         {
                           // row = {activas:true};
                           ress[0].activas = true;
-                          console.log(ress);
+                          // console.log(ress);
                           res.push(ress[0]);
                           for (var i = 0; i < row.length; i++) {
                             res.push(row[i]);
@@ -163,8 +163,8 @@ var sql = "SELECT CONVERT_TZ(events.start,'+00:00','-05:00') as start,events.id_
                             if(err){throw err}
                             else
                             {
-                              console.log('/*/*/*/*MASCOTAS/*/*/*/*/*/');
-                              console.log(row1)
+                              // console.log('/*/*/*/*MASCOTAS/*/*/*/*/*/');
+                              // console.log(row1)
                               // console.log(resm);
                               if(JSON.stringify(resm)!='[]')
                               {

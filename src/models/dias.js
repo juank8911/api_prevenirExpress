@@ -15,8 +15,8 @@ let diasModel={};
 // agrega los dias la base de datos
 diasModel.agregarDia=(dia,callback)=> {
 var sql = 'INSERT INTO dias(dia,id_horario) value (?,?)';
-console.log('(((S(S(S(S(S( ))))))))');
-console.log(dia);
+// console.log('(((S(S(S(S(S( ))))))))');
+// console.log(dia);
 semana=dia.semanas;
 id = dia.id;
 ids=dia.ids;
@@ -121,7 +121,7 @@ diasModel.darDiasEd=(rows,callback)=>{
 
 //cunsalta si existen citas en esos horararios para ser eliminados o no
 diasModel.ExcitasDias = (id,callback) =>{
-  console.log(id);
+  // console.log(id);
   var sql ='SELECT count(events.start) as eventH FROM events WHERE DAYNAME(events.start) IN (SELECT dias.dia FROM dias WHERE dias.id_horario = ?);';
   // var sql = 'SELECT DAYNAME(events.start) FROM events';
   var sql1 = "SET lc_time_names = 'es_MX';"

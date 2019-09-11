@@ -14,7 +14,7 @@ let comentmodule = {};
 // agrega un comentario por cita a la base de atos con la calificacion brindada por el ususario
 comentmodule.agregarComentario = (coment,callback) =>
 {
-  console.log(coment);
+  // console.log(coment);
 if(connection)
 {
 var ins = 'INSERT INTO comentarios (comentario, calificacion, usuarios_id, historial_id, id_consultorio) VALUES (?, ?, ?, ?, ?);'
@@ -26,7 +26,7 @@ connection.query(ins,[coment.comentario,coment.califica,coment.id_usuario,coment
   else
   {
     connection.query(prom,[coment.id_servicio],(err,proms)=>{
-      console.log(proms);
+      // console.log(proms);
       proms = proms[0];
       connection.query(upd1,[proms.prom,coment.id_servicio],(err,res)=>{
         connection.query(upd2,[coment.id_historial],(err,rowss)=>{
@@ -55,7 +55,7 @@ connection.query(ins,[coment.comentario,coment.califica,coment.id_servicio,comen
   else
   {
     connection.query(prom,[coment.id_servicio],(err,proms)=>{
-      console.log(proms);
+      // console.log(proms);
       proms = proms[0];
       connection.query(upd1,[proms.prom,coment.id_servicio],(err,res)=>{
         connection.query(upd2,[coment.id_historial],(err,rowss)=>{
@@ -74,12 +74,12 @@ connection.query(ins,[coment.comentario,coment.califica,coment.id_servicio,comen
 comentmodule.respuestasFaltaMed = (ids,callback) =>{
   if(connection)
   {
-    console.log('pase 1');
+    // console.log('pase 1');
     if(ids.cate != 20)
     {
       console.log('pase 2');
-      var sel = 'SELECT comentarios.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as usu, usuarios.avatar FROM comentarios,servicios, usuarios WHERE usuarios.id = comentarios.usuarios_id AND comentarios.servicios_idservicios = servicios.id_servicios AND servicios.id_servicios = ? AND comentarios.coment_m = 0;';
-      connection.query(sel,[ids.id],(err,resp)=>{
+      var sel = 'SELECT comentarios.*, CONCAT(usuarios.nombre," ",usuarios.apellidos) as usu, usuarios.avatar FROM comentarios,consultorio, usuarios WHERE usuarios.id = comentarios.usuarios_id AND comentarios.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = ? AND consultorio.medico_id = ? AND comentarios.coment_m = 0;';
+      connection.query(sel,[ids.id, ids.idm],(err,resp)=>{
         if(err){throw err}
         else
         {
@@ -89,8 +89,8 @@ comentmodule.respuestasFaltaMed = (ids,callback) =>{
     }
     else
     {
-      var sel = 'SELECT comentarios_masc.*, mascotas.nombre as usu, mascotas.avatar FROM comentarios_masc,servicios, mascotas WHERE mascotas.id_mascotas = comentarios_masc.id_mascotas AND comentarios_masc.id_servicios = servicios.id_servicios AND servicios.id_servicios = ? AND comentarios_masc.coment_m = 0;';
-      connection.query(sel,[ids.id],(err,resp)=>{
+      var sel = 'SELECT comentarios_masc.*, mascotas.nombre as usu, mascotas.avatar FROM comentarios_masc,consultorio, mascotas WHERE mascotas.id_mascotas = comentarios_masc.id_mascotas AND comentarios_masc.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = ? AND consultorio.medico_id = ? AND comentarios_masc.coment_m = 0;';
+      connection.query(sel,[ids.id, ids.idm],(err,resp)=>{
         if(err){throw err}
         else
         {
@@ -105,16 +105,16 @@ comentmodule.respuestasFaltaMed = (ids,callback) =>{
 comentmodule.UpdateComentMed = (coment,callback)=>{
   if(connection)
   {
-    console.log(coment);
+    // console.log(coment);
       if(coment.cate != 20)
       {
-        console.log('dentro');
+        // console.log('dentro');
         var upd = 'UPDATE comentarios SET comentario_med = ?, coment_m = 1 WHERE (id_comentarios = ?)';
         connection.query(upd,[coment.coment,coment.id],(err,row)=>{
           if(err){throw err}
           else
           {
-            console.log(row);
+            // console.log(row);
             callback(null,true)
           }
         });
@@ -126,7 +126,7 @@ comentmodule.UpdateComentMed = (coment,callback)=>{
           if(err){throw err}
           else
           {
-            console.log(row);
+            // console.log(row);
             callback(null,true)
           }
         });

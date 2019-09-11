@@ -72,33 +72,33 @@ validamodel.validaMedico = (vali,callback) =>{
   if(connection)
   {
     // console.log(vali);
-    console.log('validando');
+    // console.log('validando');
     //cedula,email,
     let val = 'SELECT * FROM members WHERE email = ?'
     connection.query(val,[vali.email],(err,res)=>{
       if(err){throw err}
       else
       {
-        console.log('VALIDACION DE MEMBER');
+        // console.log('VALIDACION DE MEMBER');
         console.log(res);
         if (JSON.stringify(res)=='[]')
         {
-          console.log('CORREO NO EXISTE');
+          // console.log('CORREO NO EXISTE');
           val = 'SELECT * FROM medicos WHERE tarj_profecional = ?';
           connection.query(val,[vali.t_prof],(err,res1)=>{
-            console.log('VALIDACION DE MEDICO');
+            // console.log('VALIDACION DE MEDICO');
             console.log(res1);
             if(err){throw err}
             else
             {
               if (JSON.stringify(res1)=='[]')
               {
-                console.log('NO EXISTE');
+                // console.log('NO EXISTE');
                 callback(null,{'existe':false});
               }
               else
               {
-                console.log('SI EXISTE');
+                // console.log('SI EXISTE');
                 callback(null,{'existe':'true','campo':'profecional'});
               }
             }

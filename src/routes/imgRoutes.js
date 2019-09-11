@@ -5,7 +5,7 @@ module.exports=function(app)
 {
 //guarda las imagenes en el servido y en la base de datos
 app.post('/images',(req, res)=>{
-console.log(req.files.archivo);
+// console.log(req.files.archivo);
 var imagen = req.files.archivo;
 img.subida(imagen,req);
 //  var img = {

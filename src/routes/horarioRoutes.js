@@ -11,10 +11,10 @@ var respuesta=[];
 var p=0;
 //console.log(req.body);
 horarios = req.body.horarios;
-console.log(horarios);
+// console.log(horarios);
 //id=horario.id;
 //semana = horario.semana;
-console.log(horarios.length);
+// console.log(horarios.length);
 //  console.log(id);
 for (var i = 0; i < horarios.length; i++)
 {
@@ -22,7 +22,7 @@ for (var i = 0; i < horarios.length; i++)
 // console.log(horarios[i]);
 hora.agregarHorario1(horarios[i],(err,resp)=>{
 respuesta.push(resp);
-console.log(p);
+// console.log(p);
 p++;
 if(p>=horarios.length)
 {
@@ -37,17 +37,17 @@ res.json(respuesta);
 app.post('/horario',(req, res)=>{
 var respuesta=[];
 var p=0;
-console.log(req.body);
+// console.log(req.body);
 horarios = req.body;
 // console.log(horarios);
 // console.log(horarios.length);
 hora.agregar1Horario(horarios,(err,resp)=>{
-  console.log('Respuesta de agregar horario');
+  // console.log('Respuesta de agregar horario');
   if(err){throw err}
   else
     {
         csh.agregaids(resp,(err,adds)=>{
-          console.log(adds);
+          // console.log(adds);
             res.json(adds)
         });
     }

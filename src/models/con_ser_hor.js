@@ -16,23 +16,23 @@ cshModule.agregaids = (ids,callback) =>{
   var p =0;
 if(connection)
 {
-  console.log('AGREGANDO LOS IDS DE CONSULTORIOS');
-  console.log(ids);
+  // console.log('AGREGANDO LOS IDS DE CONSULTORIOS');
+  // console.log(ids);
   var sql = 'INSERT INTO con_ser_hor(id_consultorio, id_servicios, id_horario) VALUES (?, ?, ?);';
   var resp = [];
-console.log('agregando ids');
+// console.log('agregando ids');
 // console.log(ids);
   forEach(ids, function(id, index, arr)
 {
-  console.log('INSERT INTO con_ser_hor(id_consultorio, id_servicios, id_horario) VALUES (',id.id_consul, id.id_ser, id.id_hora,')');
+  // console.log('INSERT INTO con_ser_hor(id_consultorio, id_servicios, id_horario) VALUES (',id.id_consul, id.id_ser, id.id_hora,')');
   connection.query(sql,[id.id_consul, id.id_ser, id.id_hora],(err,res)=>{
       if(err){throw err}
       else {
         {
-          console.log(res);
+          // console.log(res);
           // resp.push(res);
           p++;
-          console.log(p,'id contra length  ',ids.length );
+          // console.log(p,'id contra length  ',ids.length );
           if(p>=ids.length)
           {
             callback(null,true)

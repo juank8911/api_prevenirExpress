@@ -7,7 +7,7 @@ module.exports = function (app)
 // Devuelve los medicos por su cedula
 app.get('/medicosc/:id',(req,res)=>{
   let id = req.params.id;
-  console.log(id);
+  // console.log(id);
   med.buscarMedicoCedu(id,(err,medi)=>{
     res.json(medi);
   });
@@ -32,7 +32,7 @@ res.json(data);
 //devuelve medico con member correo y titulos
 app.get('/medicosm/:id',(req,res)=>{
   let idm = req.params.id;
-  console.log('ES MEDICO');
+  // console.log('ES MEDICO');
 med.getMedicoMem(idm,(err,data)=>{
 res.json(data);
 });

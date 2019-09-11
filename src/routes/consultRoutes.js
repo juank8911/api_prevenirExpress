@@ -6,7 +6,7 @@ module.exports = function (app)
 app.post('/addconsul',(req,res)=>{
 
   let consuls = req.body;
-
+  // console.log(consuls);
   consu.insertConsul1(consuls,(err,resp)=>{
     res.json(resp);
   });
@@ -29,7 +29,7 @@ app.put('/delconsul/:idc',(req,res)=>{
 app.get('/consulsucse/:idsu/:idser',(req,res)=>{
   let ids = { idsu: req.params.idsu,
               idser: req.params.idser};
-  console.log(ids);
+  // console.log(ids);
   consu.getConsultorioSucSer(ids,(err,resp)=>{
     res.json(resp);
   })
@@ -43,8 +43,8 @@ app.get('/consultorioid/:idc',(req,res)=>{
 
 app.put('/consultorio',(req,res)=>{
   consul = req.body;
-  console.log(req.body);
-  console.log(consul);
+  // console.log(req.body);
+  // console.log(consul);
   consu.editarConsultorio(consul,(err,resp)=>{
       res.json(resp)
   });

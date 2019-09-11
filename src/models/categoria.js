@@ -32,7 +32,7 @@ callback(null,row);
 
 
 cateModule.prueba = (cal,callback)=>{
-  console.log('prueba de callbak');
+  // console.log('prueba de callbak');
   callback(null,true);
 };
 

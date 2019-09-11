@@ -5,7 +5,7 @@ module.exports = function (app)
 
 // Grega solo una sucursal
   app.post('/addsucur',(req,res)=>{
-      console.log(req.body);
+      // console.log(req.body);
       var securs = req.body;
       sucur.agregarSucursales(securs,(err,resp)=>{
         res.json(resp);
@@ -53,7 +53,7 @@ module.exports = function (app)
   app.get('/sucumem/:idm',(req,res)=>{
     let id = req.params.idm;
     sucur.sucurIdMember(id,(err,resp)=>{
-      console.log(resp);
+      // console.log(resp);
         res.json(resp);
     })
   });

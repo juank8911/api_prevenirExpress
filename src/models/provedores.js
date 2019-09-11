@@ -22,12 +22,12 @@ let provedorModule = {};
 provedorModule.regProvedorFace = (prov, callback)=> {
 if(connection)
 {
-  console.log(provs);
+  // console.log(provs);
 var id = prov.cedula;
 var nombre = prov.nombre;
 var correo = prov.email;
 var cod = prov.cod;
-console.log(cod);
+// console.log(cod);
 var sql = 'INSERT INTO provedores(id_provedor,cod_ver,nombre,correo,members_id) values (?,?,?,?,?)';
 connection.query(sql,[id,cod,nombre,correo,id],(err, row)=>{
 if(err)
@@ -64,12 +64,12 @@ if(err){throw err;}else{callback(null,row)}
 //retorna a un provedor por su id
 
 provedorModule.darProvedorid = (id,callback)=>{
-  console.log('hola buscando provedores');
+  // console.log('hola buscando provedores');
 var sql = 'SELECT provedores.* FROM provedores, members WHERE provedores.members_id = members.id AND members.id = ?;';
 connection.query(sql,[id],(err,row)=>{
 if(err){throw err}else{
-console.log(row);
-  console.log('respuesta A LA APP');
+// console.log(row);
+//   console.log('respuesta A LA APP');
   callback(null,row)
 }
 });

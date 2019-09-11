@@ -24,17 +24,17 @@ let sucurModule = {};
                   if(err){throw err}
                   else
                   {
-                    console.log(resp.insertId);
+                    // console.log(resp.insertId);
                     var idm = resp.insertId;
-                    console.log('SUCURSALES INFO COMPLETA')
-                    console.log(sucrs);
-                    console.log('////////////////////////----------');
+                    // console.log('SUCURSALES INFO COMPLETA')
+                    // console.log(sucrs);
+                    // console.log('////////////////////////----------');
                     var sql = 'INSERT INTO sucursales (nombre, direccion, telefono, id_municipio, id_provedor,members_id) VALUE (?, ?, ?, ?, ?,?);'
                     var p=0;
                     var ids=[];
                     connection.query(sql,[sucrs.nombre, sucrs.direccion, sucrs.telefono, sucrs.id_municipio, sucrs.id_provedor,idm],(err,res)=>{
                       if(err){
-                        console.log(idm);
+                        // console.log(idm);
                         var sqld = 'DELETE FROM members WHERE id = ?;'
                         connection.query(sqld,[idm],(err1,resp)=>{
                           if(err1){throw err1}
@@ -49,7 +49,7 @@ let sucurModule = {};
                         // console.log('ENVIO PARA AGREGAR CONSULTORIOS');
                           consul.insertConsul1(sucrs.consultorios,(err,res)=>
                           {
-                              console.log(res);
+                              // console.log(res);
                               callback(null,true);
                           });
 

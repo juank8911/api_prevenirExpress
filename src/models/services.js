@@ -25,7 +25,7 @@ let servmodule = {};
 servmodule.save = (data , callback ) => {
   // console.log('adentro del save nuevo vamo a ver');
   // console.log(data.medico_id);
-  console.log(data.id_prov);
+  // console.log(data.id_prov);
   img = data.foto64;
   nombre = data.nombre;
   horario = data.horario;
@@ -44,7 +44,7 @@ servmodule.save = (data , callback ) => {
   else
   {
     // id de insercion de el servicios
-    console.log('AGREGADO EL SERVICIO');
+    // console.log('AGREGADO EL SERVICIO');
     var idinsert = res.insertId;
     idInd = res.insertId;
     //obteniendo el horario
@@ -52,7 +52,7 @@ servmodule.save = (data , callback ) => {
     // horarios = horarios.horario;
 
           sqlss = 'INSERT INTO servicios_categoria (servicios_idservicios, categoria_idcategoria) VALUES (?, ?)';
-          console.log('id_Servicio'+idInd+'/*/*/*'+'Id Cate'+data.categoria);
+          // console.log('id_Servicio'+idInd+'/*/*/*'+'Id Cate'+data.categoria);
           connection.query(sqlss,[idInd,data.categoria],(err,row)=>{
           if(err)
           {
@@ -60,7 +60,7 @@ servmodule.save = (data , callback ) => {
           }
           else
           {
-            console.log('AGREGADA SERVICIO CATEGORIA');
+            // console.log('AGREGADA SERVICIO CATEGORIA');
             var p = 1;
             var respons = [];
             for (var i = 0; i < img.length; i++)
@@ -132,12 +132,12 @@ else
   row.forEach((serv)=>{
   // console.log(serv.idservicios)
   var id = serv.id_servicios;
-  console.log(id);
+  // console.log(id);
   connection.query(sql1,[id],(err,ft)=>{
     if(err){throw err}
     else
     {
-      console.log(ft);
+      // console.log(ft);
       ft = ft[0];
       serv.foto = ft.ruta;
     }
@@ -282,7 +282,7 @@ callback(null,resp);
 };
 // da servicios por el id de del servicio
 servmodule.darServiciosIdS = (id,callback)=>{
- console.log('prueba de servicios')
+ // console.log('prueba de servicios')
 if(connection)
 {
 var sql = 'SELECT servicios.*, categoria.nombre as categoria, categoria.id_categoria as id_categoria FROM servicios, servicios_categoria, categoria WHERE servicios.id_servicios = servicios_categoria.servicios_idservicios AND categoria.id_categoria = servicios_categoria.categoria_idcategoria and servicios.id_servicios = ?';
@@ -294,7 +294,7 @@ throw err;
 }
 else
 {
-console.log(row);
+// console.log(row);
 var p =1;
 var sql = 'SELECT * FROM fotos where servicios_idservicios = ?';
 var jsonServ = [];
@@ -381,12 +381,12 @@ servmodule.darServiciosMunCat = (ids,callback)=>{
 //console.log('////////////////Servicios ')
 var idm = ids.idm;
 var idc = ids.idc;
-console.log(idc);
+// console.log(idc);
 if(connection)
 {
 if(idc>=0)
 {
-console.log('////////////////Servicios por muunicipios/////////// ')
+// console.log('////////////////Servicios por muunicipios/////////// ')
 
 if(idc!=20)
 {
@@ -570,17 +570,17 @@ if(connection)
         var sql3 = 'DELETE FROM medicos WHERE servicios_idservicios = ?';
 
 
-        console.log('borrando fotos');
+        // console.log('borrando fotos');
         connection.query(sql1,[id],(err,res)=>{
         if(err){throw err;}
         else {
         {
-          console.log('borrando categoria');
+          // console.log('borrando categoria');
         connection.query(sql2,[id],(err,res2)=>{
         if(err){throw err;}
         else
         {
-          console.log('borrando servicio');
+          // console.log('borrando servicio');
         connection.query(sql,[id],(err,row)=>{
         if(err)
         {
@@ -653,7 +653,7 @@ connection.query(sql1,[serv.categoria,serv.id],(err,row)=>{
 servmodule.serviciosMedicoProv = (ids,callback) =>{
   if(connection)
   {
-    console.log('id uno a uno');
+    // console.log('id uno a uno');
     // console.log(ids);
     let idser = 0;
     var servi
@@ -667,7 +667,7 @@ servmodule.serviciosMedicoProv = (ids,callback) =>{
       else
       {
         // ids.serv = ser;
-        console.log(ser);
+        // console.log(ser);
         // for (var i = 0; i < ser.length; i++) {
         //   idser = ser[i].id_servicios;
         //   servi = ser[i];
@@ -703,10 +703,10 @@ servmodule.serviciosMedicoProv = (ids,callback) =>{
               // console.log('PRUEBOTA');
             data.fotos = row1;
             respu.push(data);
-            console.log(respu.length);
+            // console.log(respu.length);
           });
         });
-        console.log('respuesta');
+        // console.log('respuesta');
           callback(null,respu);
 
       }
@@ -722,7 +722,7 @@ servmodule.serviciosMedicoProvedor = (pr,callback) =>{
     // console.log('id uno a uno');
     // console.log(prs);
     let servi = [];
-    let serv = 'SELECT servicios.nombre,servicios.id_servicios,servicios.*, servicios_categoria.categoria_idcategoria FROM servicios, provedores, medicos, servicios_categoria  WHERE servicios.medico_id = medicos.medico_id AND servicios.id_provedores = provedores.id_provedor AND servicios_categoria.servicios_idservicios = servicios.id_servicios AND medicos.medico_id = ? AND provedores.id_provedor = ?;';
+    let serv = 'SELECT servicios.nombre,servicios.id_servicios,servicios.*, servicios_categoria.categoria_idcategoria, consultorio.id_consultorio FROM servicios, provedores, medicos, servicios_categoria, consultorio  WHERE consultorio.medico_id = medicos.medico_id AND servicios.id_servicios = consultorio.id_servicios AND servicios.id_provedores = provedores.id_provedor AND servicios_categoria.servicios_idservicios = servicios.id_servicios AND medicos.medico_id = ? AND provedores.id_provedor = ?;';
           // console.log(pr);
           connection.query(serv,[pr.id,pr.idp],(err,row)=>{
             if(err){throw err}
@@ -801,7 +801,7 @@ servmodule.servisucu = (idsu,callback)=>{
     connection.query(sql,[idsu],(err,row)=>{
       if(err){throw err}
       else{
-        console.log(row);
+        // console.log(row);
         callback(null,row)
       }
     });
@@ -820,17 +820,17 @@ promise
         .then((resolve,reject)=>{
           var con =0;
           var datos = resolve;
-          console.log(datos);
+          // console.log(datos);
           for (var i = 0; i < datos.length; i++) {
-            console.log(datos[i]);
+            // console.log(datos[i]);
             con++;
-            console.log(con);
+            // console.log(con);
           }
-          console.log('DESPUES DEL FOR');
+          // console.log('DESPUES DEL FOR');
                 return con
            })
            .then((res,rej)=>{
-             console.log(res);
+             // console.log(res);
              callback(null,res)
            })
         .catch((err)=>{console.error(err);})

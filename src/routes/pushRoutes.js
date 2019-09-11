@@ -12,7 +12,7 @@ var token = {
   admines: req.body.admin,
   medico: req.body.medico
 };
-console.log(token);
+// console.log(token);
 
 push.addtoken(token,(err,resp)=>{
   res.json(resp);

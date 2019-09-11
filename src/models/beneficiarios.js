@@ -29,7 +29,7 @@ if(connection)
       throw err;
       }
       else {
-            console.log(row);
+            // console.log(row);
             var id = row.insertId;
             var add = 'INSERT INTO usuarios (cedula,correo, nombre, apellidos, telefono,telefonowatshapp,fecha_nacimiento,usuariosBf_id, parentescos_id_parentescos,members_id,id_pais) VALUES (?,?,?,?,?,?,?,?,?,?,?);';
             // //console.lo.log(benef);
