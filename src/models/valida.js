@@ -99,7 +99,7 @@ validamodel.validaMedico = (vali,callback) =>{
               else
               {
                 // console.log('SI EXISTE');
-                callback(null,{'existe':'true','campo':'profecional'});
+                callback(null,{'existe':'true','campo':'profesional'});
               }
             }
           });
