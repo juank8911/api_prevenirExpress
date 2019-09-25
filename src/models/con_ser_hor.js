@@ -16,8 +16,8 @@ cshModule.agregaids = (ids,callback) =>{
   var p =0;
 if(connection)
 {
-  // console.log('AGREGANDO LOS IDS DE CONSULTORIOS');
-  // console.log(ids);
+  console.log('AGREGANDO LOS IDS DE CONSULTORIOS');
+  console.log(ids);
   var sql = 'INSERT INTO con_ser_hor(id_consultorio, id_servicios, id_horario) VALUES (?, ?, ?);';
   var resp = [];
 // console.log('agregando ids');

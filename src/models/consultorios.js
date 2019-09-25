@@ -21,16 +21,18 @@ let consulModule = {};
 consulModule.insertConsul = (consuls,callback)=>{
 if(connection)
 {
-  // console.log('CONSULS DENTRO DE AGREGAR CONSULTORIOS');
-  // console.log(consuls);
-  let id_sucu = consuls.id_sucursal;
+  console.log('CONSULS DENTRO DE AGREGAR CONSULTORIOS');
+  console.log(consuls);
+  var id_sucu = consuls.id_sucursal;
+  console.log(cosuls.id_sucursal);
   var sql = 'INSERT INTO consultorio (nombre, extencion, medico_id, id_sucursales) VALUES (?, ?, ?, ?);';
   var p = 0;
   var ids=[];
   for (var i = 0; i < consuls.length; i++) {
     var consul = consuls[i];
+
     // console.log(consuls.length);
-    // console.log(consul);
+    console.log(id_sucu);
     connection.query(sql,[consul.nombre, consul.extencion, consul.medico_id, id_sucu],(err,res)=>{
       if(err){throw err}
       else
@@ -47,7 +49,14 @@ if(connection)
 
 consulModule.insertConsul1 = (consuls, callback) =>
 {
-
+  // console.log('DFGHJIOIHUGYFTDRTFGHJKHUGYFTRYGHUIJKHGYFT');
+console.log('agregando consultorios');
+console.log(consuls);
+var id_sucur = consuls[0].id_sucursal;
+consuls.shift(consuls);
+console.log();
+console.log('ID DE LA SUSRSAL');
+console.log(id_sucur);
 if(connection)
 {
   var p = 0;
@@ -58,20 +67,21 @@ if(connection)
   var sql = 'INSERT INTO consultorio (nombre, extencion, medico_id, id_sucursales, id_servicios) VALUES (?, ?, ?, ?, ?);';
   var horarios = [];
   // console.log('AGREGANDO CONSULTORIO');
+
   forEach(consuls, function(consul, index, arr)
 {
-  // console.log('dentro del for each');
-  // console.log(consul.id_sucursal);
+  console.log('dentro del for each');
+  console.log(consul);
       return new Promise((res,rej)=>{
-        connection.query(sql,[consul.nombre, consul.extencion, consul.medico_id, consul.id_sucursal, consul.id_servicio],(err,data) => {
+        connection.query(sql,[consul.nombre, consul.extension, consul.medico_id, id_sucur,consul.id_servicio ],(err,data) => {
           return (err) ? rej(err) :  res(data)
         })
         })
         .then((res,rej)=>{
               consul.horarios.id_consul = res.insertId;
               let id_prov = consul.id_provedor;
-              let id_sucu = consul.id_sucursal;
-              medicos.push({id_sucursal:consul.id_sucursal,id_provedor:consul.id_provedor,id_consultorio:res.insertId,id_medico:consul.medico_id});
+              let id_sucu = consuls.id_sucursal;
+              medicos.push({id_sucursal:id_sucur,id_provedor:consul.id_provedor,id_consultorio:res.insertId,id_medico:consul.medico_id});
               // console.log('MEDICO');
               // console.log(medicos);
                 // console.log('dentro del if de consultorios');
@@ -85,7 +95,7 @@ if(connection)
                     // console.log(index, '/ ', consuls.length-1);
                     if(index>=consuls.length-1)
                     {
-                      // console.log('FIN CONSULTORIOS');
+                      console.log('FIN CONSULTORIOS');
                       // console.log(data1);
                         csh.agregaids(data1,(err,res)=>{
                           med.activaMedico(medicos,(err,resp)=>{
@@ -163,15 +173,16 @@ if(connection)
     if(err){throw err}
     else
   {
-
+    // console.log(res);
     connection.query(sql,[ids],(err,consuls)=>{
       if(err){throw err}
       else
       {
+        // console.log(consuls);
         if(JSON.stringify(consuls)=='[]')
         {
           // console.log('vacio');
-           callback(303,consuls);
+           callback(303,res[0]);
         }
               else
                 {
@@ -183,13 +194,17 @@ if(connection)
                         // callbak(null,res);
                         forEach(consuls, function(consul, index, arr)
                         {
-                          // console.log(consul);
+                          // console.log('Dentro del forEach');
+                          // console.log(consuls.length);
+                          // console.log(consul.id_consultorio);
                             hors.darHorarioCon(consul.id_consultorio,(err,hora)=>{
                               consul.horario = hora;
                               // console.log(consul);
                               if(index>=consuls.length-1)
                               {
                                 res.consultorio = consuls;
+                                // console.log('RESPUESTA ES');
+                                // console.log(res);
                                 callback(null,res);
                               }
                             })

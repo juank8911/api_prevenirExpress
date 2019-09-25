@@ -65,5 +65,12 @@ module.exports = function (app)
       });
   });
 
+  app.delete('/sucursal/:id',(req,res)=>{
+
+        sucur.eliminarSucursal(req.params.id,(err,resp)=>{
+            res.json(resp);
+        });
+  });
+
 
 }

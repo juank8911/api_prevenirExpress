@@ -58,7 +58,7 @@ res.json(resp);
 
 //retorna los servicios segun el id del provedor
 app.get('/services/:id',(req,res)=>{
-// console.log('dar servicio por id de provedor');
+console.log('dar servicio por id de provedor');
 var id=req.params.id;
 serv.DarServiceUsu(id,(err,data)=>{
 //console.log(data);

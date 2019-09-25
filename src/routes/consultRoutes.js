@@ -1,15 +1,15 @@
 const consu = require('../models/consultorios');
+var forEach = require('async-foreach').forEach;
 
 
 module.exports = function (app)
 {
 app.post('/addconsul',(req,res)=>{
 
-  let consuls = req.body;
-  // console.log(consuls);
-  consu.insertConsul1(consuls,(err,resp)=>{
-    res.json(resp);
-  });
+    consu.insertConsul1(req.body,(err,resp)=>{
+      res.json(resp);
+    });
+
 });
 
 

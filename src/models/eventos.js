@@ -210,7 +210,7 @@ connection.query(psh,[events.servicio],(err,rowph)=>{
     {
   pushs.sendPush(disp,(err,respus)=>{
       sleep(1000);
-    var med = 'SELECT members.tokenpsh, servicios.nombre FROM members, medicos, consultorio, prov_suc_con_med, servicios WHERE members.id = medicos.members_id AND prov_suc_con_med.medico_id = medicos.medico_id AND servicios.id_servicios = consultorio.id_servicios AND prov_suc_con_med.id_consultorio = ? GROUP BY members.tokenpsh ;';
+    var med = 'SELECT members.tokenpsh, servicios.nombre FROM members, medicos, consultorio, provedores_has_medicos, servicios WHERE members.id = medicos.members_id AND provedores_has_medicos.medico_id = medicos.medico_id AND servicios.id_servicios = consultorio.id_servicios AND provedores_has_medicos.id_consultorio = ? GROUP BY members.tokenpsh ;';
     connection.query(med,[events.consultorio],(err,rowm)=>{
       if(err){throw err}
       else {
@@ -269,7 +269,7 @@ eventmodule.eliminarEvento = (ev,callback) =>{
   let id = ev.id;
   let masc = ev.masc;
 var now = moment().format('YYYY-MM-DD hh:mm:ss a');
-//console.lo.log('hoy'+now);
+console.log('hoy'+now);
 if(connection)
 {
 if(masc == true || masc == 'true' )
@@ -289,9 +289,9 @@ connection.query(valida,id,(err,resp)=>
 resp = resp[0];
 resp = resp.start
 resp = moment(resp).format('YYYY-MM-DD hh:mm:ss a');
-//console.lo.log('original'+resp);
+console.log('original'+resp);
 resp =  moment(resp).subtract(1, 'day').format('YYYY-MM-DD hh:mm:ss a');
-//console.lo.log('resta'+resp);
+console.log('resta'+resp);
 if(moment(now).isSameOrBefore(resp))
 {
   let env = {
@@ -427,7 +427,8 @@ eventmodule.eventsCalendar = (ev,callback) =>{
   let res =[];
   if(connection)
   {
-    //console.lo.log(ev.id_mascotas);
+    console.log('ERROR EN EVENTOS ');
+    console.log(ev);
     if(ev.id_mascotas==20 || ev.id_mascotas=='20')
     {
       //console.log('dentro del if');
@@ -436,7 +437,7 @@ eventmodule.eventsCalendar = (ev,callback) =>{
     else
     {
       //console.log('no entro al if');
-      var sql = 'SELECT events.id_eventos, usuarios.*,events.usuarios_id, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events, usuarios WHERE events.usuarios_id = usuarios.id AND MONTH(start) = ? AND YEAR(start) = ? and events.id_consultorio = ?;'
+      var sql = 'SELECT events.id_eventos, usuarios.*, events.usuarios_id, CONCAT(usuarios.nombre," ",usuarios.apellidos) as title, start, end,YEAR(start) as year, MONTH(start)-1 as month, DAY(start) as date FROM events, usuarios WHERE events.usuarios_id = usuarios.id AND MONTH(start) = ? AND YEAR(start) = ? and events.id_consultorio = ?;'
     }
 
 

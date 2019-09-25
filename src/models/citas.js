@@ -105,16 +105,16 @@ callback(null,row);
 
 // retorna los eventos por cedula del pasiente.
 citasModel.CitasUsuarioProv = (usu,callback)=>{
-  // console.log(usu);
+  console.log(usu);
   let res = [];
   let res1 = [];
   let rest = [];
-var sql = "SELECT CONVERT_TZ(events.start,'+00:00','-05:00') as start,events.id_eventos,events.usuarios_id, servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente, usuarios.avatar, day(now()) as hoy,month(now()) as mes, day(events.start) as cita, month(events.start) as mescita, consultorio.nombre as consultorio, servicios_categoria.categoria_idcategoria as categoria FROM events, consultorio, sucursales, usuarios, servicios, con_ser_hor, servicios_categoria WHERE events.id_consultorio = consultorio.id_consultorio AND sucursales.id_sucursales = consultorio.id_consultorio AND events.usuarios_id = usuarios.id AND consultorio.id_consultorio = con_ser_hor.id_consultorio AND con_ser_hor.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND sucursales.id_sucursales = ? AND usuarios.cedula = ? GROUP BY events.id_eventos;";
-  connection.query(sql,[usu.suc,usu.id],(err,row)=>{
+var sql = "SELECT events.*, concat(usuarios.nombre,' ',usuarios.apellidos) as paciente, usuarios.avatar, day(now()) as hoy,month(now()) as mes, day(events.start) as cita, month(events.start) as mescita, consultorio.nombre, servicios.nombre as servicio, servicios_categoria.categoria_idcategoria as categoria FROM events, usuarios, consultorio, servicios, servicios_categoria WHERE events.usuarios_id = usuarios.id AND events.id_consultorio = consultorio.id_consultorio AND consultorio.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND usuarios.cedula = ? AND consultorio.id_sucursales = ? GROUP BY events.id_eventos;";
+  connection.query(sql,[usu.id, usu.suc],(err,row)=>{
     if(err){throw err}
     else
     {
-      // console.log(row);
+      console.log(row);
 
 
                     let act = "SELECT citas_activas.*, citas_activas.start as start, servicios.nombre as servicio,concat(usuarios.nombre,' ',usuarios.apellidos) as paciente, usuarios.avatar, day(now()) as hoy,month(now()) as mes, day(citas_activas.start) as cita, month(citas_activas.start) as mescita, consultorio.nombre as consultorio, servicios_categoria.categoria_idcategoria as categoria FROM citas_activas, consultorio, sucursales, usuarios, servicios, con_ser_hor, servicios_categoria WHERE citas_activas.id_consultorio = consultorio.id_consultorio AND sucursales.id_sucursales = consultorio.id_sucursales AND citas_activas.usuarios_id = usuarios.id AND consultorio.id_consultorio = con_ser_hor.id_consultorio AND con_ser_hor.id_servicios = servicios.id_servicios AND servicios.id_servicios = servicios_categoria.servicios_idservicios AND sucursales.id_sucursales = ? AND usuarios.cedula = ? GROUP BY citas_activas.id_citas_activas;";

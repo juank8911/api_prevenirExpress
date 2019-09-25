@@ -21,7 +21,7 @@ let medicosModule = {};
 medicosModule.darMedicosProv = (id, callback)=>{
 if(connection)
 {
-var sql = 'SELECT *, CONCAT(nombres," ",apellidos) as nombre FROM medicos, provedores_has_medicos WHERE provedores_has_medicos.medico_id = medicos.medico_id AND provedores_has_medicos.id_provedor = ? ;';
+var sql = 'SELECT *, CONCAT(nombres," ",apellidos) as nombre FROM medicos, provedores_has_medicos WHERE provedores_has_medicos.medico_id = medicos.medico_id AND provedores_has_medicos.id_provedor = ? AND eliminado = 0;';
 connection.query(sql,[id],(err,row)=>{
 if(err)
 {
@@ -177,7 +177,7 @@ medicosModule.agregarMedico = (medico,callback)=>{
 medicosModule.agregarProvedor = (medico,callback) =>{
   if(connection)
   {
-    let val = 'SELECT * FROM provedores_has_medicos WHERE id_provedor = ? AND medico_id = ?'
+    let val = 'SELECT * FROM provedores_has_medicos WHERE id_provedor = ? AND medico_id = ? AND eliminado = 0;'
     connection.query(val,[medico.provedores_id,medico.cedula],(err,vali)=>{
       if(err){throw err}
       else
@@ -287,16 +287,18 @@ medicosModule.setMedico = (medico,callback) =>{
 medicosModule.deleteMedico = (ids,callback)=>{
   if(connection)
   {
-    var sel =  'SELECT count(*) FROM servicios WHERE servicios.medico_id = ? AND servicios.id_provedores = ?;'
-    var del = 'DELETE FROM provedores_has_medicos WHERE (id_provedor = ?) and (medico_id = ?);'
-    connection.query(sel,[ids.medico,ids.prov],(err,res)=>{
+    var sel =  'SELECT count(*) as val FROM provedores_has_medicos WHERE id_provedor = ? AND medico_id = ? AND eliminado = 0 AND activo = true;'
+    var upt = 'UPDATE provedores_has_medicos SET eliminado = 1 WHERE id_provedor = ? and medico_id = ?;'
+    connection.query(sel,[ids.prov,ids.medico],(err,res)=>{
       if(err){throw err}
       else
       {
-        // console.log(res);
-          if (JSON.stringify(res)!='[]')
+
+        res = res[0]
+        console.log(res.val);
+          if (res.val==0)
           {
-            connection.query(del,[ids.prov,ids.medico],(err,row)=>{
+            connection.query(upt,[ids.prov,ids.medico],(err,row)=>{
               if(err){throw err}
               else
               {
@@ -318,7 +320,7 @@ medicosModule.activaMedico = (ids,callback)=>
 {
   if(connection)
   {
-    // console.log(ids);
+    console.log(ids);
     let ins = 'UPDATE provedores_has_medicos SET id_sucursales = ?, id_consultorio = ?, activo = ? WHERE (id_provedor = ?) and (medico_id = ?);';
     forEach(ids, function(idt, index, arr)
       {
