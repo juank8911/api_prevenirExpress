@@ -12,6 +12,7 @@ res.json(data);
 });
 
 
+// ruta paera agregar beneficiarios
 app.post('/benef',jwts.valida,(req,res)=>{
   var bene = {
     ident: req.body.ident,

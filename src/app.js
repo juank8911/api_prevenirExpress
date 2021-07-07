@@ -35,7 +35,7 @@ app.set('port',config.puerto);
 //   // });
 // } ) ;
 
-//ARREGLAR LOS CAMPOS QUE SOLICITA EN EL CAMBIO EL QUERY Y DEMAS OPCIONES
+// ARREGLAR LOS CAMPOS QUE SOLICITA EN EL CAMBIO EL QUERY Y DEMAS OPCIONES
  cron.schedule(' 0 11 * * * *', () => {
    console.log('running a task every 30 minutes');
    horas.citaHistorial((err,res)=>{
@@ -59,6 +59,8 @@ app.set('port',config.puerto);
 //       });
 //
 //      });
+//    });
+
 //    console.log('corre cada minuto * */1 * * *');
 //    eject.notificaCitaHumanos((err,row)=>{
 //      eject.notiCitasPeluditos((err,row)=>{
@@ -72,16 +74,17 @@ app.set('port',config.puerto);
 //   console.log(moment().format('YYYY-MM-DD hh:mm:ss a'));
 // });
 
-cron.schedule('0 * * * *', () => {
-  console.log('corre cada hora min 0 0 * * * *');
-  console.log(moment().format('YYYY-MM-DD hh:mm:ss a'));
-  eject.notificaCitaHumanos((err,row)=>{
-    eject.notiCitasPeluditos((err,rows)=>{
-      console.log('Citas notificadas');
-    });
-  });
-
-});
+//REACTIVAR PARA ARREGLAR
+// cron.schedule('0 * * * *', () => {
+//   console.log('corre cada hora min 0 0 * * * *');
+//   console.log(moment().format('YYYY-MM-DD hh:mm:ss a'));
+//   eject.notificaCitaHumanos((err,row)=>{
+//     eject.notiCitasPeluditos((err,rows)=>{
+//       console.log('Citas notificadas');
+//     });
+//   });
+//
+// });
 
 // cron.schedule('* * 1 * *', () => {
 //   console.log('corre cada hora * * 1 * * ');

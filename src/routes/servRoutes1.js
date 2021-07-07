@@ -39,7 +39,7 @@ medico_id: req.body.medico_id
 };
 // console.log(servicio);
 serv.save(servicio,(err,data)=>{
-console.log(data);
+// console.log(data);
 res.json(data);
 });
 
@@ -57,7 +57,7 @@ res.json(resp);
 
 //retorna los servicios segun el id del provedor
 app.get('/services/:id',(req,res)=>{
-console.log('dar servicio por id de provedor');
+// console.log('dar servicio por id de provedor');
 var id=req.params.id;
 serv.DarServiceUsu(id,(err,data)=>{
 //console.log(data);
@@ -96,6 +96,7 @@ res.json(resp);
 });
 });
 
+//devuleve un servicio por el id del mismo
 app.get('/sservicio/:id',(req,res)=>{
   var id = req.params.id;
   serv.onlyservicio(id,(err,resp)=>{
@@ -119,7 +120,7 @@ direccion:req.body.direccion,
 categoria:req.body.id_ctga,
 id:req.body.id
 };
-console.log(servi);
+// console.log(servi);
 serv.updateServ(servi,(err,resp)=>{
   res.json(resp);
 });

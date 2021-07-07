@@ -34,12 +34,13 @@ categoria: req.body.id_ctga,
 horario: req.body.horarios,
 categoria: req.body.id_ctga,
 direccion:req.body.direccion,
-medico_id: req.body.medico_id
+medico_id: req.body.medico_id,
+creado: req.body.creador
 //files: req.files.imagenes
 };
 // console.log(servicio);
 serv.save(servicio,(err,data)=>{
-console.log(data);
+// console.log(data);
 res.json(data);
 });
 
@@ -119,11 +120,23 @@ direccion:req.body.direccion,
 categoria:req.body.id_ctga,
 id:req.body.id
 };
-console.log(servi);
+// console.log(servi);
 serv.updateServ(servi,(err,resp)=>{
   res.json(resp);
 });
 });
 
+app.get('/serviciosuc/:idsuc',(req,res)=>{
+  let ids = req.params.idsuc;
+serv.servisucu(ids,(err,resp)=>{
+   res.json(resp);
+})
+});
+
+app.get('/prom',(req,res)=>{
+  serv.pruebaP((err,resp)=>{
+    res.json(resp);
+  });
+});
 
 }

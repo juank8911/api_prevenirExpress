@@ -17,8 +17,8 @@ let pushmodule = {};
 pushmodule.addtoken = (token,callback)=>{
   if(connection)
   {
-    console.log('Informacion desde la apk');
-    console.log(token);
+    // console.log('Informacion desde la apk');
+    // console.log(token);
     if(token.admines==true && token.medico == false)
     {
       var sel = 'SELECT id, tokenpsh FROM members,provedores WHERE members.id = provedores.members_id AND id_provedor = ?;';
@@ -28,12 +28,12 @@ pushmodule.addtoken = (token,callback)=>{
          {
            // sleep(1000);
             res = res[0];
-            console.log('************/////////////////*************');
-            console.log(res);
-            console.log(token);
+            // console.log('************/////////////////*************');
+            // console.log(res);
+            // console.log(token);
           if(res.tokenpsh != token.token)
           {
-            console.log('dentro del if del token');
+            // console.log('dentro del if del token');
 
           // console.log('true 1');
           // console.log(res);
@@ -43,7 +43,7 @@ pushmodule.addtoken = (token,callback)=>{
             if(err){throw err}
             else
             {
-              console.log(resp);
+              // console.log(resp);
               callback(null,true);
             }
           });
@@ -67,18 +67,18 @@ pushmodule.addtoken = (token,callback)=>{
             res = res[0];
           if(res.tokenpsh != token.token)
           {
-            console.log('dentro del if del token');
-
-          console.log('true 1');
-          console.log(res);
+          //   console.log('dentro del if del token');
+          //
+          // console.log('true 1');
+          // console.log(res);
 
           var upd = 'UPDATE members SET tokenpsh = ? WHERE id = ?;';
           connection.query(upd,[token.token,res.id],(err,resp)=>{
             if(err){throw err}
             else
             {
-              console.log('////////////************/////////////////');
-              console.log('true 2');
+              // console.log('////////////************/////////////////');
+              // console.log('true 2');
               callback(null,true);
             }
           });
@@ -94,7 +94,7 @@ pushmodule.addtoken = (token,callback)=>{
   }
   else if(token.admines==false && token.medico == true)
   {
-    console.log('es medico');
+    // console.log('es medico');
     var sel = 'SELECT members.id, tokenpsh FROM members,medicos WHERE members.id = medicos.members_id AND medicos.medico_id = ?;';
     connection.query(sel,[token.id],(err,res)=>{
       if(err){throw err}
@@ -102,21 +102,21 @@ pushmodule.addtoken = (token,callback)=>{
        {
           // sleep(1000);
           res = res[0];
-          console.log(res);
+          // console.log(res);
         if(res.tokenpsh != token.token)
         {
-          console.log('dentro del if del token');
-
-        console.log('true 1');
-        console.log(res);
+        //   console.log('dentro del if del token');
+        //
+        // console.log('true 1');
+        // console.log(res);
 
         var upd = 'UPDATE members SET tokenpsh = ? WHERE id = ?;';
         connection.query(upd,[token.token,res.id],(err,resp)=>{
           if(err){throw err}
           else
           {
-            console.log('////////////************/////////////////');
-            console.log('true 2');
+            // console.log('////////////************/////////////////');
+            // console.log('true 2');
             callback(null,true);
           }
         });
@@ -157,30 +157,30 @@ let p = true;
     // console.log(message);
     fcm.send(message,(err,response)=>{
       if(err){
-      console.log('no enviados'+ err);
-      console.log(response);
-      console.log(p);
+      // console.log('no enviados'+ err);
+      // console.log(response);
+      // console.log(p);
       if(p==2)
       {
-        console.log('ENTRE AL IF');
+        // console.log('ENTRE AL IF');
         callback(null,false);
       }
       p++
       }
       else
       {
-        console.log(response);
-        console.log(p);
+        // console.log(response);
+        // console.log(p);
         if(p==2)
         {
-          console.log('ENTRE AL IF');
+          // console.log('ENTRE AL IF');
           callback(null,true);
         }
         p++
       }
-      console.log('no e salido');
+      // console.log('no e salido');
     });
-    console.log('sali');
+    // console.log('sali');
 
 };
 

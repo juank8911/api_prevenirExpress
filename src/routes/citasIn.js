@@ -12,22 +12,24 @@ app.get('/cedula/:id/:masc',(req,res)=>{
       masc: req.params.masc
     }
 
-  console.log(id.masc);
+  // console.log(id.masc);
 internas.darUsuariosID(id,(err,data)=>{
 res.json(data);
 });
 });
 
 app.get('/cedula',(req,res)=>{
-  console.log('da cedulas');
+  // console.log('da cedulas');
 internas.darUsuarios((err,data)=>{
 res.json(data);
 });
 });
 
 app.post('/citai',jwt.validaAdmin,(req,res)=>{
-  console.log(req.body);
+  // console.log(req.body);
   let cita = req.body;
+  // console.log('NUEVA CITA INTERNA *********');
+  // console.log(cita);
   let masc = req.body.mascota;
   if(masc==true)
   {
@@ -39,7 +41,7 @@ app.post('/citai',jwt.validaAdmin,(req,res)=>{
   else
   {
     // console.log('cita de usuario');
-    console.log(cita);
+    // console.log(cita);
 
     internas.nuevaCita(cita,(err,resp)=>{
       res.json(resp);
@@ -50,10 +52,10 @@ app.post('/citai',jwt.validaAdmin,(req,res)=>{
 
 
 //devuelve las citas de un paciente por cedula segun el provedor
-app.get('/ordencita/:ced/:prov',(req,res)=>{
+app.get('/ordencita/:ced/:suc',(req,res)=>{
   let usu = {
     id: req.params.ced,
-    ser: req.params.prov
+    suc: req.params.suc
   }
     citas.CitasUsuarioProv(usu,(err,resp)=>{
       res.json(resp);
@@ -64,7 +66,7 @@ app.get('/ordencita/:ced/:prov',(req,res)=>{
 //activa la cita de un paciente y la elimina de la tabla eventos
 app.post('/activacita',(req,res)=>{
   let cita = req.body;
-  console.log(cita);
+  // console.log(cita);
   internas.activaCitaP(cita,(err,resp)=>{
     res.json(resp);
   });

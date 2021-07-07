@@ -12,7 +12,7 @@ res.json(data);
 });
 });
 
-
+//decuelve el salt de del member
 app.get('/cambios/:id',(req,res)=>{
   let id = req.params.id;
   eject.cambioSalt(id,(err,row)=>{
@@ -20,6 +20,7 @@ app.get('/cambios/:id',(req,res)=>{
   });
 });
 
+//cambio de contraseña
 app.get('/cambioc/:email',(req,res)=>{
   let email = req.params.email;
   eject.cambioContra(email,(err,resp)=>{
@@ -27,6 +28,7 @@ app.get('/cambioc/:email',(req,res)=>{
   });
 });
 
+//aceota la nueva contraseña
 app.put('/cambioc',(req,res)=>{
   let dts = req.body;
   console.log(dts);

@@ -29,7 +29,7 @@ if(connection)
       throw err;
       }
       else {
-            console.log(row);
+            // console.log(row);
             var id = row.insertId;
             var add = 'INSERT INTO usuarios (cedula,correo, nombre, apellidos, telefono,telefonowatshapp,fecha_nacimiento,usuariosBf_id, parentescos_id_parentescos,members_id,id_pais) VALUES (?,?,?,?,?,?,?,?,?,?,?);';
             // //console.lo.log(benef);
@@ -63,6 +63,7 @@ else
 }
 };
 
+//retorna los beneficiarios por el id del titular
 benefModule.darBenefId = (id,callback)=>{
 var sel = 'SELECT usuarios.*, parentescos.nombre as parentesco FROM usuarios,parentescos WHERE usuarios.parentescos_id_parentescos = parentescos.id_parentescos and usuariosBf_id = ? and parentescos_id_parentescos != 17;'
 if(connection)

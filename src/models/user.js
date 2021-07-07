@@ -108,7 +108,8 @@ userModel.darUserId=(id,callback)=>{
 if(connection)
 {
 var sql = "SELECT usuarios.*, CONCAT( usuarios.nombre,' ', usuarios.apellidos) as nombres,TIMESTAMPDIFF(YEAR,fecha_nacimiento,CURDATE()) as edad, municipio.id_municipio,municipio.nombre as nomMuni,departamento.nombre as nomDepa, departamento.id_departamento FROM usuarios,municipio,departamento where usuarios.id_municipio = municipio.id_municipio AND departamento.id_departamento = municipio.id_departamento AND usuarios.id = ?;";
-connection.query(sql,id,(err,row)=>{if(err){throw err}
+connection.query(sql,id,(err,row)=> {
+  if(err){throw err}
 else{
 var par = "SELECT acompañante.*, parentescos.nombre as parentesco FROM acompañante,parentescos WHERE acompañante.id_parentescos = parentescos.id_parentescos AND acompañante.usuarios_id = ?;"
 connection.query(par,id,(err,resp)=>{
@@ -117,7 +118,7 @@ connection.query(par,id,(err,resp)=>{
   {
     row = row[0];
     row.parentesco = resp;
-    console.log(row);
+    // console.log(row);
     callback(null,row);
   }
 });
@@ -158,7 +159,7 @@ userModel.setUsuario=(usu,callback)=>{
 if(connection)
 {
 // console.log('Y/(() CAMBIANDO EL USUARIO)');
-console.log(usu);
+// console.log(usu);
 var sql = 'UPDATE usuarios SET tipoDocumento = ?,cedula=?, nombre = ?, apellidos = ?, direccion = ?, telefono = ?, telefonowatshapp = ?, fecha_nacimiento = ?, estadoCivil = ?, ocupacion = ?, barrio = ?, eps = ? WHERE (id = ?) and (parentescos_id_parentescos = 17);'
 connection.query(sql,[usu.tipoDocumento,usu.cedula, usu.nombre,usu.apellidos,usu.direccion,usu.telefono,usu.telefonowatshapp,usu.fecha_nacimiento,usu.estadoCivil,usu.ocupacion,usu.barrio,usu.eps,usu.id],(err,row)=>{
 if(err){callback(null,{'update':false});}
@@ -200,7 +201,7 @@ userModel.darUsuario=(ced,callback)=>{
 
       row = row[0];
       not.push(row);
-      console.log(not);
+      // console.log(not);
 
       connection.query(citas,[row.id],(err,rep)=>{
         if(err){throw err}

@@ -6,6 +6,7 @@ let titulo = require('./titulos');
 let ciclo = require('../controler/ciclos')
 let email = require('./email');
 var async = require("async");
+var forEach = require('async-foreach').forEach;
 
 connection = new mysql({
 host: config.host,
@@ -20,7 +21,7 @@ let medicosModule = {};
 medicosModule.darMedicosProv = (id, callback)=>{
 if(connection)
 {
-var sql = 'SELECT *, CONCAT(nombres," ",apellidos) as nombre FROM medicos, provedores_has_medicos WHERE provedores_has_medicos.medico_id = medicos.medico_id AND provedores_has_medicos.id_provedor = ?;';
+var sql = 'SELECT *, CONCAT(nombres," ",apellidos) as nombre FROM medicos, provedores_has_medicos WHERE provedores_has_medicos.medico_id = medicos.medico_id AND provedores_has_medicos.id_provedor = ? AND eliminado = 0;';
 connection.query(sql,[id],(err,row)=>{
 if(err)
 {
@@ -94,7 +95,7 @@ medicosModule.getMedicoMem = (id,callback)=>{
             res = res[0];
             res.titulos = row;
             resp.push(res);
-            console.log(resp);
+            // console.log(resp);
             callback(null,resp)
           });
 
@@ -110,10 +111,10 @@ medicosModule.agregarMedico = (medico,callback)=>{
     email: medico.email,
     t_prof:medico.tarj_profecional
   };
-  console.log('valida');
-  console.log(vali);
+  // console.log('valida');
+  // console.log(vali);
   valida.validaMedico(vali,(err,res)=>{
-    console.log(res);
+    // console.log(res);
     if(res.existe==false)
     {
       if(connection)
@@ -134,8 +135,8 @@ medicosModule.agregarMedico = (medico,callback)=>{
               id:mem.insertId
             };
             email.cuentaBlock (usu,(err,ressp)=>{
-              console.log(ressp);
-              console.log('member agregado con exito');
+              // console.log(ressp);
+              // console.log('member agregado con exito');
               // console.log(mem.insertId);
               connection.query(sql,[mem.insertId,medico.cedula,medico.nombre,medico.apellidos,medico.tarj_profecional,medico.titulo,mem.insertId],(err,row)=>{
               if(err)
@@ -164,7 +165,7 @@ medicosModule.agregarMedico = (medico,callback)=>{
     }
     else
     {
-      console.log(res);
+      // console.log(res);
       callback(null,res)
     }
   });
@@ -176,7 +177,7 @@ medicosModule.agregarMedico = (medico,callback)=>{
 medicosModule.agregarProvedor = (medico,callback) =>{
   if(connection)
   {
-    let val = 'SELECT * FROM provedores_has_medicos WHERE id_provedor = ? AND medico_id = ?'
+    let val = 'SELECT * FROM provedores_has_medicos WHERE id_provedor = ? AND medico_id = ? AND eliminado = 0;'
     connection.query(val,[medico.provedores_id,medico.cedula],(err,vali)=>{
       if(err){throw err}
       else
@@ -223,14 +224,14 @@ if(connection)
       }
       else
       {
-        console.log(pr.length);
-        console.log(pr);
+        // console.log(pr.length);
+        // console.log(pr);
           for (var i = 0; i < pr.length; i++)
           {
             prs = pr[i];
             prs.id = id;
             service.serviciosMedicoProvedor(prs,(err,row)=>{
-              console.log(row);
+              // console.log(row);
               // prs.serv = row;
               res.push(row);
               // console.log('/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/');
@@ -241,7 +242,7 @@ if(connection)
                 callback(null,res);
               }
                 p++;
-              console.log(p+'/*/*/*/*/*'+pr.length);
+              // console.log(p+'/*/*/*/*/*'+pr.length);
             });
 
           }
@@ -257,9 +258,9 @@ if(connection)
 medicosModule.setMedico = (medico,callback) =>{
   if(connection)
   {
-    console.log(medico);
+    // console.log(medico);
     let titulos = medico.estudios;
-    console.log(titulos);
+    // console.log(titulos);
     let upd = 'UPDATE medicos SET nombres = ?, apellidos = ?, titulo = ?, telefono = ?, whatsapp = ? WHERE (medico_id = ?);';
     connection.query(upd,[medico.nombres,medico.apellidos,medico.titulo,medico.telefono,medico.wp,medico.id],(err,rep)=>{
       if(err){throw err}
@@ -286,16 +287,18 @@ medicosModule.setMedico = (medico,callback) =>{
 medicosModule.deleteMedico = (ids,callback)=>{
   if(connection)
   {
-    var sel =  'SELECT count(*) FROM servicios WHERE servicios.medico_id = ? AND servicios.id_provedores = ?;'
-    var del = 'DELETE FROM provedores_has_medicos WHERE (id_provedor = ?) and (medico_id = ?);'
-    connection.query(sel,[ids.medico,ids.prov],(err,res)=>{
+    var sel =  'SELECT count(*) as val FROM provedores_has_medicos WHERE id_provedor = ? AND medico_id = ? AND eliminado = 0 AND activo = true;'
+    var upt = 'UPDATE provedores_has_medicos SET eliminado = 1 WHERE id_provedor = ? and medico_id = ?;'
+    connection.query(sel,[ids.prov,ids.medico],(err,res)=>{
       if(err){throw err}
       else
       {
-        console.log(res);
-          if (JSON.stringify(res)!='[]')
+
+        res = res[0]
+        console.log(res.val);
+          if (res.val==0)
           {
-            connection.query(del,[ids.prov,ids.medico],(err,row)=>{
+            connection.query(upt,[ids.prov,ids.medico],(err,row)=>{
               if(err){throw err}
               else
               {
@@ -312,5 +315,45 @@ medicosModule.deleteMedico = (ids,callback)=>{
     });
   }
 };
+
+medicosModule.activaMedico = (ids,callback)=>
+{
+  if(connection)
+  {
+    console.log(ids);
+    let ins = 'UPDATE provedores_has_medicos SET id_sucursales = ?, id_consultorio = ?, activo = ? WHERE (id_provedor = ?) and (medico_id = ?);';
+    forEach(ids, function(idt, index, arr)
+      {
+            connection.query(ins,[idt.id_sucursal, idt.id_consultorio,'true', idt.id_provedor, idt.id_medico,],(err,add)=>{
+              if(err){throw err}
+              else
+              {
+                // console.log('ok');
+                // console.log(index, ' ',ids.length-1 );
+                if(index>=ids.length-1)
+                {
+                  callback(null,true);
+                }
+              }
+            })
+        });
+
+  }
+}
+
+medicosModule.darMedicosSucursal = (ids, callback) =>
+{
+  if(connection)
+  {
+    var sql = 'SELECT medicos.*, consultorio.id_consultorio as consultorio FROM medicos, consultorio, sucursales WHERE medicos.medico_id = consultorio.medico_id AND consultorio.id_sucursales = sucursales.id_sucursales AND sucursales.id_sucursales = ? AND consultorio.id_servicios = ? AND consultorio.eliminado = 0;';
+    connection.query(sql,[ids.id_sucur,ids.id_serv],(err,row)=>{
+        if(err){throw err}
+        else
+        {
+          callback(null,row)
+        }
+    });
+  }
+}
 
 module.exports = medicosModule;

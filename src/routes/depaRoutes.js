@@ -15,7 +15,7 @@ res.json(data);
 //elimina departamentos segun el id del departamento
 app.delete('/departamentos/:id',(req,res)=>{
 
-console.log('borrando departamento con id= '+req.params.id)
+// console.log('borrando departamento con id= '+req.params.id)
 res.json(req.params.id);
 });
 
